@@ -4,6 +4,7 @@ import Root from './root.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NotFound, Home, Login, Bestellingen, Profiel, Producten} from './pages.jsx';
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
+import { TokenProvider } from './Componenten/context/TokenContext.jsx';
 
 
 const router = createBrowserRouter([
@@ -44,6 +45,8 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <TokenProvider>
+      <RouterProvider router={router} />
+    </TokenProvider>
   </React.StrictMode>,
 )

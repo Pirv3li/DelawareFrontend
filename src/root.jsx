@@ -3,12 +3,12 @@ import { NavLink } from "react-router-dom";
 import { useToken } from './Componenten/context/tokenHook';
 import './header.css'
 
-function App() {
-  const [token, setAuthToken] = useToken();
+export default function Root() {
+  const { token, setAuthToken } = useToken();
 
-const handleLogout = useCallback(() => {
-  setAuthToken("Null");
-}, [setAuthToken]);
+  const handleLogout = useCallback(() => {
+    setAuthToken("Null");
+  }, [setAuthToken]);
 
   return (
     <>
@@ -32,5 +32,3 @@ const handleLogout = useCallback(() => {
     </>
   )
 }
-
-export default App
