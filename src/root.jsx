@@ -1,8 +1,14 @@
-import { useState } from 'react'
-import './index.css'
+import { useCallback} from 'react'
+import { NavLink } from "react-router-dom";
+import { useToken } from './Componenten/context/tokenHook';
+import './header.css'
 
 function App() {
-  
+  const [token, setAuthToken] = useToken();
+
+const handleLogout = useCallback(() => {
+  setAuthToken("Null");
+}, [setAuthToken]);
 
   return (
     <>
@@ -14,7 +20,7 @@ function App() {
             {token !== "null" ? (
               <>
               <li><NavLink to="/profiel">Profiel</NavLink></li>
-              <li><button onClick={handeLogout}>Logout</button></li>
+              <li><button onClick={handleLogout}>Logout</button></li>
               </>
             ) : (
               <li><NavLink to="/login">Login</NavLink></li>
