@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import Root from './root.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { NotFound, Home, Login, Bestellingen, Profiel, Producten } from './pages.jsx';
+import { NotFound, Home, Login, Bestellingen, Profiel } from './pages.jsx';
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
 import { TokenProvider } from './Componenten/context/TokenContext.jsx';
 import Layout from './Componenten/Layout.jsx';
@@ -18,7 +18,6 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: '/', element: <Home /> },
       { path: '*', element: <NotFound /> },
-      { path: 'producten', element: <Producten /> },
       { path: 'login', element: <Login /> },
       {
         path: 'bestellingen',
@@ -55,6 +54,5 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         </AuthProvider>
       </TokenProvider>
     </ChakraProvider>
-
   </React.StrictMode>,
 )

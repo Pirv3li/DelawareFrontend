@@ -2,20 +2,20 @@ import HomePage from './Componenten/HomePage';
 import Log from './Componenten/Login';
 import Bestel from './Componenten/Bestellingen';
 import Account from './Componenten/Profiel';
-import Prod from './Componenten/Producten';
+import Producten from './Componenten/pages/home/producten';
 import { useLocation } from 'react-router-dom';
 
 export const Home = () => (
   <div>
-    <HomePage/>
+    <Producten/>
   </div>
 );
 
-export const Producten = () => (
-  <div>
-    <Prod/>
-  </div>
-)
+// export const Product = () => (
+//   <div>
+//     <Producten/>
+//   </div>
+// )
 
 export const Bestellingen = () => (
   <div>
