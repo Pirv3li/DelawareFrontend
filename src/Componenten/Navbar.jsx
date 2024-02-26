@@ -11,7 +11,7 @@ const Navbar = () => {
     const { colorMode, toggleColorMode } = useColorMode();
 
     return (
-        <Flex as="nav" p={4} bgColor="blue.500" color="white">
+        <Flex as="nav" p={4} bgColor="red.500" color="white" width="100vw">
             <ChakraLink as={RouterLink} to="/bestellingen" mx={2}>
                 Bestellingen
             </ChakraLink>
