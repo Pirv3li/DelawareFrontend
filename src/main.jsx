@@ -6,7 +6,7 @@ import { NotFound, Home, Login, Bestellingen, Profiel, Producten } from './pages
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
 import { TokenProvider } from './Componenten/context/TokenContext.jsx';
 import Layout from './Componenten/Layout.jsx';
-
+import { AuthProvider } from './Componenten/contexts/Auth.contexts.jsx';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
 
@@ -50,7 +50,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <ChakraProvider>
       <TokenProvider>
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </TokenProvider>
     </ChakraProvider>
 

@@ -80,8 +80,8 @@ export const AuthProvider = ({ children }) => {
     async (data) => {
       try {
         const { token, user } = await doRegister(data);
-        // console.log(user); // Log the user object
-        // setSession(token, user);
+        console.log(user); // Log the user object
+        setSession(token, user);
         return true;
       } catch (error) {
         console.error(error);
