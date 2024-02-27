@@ -23,7 +23,7 @@ export default function Login() {
 
   const methods = useForm({
     defaultValues: {
-      email: 'user1@example.com',
+      gebruikersnaam: 'klant2',
       password: '12345678',
     },
   });
@@ -32,13 +32,13 @@ export default function Login() {
 
 
 const handleLogin = useCallback(
-  async ({ email, password }) => {
+  async ({ gebruikersnaam, password }) => {
     try {
-      const response = await login(email, password);
+      const response = await login(gebruikersnaam, password);
 
       if (response) {
         navigate({
-          pathname: '',
+          pathname: '/',
           replace: true,
         });
       }

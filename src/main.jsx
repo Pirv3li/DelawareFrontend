@@ -1,6 +1,5 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import Root from './root.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NotFound, Home, Login, Bestellingen, Profiel } from './pages.jsx';
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
@@ -47,12 +46,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <ChakraProvider>
-      <TokenProvider>
-        <AuthProvider>
-          <RouterProvider router={router} />
-        </AuthProvider>
-      </TokenProvider>
-    </ChakraProvider>
+    <AuthProvider>
+      <ChakraProvider>
+        <TokenProvider>
+            <RouterProvider router={router} />
+        </TokenProvider>
+      </ChakraProvider>
+    </AuthProvider>
   </React.StrictMode>,
 )

@@ -28,13 +28,13 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
   
   const { isMutating: loading, trigger: doLogin } = useSWRMutation(
-    "Gebruiker/login",
+    "klant/login",
     api.post
   );
 
   const {
     trigger: doRegister,
-  } = useSWRMutation('Gebruiker/register', api.post)
+  } = useSWRMutation('klant/register', api.post)
 
 
   const setSession = useCallback(
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
       setGebruiker(user);
 
       localStorage.setItem(JWT_TOKEN_KEY, token);
-      localStorage.setItem(GEBRUIKER_ID_KEY, user.idGebruiker);
+      localStorage.setItem(GEBRUIKER_ID_KEY, user.idKlant);
     },
     [],
   );
@@ -51,11 +51,11 @@ export const AuthProvider = ({ children }) => {
  
 
   const login = useCallback(
-    async (email, password) => {
+    async (username, password) => {
       try {
         // 👇 7
         const { token, user } = await doLogin({
-          email,
+          username,
           password,
         });
 
@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
         setGebruiker(user); // 👈 8
 
         localStorage.setItem(JWT_TOKEN_KEY, token); // 👈 13
-        localStorage.setItem(GEBRUIKER_ID_KEY, user.idGebruiker); 
+        localStorage.setItem(GEBRUIKER_ID_KEY, user.idKlant); 
 
         return true; // 👈 10
         // 👇 10
@@ -76,20 +76,20 @@ export const AuthProvider = ({ children }) => {
   
  
 
-  const register = useCallback(
-    async (data) => {
-      try {
-        const { token, user } = await doRegister(data);
-        console.log(user); // Log the user object
-        setSession(token, user);
-        return true;
-      } catch (error) {
-        console.error(error);
-        return false;
-      }
-    },
-    [doRegister, setSession],
-  );
+  // const register = useCallback(
+  //   async (data) => {
+  //     try {
+  //       const { token, user } = await doRegister(data);
+  //       console.log(user); // Log the user object
+  //       setSession(token, user);
+  //       return true;
+  //     } catch (error) {
+  //       console.error(error);
+  //       return false;
+  //     }
+  //   },
+  //   [doRegister, setSession],
+  // );
  
 
 
@@ -135,7 +135,7 @@ export const AuthProvider = ({ children }) => {
       login,
       logOut,
       getAfspraken,
-      register,
+      // register,
     }),
     [token, gebruiker, ready, loading, isAuthed, login, logOut, getAfspraken,]
   );

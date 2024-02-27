@@ -7,8 +7,14 @@ import { SunIcon, MoonIcon } from '@chakra-ui/icons';
 import { useAuth } from './contexts/Auth.contexts';
 
 const Navbar = () => {
-    const { isAuthed } = useAuth();
+    const { isAuthed, logOut } = useAuth();
+    console.log(isAuthed);
     const { colorMode, toggleColorMode } = useColorMode();
+
+    const handleLogout = () => {
+      logOut();
+    };
+
 
     return (
         <Flex as="nav" p={4} bgColor="red.500" color="white" width="100vw" justifyContent="space-between" alignItems="center">
@@ -21,12 +27,21 @@ const Navbar = () => {
                 <ChakraLink as={RouterLink} to="/bestellingen" mx={2}>
                     Bestellingen
                 </ChakraLink>
-                <ChakraLink as={RouterLink} to="/profiel" mx={2}>
-                    Profiel
-                </ChakraLink>
-                <ChakraLink as={RouterLink} to="/login" mx={2}>
-                    Login
-                </ChakraLink>
+                {isAuthed? (
+                    <>
+                        <ChakraLink as={RouterLink} to="/profiel" mx={2}>
+                            Profiel
+                        </ChakraLink>
+                        <ChakraLink as={RouterLink} onClick={handleLogout} mx={2}>
+                            Log uit
+                        </ChakraLink>
+                    </>
+                ):(
+
+                    <ChakraLink as={RouterLink} to="/login" mx={2}>
+                        Login
+                    </ChakraLink>
+                )}
                 <IconButton
                     aria-label="Toggle color mode"
                     icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
