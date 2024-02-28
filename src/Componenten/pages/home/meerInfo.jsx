@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Text, Flex, Button } from "@chakra-ui/react";
+import { Box, Text, Flex, Button, Heading } from "@chakra-ui/react";
 import { getById } from '../../../api/index.js';
+import { ArrowLeftIcon } from '@chakra-ui/icons'
 
 function MeerInfo({ idProduct }) {
     const [product, setProduct] = useState(null);
@@ -21,20 +22,30 @@ function MeerInfo({ idProduct }) {
     return (
         <Box>
             {product && (
-                <Flex direction="row">
-                    <img
-                        src={product.foto}
-                        alt="Foto kon niet laden"
-                        style={{
-                            width: '250px',
-                            height: '250px',
-                            objectFit: 'contain'
-                        }}
-                    />
-                    <Box ml={4}>
+                <Flex direction="row" alignItems="flex-start">
+                    <Box>
+                        <img
+                            src={product.foto}
+                            alt="Foto kon niet laden"
+                            style={{
+                                width: '250px',
+                                height: '250px',
+                                objectFit: 'contain'
+                            }}
+                        />
+                        <Button 
+                            width="100%"
+                            leftIcon={<ArrowLeftIcon />}
+                            
+                            variant='outline'
+                            onClick={() => window.location.reload()}
+                        >
+                            
+                        </Button>
+                    </Box>
+                    <Box ml={4} mt={4}>
                         <Flex>
-                            <Text color="blue.500">naam</Text>
-                            <Text ml={2}>{product.naam}</Text>
+                            <Heading ml={2}>{product.naam}</Heading>
                         </Flex>
                         <Flex>
                             <Text color="blue.500">btw:</Text>
@@ -44,11 +55,9 @@ function MeerInfo({ idProduct }) {
                             <Text color="blue.500">Eenheidsprijs:</Text>
                             <Text ml={2}>{product.eenheidsprijs}</Text>
                         </Flex>
-                        <Flex>
-                            <Button colorScheme='teal' variant='outline'>
-                                Terug
-                            </Button>
-                        </Flex>
+                        <Button>
+                            Kopen
+                        </Button>
                     </Box>
                 </Flex>
             )}
