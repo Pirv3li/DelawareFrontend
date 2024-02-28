@@ -12,7 +12,10 @@ import useSWRMutation from "swr/mutation";
 import * as api from "../../api/index.js";
 
 const JWT_TOKEN_KEY = "jwtToken";
-const GEBRUIKER_ID_KEY = 'idGebruiker'; // 👈 13
+const KLANT_ID_KEY = 'idKlant'; // 👈 13
+const Roles = 'roles';
+const LEVERANCIER_ID_KEY = 'idLeverancier'; 
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -27,10 +30,7 @@ export const AuthProvider = ({ children }) => {
     setReady(true);
   }, [token]);
   
-  const { isMutating: loading, trigger: doLogin } = useSWRMutation(
-    "klant/login",
-    api.post
-  );
+ 
 
   const {
     trigger: doRegister,
@@ -43,36 +43,58 @@ export const AuthProvider = ({ children }) => {
       setGebruiker(user);
 
       localStorage.setItem(JWT_TOKEN_KEY, token);
-      localStorage.setItem(GEBRUIKER_ID_KEY, user.idKlant);
+      localStorage.setItem(Roles, user.roles);
+      if(user.roles == 'klant'){
+        localStorage.setItem(KLANT_ID_KEY, user.idKlant);
+      }else{
+      localStorage.setItem(LEVERANCIER_ID_KEY, user.idLeverancier);
+      }
     },
     [],
   );
 
+
+  const { isMutating: loadingKlant, trigger: doLoginKlant } = useSWRMutation(
+    "klant/login",
+    api.post
+  );
+  
+  const { isMutating: loadingLeverancier, trigger: doLoginLeverancier } = useSWRMutation(
+    "leverancier/login",
+    api.post
+  );
  
 
   const login = useCallback(
     async (username, password) => {
       try {
-        // 👇 7
-        const { token, user } = await doLogin({
+        const { token, user } = await doLoginKlant({
           username,
           password,
         });
-
-        setToken(token); // 👈 8
-        setGebruiker(user); // 👈 8
-
-        localStorage.setItem(JWT_TOKEN_KEY, token); // 👈 13
-        localStorage.setItem(GEBRUIKER_ID_KEY, user.idKlant); 
-
-        return true; // 👈 10
-        // 👇 10
+  
+        setSession(token, user);
+        return true;
+      } catch (error) {
+        // Ignore the error from the first login attempt
+      }
+  
+      try {
+        const { token, user } = await doLoginLeverancier({
+          username,
+          password,
+        });
+  
+        setSession(token, user);
+        return true;
       } catch (error) {
         throw new Error('Foute login gegevens');
       }
     },
-    [doLogin]
+    [doLoginKlant, doLoginLeverancier, setSession]
   );
+  
+  const loading = loadingKlant || loadingLeverancier;
   
  
 
@@ -97,15 +119,21 @@ export const AuthProvider = ({ children }) => {
     try {
       setToken(null);
       setGebruiker(null);
-
+  
       localStorage.removeItem(JWT_TOKEN_KEY);
-      localStorage.removeItem(GEBRUIKER_ID_KEY);
+      if(gebruiker && gebruiker.roles == 'klant'){
+        localStorage.removeItem(KLANT_ID_KEY);
+      }else{
+        localStorage.removeItem(LEVERANCIER_ID_KEY);
+      }
+      localStorage.removeItem(Roles);
       return true;
     } catch (error) {
       console.error("Error during logOut:", error);
       return false;
     }
-  }, [setToken, setGebruiker]);
+  }, [setToken, setGebruiker, gebruiker]);
+
 
   const getAfspraken = useCallback(async () => {
     try {
