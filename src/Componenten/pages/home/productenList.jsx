@@ -27,7 +27,7 @@ function ProductenList() {
 
     const handleClick = (id) => {
         setSelectedProductId(id);
-        setShowList(false); // Add this line
+        setShowList(false); 
     };
 
     return (
@@ -35,7 +35,7 @@ function ProductenList() {
             <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
                 Producten
             </Text>
-            {showList && ( // Add this line
+            {showList && ( 
                 <Wrap spacing={4} justify="flex-wrap" overflow="none">
                     {items.map((item, index) => (
                         <WrapItem key={item.idProduct}>
@@ -60,13 +60,13 @@ function ProductenList() {
                                     Prijs incl BTW {item.eenheidsprijs * (1 + item.btwtarief / 100)}
                                 </Text>
                                 <Button onClick={() => handleClick(item.idProduct)}>
-                                    Click me
+                                    Meer info
                                 </Button>
                             </CustomBox>
                         </WrapItem>
                     ))}
                 </Wrap>
-            )} // Add this line
+            )} 
             {selectedProductId && <MeerInfo idProduct={selectedProductId} />}
         </VStack>
     );

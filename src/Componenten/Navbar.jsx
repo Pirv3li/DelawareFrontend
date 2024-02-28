@@ -9,12 +9,11 @@ import { useNavbarStyles } from './useThemaNavbar';
 
 const Navbar = () => {
     const { isAuthed, logOut } = useAuth();
-    console.log(isAuthed);
     const { colorMode, toggleColorMode } = useColorMode();
     const { bgColor, color, hoverColor } = useNavbarStyles();
 
     const handleLogout = () => {
-      logOut();
+        logOut();
     };
 
 
@@ -26,11 +25,12 @@ const Navbar = () => {
                 </ChakraLink>
             </Text>
             <Flex alignItems="center">
-                <ChakraLink as={RouterLink} to="/bestellingen" mx={2} _hover={{ color: hoverColor }}>
-                    Bestellingen
-                </ChakraLink>
-                {isAuthed? (
+
+                {isAuthed ? (
                     <>
+                        <ChakraLink as={RouterLink} to="/bestellingen" mx={2} _hover={{ color: hoverColor }}>
+                            Bestellingen
+                        </ChakraLink>
                         <ChakraLink as={RouterLink} to="/profiel" mx={2}>
                             Profiel
                         </ChakraLink>
@@ -38,7 +38,7 @@ const Navbar = () => {
                             Log uit
                         </ChakraLink>
                     </>
-                ):(
+                ) : (
 
                     <ChakraLink as={RouterLink} to="/login" mx={2}>
                         Login

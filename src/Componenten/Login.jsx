@@ -6,14 +6,7 @@ import LabelInput from '../Componenten/LabelInput';
 import { useAuth } from './contexts/Auth.contexts';
 import Error from '../Componenten/Error';
 
-const validationRules = {
-  gebruikersnaam: {
-    required: 'Gebruikersnaam is required',
-  },
-  password: {
-    required: 'Password is required',
-  },
-};
+
 
 export default function Login() {
   const { error, loading, login } = useAuth();
@@ -23,8 +16,8 @@ export default function Login() {
 
   const methods = useForm({
     defaultValues: {
-      gebruikersnaam: 'klant2',
-      password: '12345678',
+      gebruikersnaam: '',
+      password: '',
     },
   });
   const { handleSubmit } = methods;
@@ -35,7 +28,7 @@ const handleLogin = useCallback(
   async ({ gebruikersnaam, password }) => {
     try {
       const response = await login(gebruikersnaam, password);
-
+      console.log(response);
       if (response) {
         navigate({
           pathname: '/',
@@ -70,12 +63,11 @@ const handleLogin = useCallback(
 
           <LabelInput
 
-            label="email: "
+            label="gebruikersnaam: "
             type="text"
-            name="email"
-            placeholder="your@email.com"
-            validationRules={validationRules.email}
-            data-cy='email_input'
+            name="gebruikersnaam"
+            placeholder=""
+            data-cy='gebruikersnaam_input'
             mb={4} 
 
           />
@@ -84,7 +76,6 @@ const handleLogin = useCallback(
             label="password: "
             type="password"
             name="password"
-            validationRules={validationRules.password}
             mb={4} 
             data-cy='password_input'
 
