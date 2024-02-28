@@ -5,26 +5,28 @@ import { useColorMode } from '@chakra-ui/react';
 import { SunIcon, MoonIcon } from '@chakra-ui/icons';
 
 import { useAuth } from './contexts/Auth.contexts';
+import { useNavbarStyles } from './useThemaNavbar';
 
 const Navbar = () => {
     const { isAuthed } = useAuth();
     const { colorMode, toggleColorMode } = useColorMode();
+    const { bgColor, color, hoverColor } = useNavbarStyles();
 
     return (
-        <Flex as="nav" p={4} bgColor="red.500" color="white" width="100vw" justifyContent="space-between" alignItems="center">
+        <Flex as="nav" p={4} bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center">
             <Text fontSize="2xl" fontWeight="bold">
-                <ChakraLink as={RouterLink} to="/" mx={2}>
+                <ChakraLink as={RouterLink} to="/" mx={2} _hover={{ color: hoverColor }}>
                     Delaware
                 </ChakraLink>
             </Text>
             <Flex alignItems="center">
-                <ChakraLink as={RouterLink} to="/bestellingen" mx={2}>
+                <ChakraLink as={RouterLink} to="/bestellingen" mx={2} _hover={{ color: hoverColor }}>
                     Bestellingen
                 </ChakraLink>
-                <ChakraLink as={RouterLink} to="/profiel" mx={2}>
+                <ChakraLink as={RouterLink} to="/profiel" mx={2} _hover={{ color: hoverColor }}>
                     Profiel
                 </ChakraLink>
-                <ChakraLink as={RouterLink} to="/login" mx={2}>
+                <ChakraLink as={RouterLink} to="/login" mx={2} _hover={{ color: hoverColor }}>
                     Login
                 </ChakraLink>
                 <IconButton
