@@ -48,6 +48,17 @@ function MeerInfo({ idProduct }) {
                             <Heading ml={2}>{product.naam}</Heading>
                         </Flex>
                         <Flex>
+                            <Text ml={2}>{product.beschrijving}</Text>
+                        </Flex>
+                        <Flex>
+                            <Text color="blue.500">Aantal:</Text>
+                            <Text ml={2}>{product.aantal}</Text>
+                        </Flex>
+                        <Flex>
+                            <Text color="blue.500">Gewicht:</Text>
+                            <Text ml={2}>{product.gewicht}</Text>
+                        </Flex>
+                        <Flex>
                             <Text color="blue.500">btw:</Text>
                             <Text ml={2}>{product.btwtarief}</Text>
                         </Flex>

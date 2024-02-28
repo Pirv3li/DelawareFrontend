@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { NotFound, Home, Login, Bestellingen, Profiel } from './pages.jsx';
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
-import { TokenProvider } from './Componenten/context/TokenContext.jsx';
 import Layout from './Componenten/Layout.jsx';
 import { AuthProvider } from './Componenten/contexts/Auth.contexts.jsx';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
@@ -48,9 +47,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
       <ChakraProvider>
-        <TokenProvider>
-            <RouterProvider router={router} />
-        </TokenProvider>
+            <RouterProvider router={router} />     
       </ChakraProvider>
     </AuthProvider>
   </React.StrictMode>,
