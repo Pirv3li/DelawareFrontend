@@ -8,9 +8,15 @@ import { useAuth } from './contexts/Auth.contexts';
 import { useNavbarStyles } from './useThemaNavbar';
 
 const Navbar = () => {
-    const { isAuthed } = useAuth();
+    const { isAuthed, logOut } = useAuth();
+    console.log(isAuthed);
     const { colorMode, toggleColorMode } = useColorMode();
     const { bgColor, color, hoverColor } = useNavbarStyles();
+
+    const handleLogout = () => {
+      logOut();
+    };
+
 
     return (
         <Flex as="nav" p={4} bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center">
@@ -23,12 +29,21 @@ const Navbar = () => {
                 <ChakraLink as={RouterLink} to="/bestellingen" mx={2} _hover={{ color: hoverColor }}>
                     Bestellingen
                 </ChakraLink>
-                <ChakraLink as={RouterLink} to="/profiel" mx={2} _hover={{ color: hoverColor }}>
-                    Profiel
-                </ChakraLink>
-                <ChakraLink as={RouterLink} to="/login" mx={2} _hover={{ color: hoverColor }}>
-                    Login
-                </ChakraLink>
+                {isAuthed? (
+                    <>
+                        <ChakraLink as={RouterLink} to="/profiel" mx={2}>
+                            Profiel
+                        </ChakraLink>
+                        <ChakraLink as={RouterLink} onClick={handleLogout} mx={2}>
+                            Log uit
+                        </ChakraLink>
+                    </>
+                ):(
+
+                    <ChakraLink as={RouterLink} to="/login" mx={2}>
+                        Login
+                    </ChakraLink>
+                )}
                 <IconButton
                     aria-label="Toggle color mode"
                     icon={colorMode === 'light' ? <MoonIcon /> : <SunIcon />}
