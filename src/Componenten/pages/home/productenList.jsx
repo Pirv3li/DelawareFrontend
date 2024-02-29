@@ -37,7 +37,7 @@ function ProductenList() {
             </Text>
             {showList && ( 
                 <Wrap spacing={4} justify="flex-wrap" overflow="none">
-                    {items.map((item, index) => (
+                    {items.map((item) => (
                         <WrapItem key={item.idProduct}>
                             <CustomBox
                                 bgColor={boxbgColor}

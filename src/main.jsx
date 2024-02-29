@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { NotFound, Home, Login, Bestellingen, Profiel } from './pages.jsx';
+import { NotFound, Home, Login, Bestelling, Profiel, BestellingInfo } from './pages.jsx';
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
 import Layout from './Componenten/Layout.jsx';
 import { AuthProvider } from './Componenten/contexts/Auth.contexts.jsx';
@@ -18,12 +18,22 @@ const router = createBrowserRouter([
       { path: '*', element: <NotFound /> },
       { path: 'login', element: <Login /> },
       {
-        path: 'bestellingen',
+        path: 'Bestellingen',
         element: <PrivateRoute />,
         children: [
           {
             index: true,
-            element: <Bestellingen />
+            element: <Bestelling />
+          }
+        ]
+      },
+      {
+        path: 'bestellingInfo',
+        element: <PrivateRoute />,
+        children: [
+          {
+            index: true,
+            element: <BestellingInfo />
           }
         ]
       },
