@@ -52,7 +52,7 @@ const handleLogin = useCallback(
         Foute login gegevens
       </Alert>
       )}
-      <Flex align="center" justify="center" minH="100vh">
+      <Flex align="center" justify="center" minH="60vh">
         <Box width="md" p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
           <Heading mb={4}
             align="center"

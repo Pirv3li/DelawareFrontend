@@ -19,28 +19,31 @@ const Navbar = () => {
 
     return (
         <Flex as="nav" p={4} bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center">
-            <Text fontSize="2xl" fontWeight="bold">
-                <ChakraLink as={RouterLink} to="/" mx={2} _hover={{ color: hoverColor }}>
-                    Delaware
-                </ChakraLink>
-            </Text>
-            <Flex alignItems="center">
+
+            <ChakraLink as={RouterLink} to="/" mx={2} _hover={{ color: hoverColor }}>
+                <img src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png" alt="" style={{ maxWidth: '50%' }} />
+            </ChakraLink>
+
+            <Flex as="nav" p={4} bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="flex-end" flexWrap="nowrap">
+
 
                 {isAuthed ? (
                     <>
-                        <ChakraLink as={RouterLink} to="/bestellingen" mx={2} _hover={{ color: hoverColor }}>
-                            Bestellingen
-                        </ChakraLink>
-                        <ChakraLink as={RouterLink} to="/profiel" mx={2}>
-                            Profiel
-                        </ChakraLink>
-                        <ChakraLink as={RouterLink} onClick={handleLogout} mx={2}>
-                            Log uit
-                        </ChakraLink>
+                        <Flex ml="auto">
+                            <ChakraLink as={RouterLink} to="/bestellingen" ml={5} _hover={{ color: hoverColor }} fontSize='2xl'>
+                                Bestellingen
+                            </ChakraLink>
+                            <ChakraLink as={RouterLink} to="/profiel" ml={5} _hover={{ color: hoverColor }} fontSize='2xl'>
+                                Profiel
+                            </ChakraLink>
+                            <ChakraLink as={RouterLink} onClick={handleLogout} ml={5} _hover={{ color: hoverColor }} fontSize={"2xl"}>
+                                Log uit
+                            </ChakraLink>
+                        </Flex>
                     </>
                 ) : (
 
-                    <ChakraLink as={RouterLink} to="/login" mx={2}>
+                    <ChakraLink as={RouterLink} to="/login" ml={300} _hover={{ color: hoverColor }} fontSize='2xl'>
                         Login
                     </ChakraLink>
                 )}

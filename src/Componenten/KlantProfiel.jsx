@@ -16,13 +16,11 @@ export const KlantProfiel = () => {
       const data = await getKlant();
       setKlant(data);
       setLoading(false);
-      console.log("data: " + data);
     } catch (error) {
       console.error(error);
     }
   }
 
-  console.log(klant);
 
   if (loading) {
     return <div>Loading...</div>;
@@ -37,8 +35,11 @@ export const KlantProfiel = () => {
         borderWidth={1}
         borderRadius={"lg"}
         overflow={"hidden"}
+         
       >
+        
         <Image
+          mt={6}
           h={"120px"}
           w={"full"}
           src={klant.klant.bedrijf.logo}

@@ -7,7 +7,6 @@ import Layout from './Componenten/Layout.jsx';
 import { AuthProvider } from './Componenten/contexts/Auth.contexts.jsx';
 import { ChakraProvider, extendTheme } from '@chakra-ui/react';
 
-
 const router = createBrowserRouter([
   {
     path: '/',

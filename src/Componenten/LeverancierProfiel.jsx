@@ -40,6 +40,7 @@ export const LeverancierProfiel = () => {
         overflow={"hidden"}
       >
         <Image
+          mt={6}
           h={"120px"}
           w={"full"}
           src={leverancier.leverancier.bedrijf.logo}
