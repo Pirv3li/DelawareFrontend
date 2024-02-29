@@ -12,9 +12,9 @@ import useSWRMutation from "swr/mutation";
 import * as api from "../../api/index.js";
 
 const JWT_TOKEN_KEY = "jwtToken";
-const KLANT_ID_KEY = 'idKlant'; // 👈 13
-const Roles = 'roles';
-const LEVERANCIER_ID_KEY = 'idLeverancier'; 
+const KLANT_ID_KEY = "idKlant";
+const Roles = "roles";
+const LEVERANCIER_ID_KEY = "idLeverancier";
 
 const AuthContext = createContext();
 
@@ -26,44 +26,32 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     api.setAuthToken(token);
-    setIsAuthed(Boolean(token)); 
+    setIsAuthed(Boolean(token));
     setReady(true);
   }, [token]);
-  
- 
 
-  const {
-    trigger: doRegister,
-  } = useSWRMutation('klant/register', api.post)
+  const { trigger: doRegister } = useSWRMutation("klant/register", api.post);
 
+  const setSession = useCallback((token, user) => {
+    setToken(token);
+    setGebruiker(user);
 
-  const setSession = useCallback(
-    (token, user) => {
-      setToken(token);
-      setGebruiker(user);
-
-      localStorage.setItem(JWT_TOKEN_KEY, token);
-      localStorage.setItem(Roles, user.roles);
-      if(user.roles == 'klant'){
-        localStorage.setItem(KLANT_ID_KEY, user.idKlant);
-      }else{
+    localStorage.setItem(JWT_TOKEN_KEY, token);
+    localStorage.setItem(Roles, user.roles);
+    if (user.roles == "klant") {
+      localStorage.setItem(KLANT_ID_KEY, user.idKlant);
+    } else {
       localStorage.setItem(LEVERANCIER_ID_KEY, user.idLeverancier);
-      }
-    },
-    [],
-  );
-
+    }
+  }, []);
 
   const { isMutating: loadingKlant, trigger: doLoginKlant } = useSWRMutation(
     "klant/login",
     api.post
   );
-  
-  const { isMutating: loadingLeverancier, trigger: doLoginLeverancier } = useSWRMutation(
-    "leverancier/login",
-    api.post
-  );
- 
+
+  const { isMutating: loadingLeverancier, trigger: doLoginLeverancier } =
+    useSWRMutation("leverancier/login", api.post);
 
   const login = useCallback(
     async (username, password) => {
@@ -72,31 +60,29 @@ export const AuthProvider = ({ children }) => {
           username,
           password,
         });
-  
+
         setSession(token, user);
         return true;
       } catch (error) {
         // Ignore the error from the first login attempt
       }
-  
+
       try {
         const { token, user } = await doLoginLeverancier({
           username,
           password,
         });
-  
+
         setSession(token, user);
         return true;
       } catch (error) {
-        throw new Error('Foute login gegevens');
+        throw new Error("Foute login gegevens");
       }
     },
     [doLoginKlant, doLoginLeverancier, setSession]
   );
-  
+
   const loading = loadingKlant || loadingLeverancier;
-  
- 
 
   // const register = useCallback(
   //   async (data) => {
@@ -112,18 +98,16 @@ export const AuthProvider = ({ children }) => {
   //   },
   //   [doRegister, setSession],
   // );
- 
-
 
   const logOut = useCallback(() => {
     try {
       setToken(null);
       setGebruiker(null);
-  
+
       localStorage.removeItem(JWT_TOKEN_KEY);
-      if(gebruiker && gebruiker.roles == 'klant'){
+      if (gebruiker && gebruiker.roles == "klant") {
         localStorage.removeItem(KLANT_ID_KEY);
-      }else{
+      } else {
         localStorage.removeItem(LEVERANCIER_ID_KEY);
       }
       localStorage.removeItem(Roles);
@@ -134,12 +118,9 @@ export const AuthProvider = ({ children }) => {
     }
   }, [setToken, setGebruiker, gebruiker]);
 
-
   const getAfspraken = useCallback(async () => {
     try {
-      console.log(
-        "Attempting ophalen van Afspraken voor gebruiker"
-      );
+      console.log("Attempting ophalen van Afspraken voor gebruiker");
       const response = await api.get(`/api/afspraken/`);
       if (response) {
         return response.items;
@@ -150,9 +131,36 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+  const getKlant = useCallback(async () => {
+    try {
+      console.log(`Attempting ophalen van Klant`);
 
+      const response = await api.getAll(`klant/`);
+      if (response) {
+        console.log("response:", response);
+        return response;
+      }
+    } catch (error) {
+      console.error("Error during ophalen van Klant:", error);
+      return false;
+    }
+  }, []);
 
-  
+  const getLeverancier = useCallback(async () => {
+    try {
+      console.log(`Attempting ophalen van Leverancier`);
+
+      const response = await api.getAll(`leverancier/`);
+      if (response) {
+        console.log("response:", response);
+        return response;
+      }
+    } catch (error) {
+      console.error("Error during ophalen van Leverancier:", error);
+      return false;
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
       token,
@@ -164,8 +172,21 @@ export const AuthProvider = ({ children }) => {
       logOut,
       getAfspraken,
       // register,
+      getKlant,
+      getLeverancier,
     }),
-    [token, gebruiker, ready, loading, isAuthed, login, logOut, getAfspraken,]
+    [
+      token,
+      gebruiker,
+      ready,
+      loading,
+      isAuthed,
+      login,
+      logOut,
+      getAfspraken,
+      getKlant,
+      getLeverancier,
+    ]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -1,39 +1,43 @@
-import HomePage from './Componenten/HomePage';
-import Log from './Componenten/Login';
-import Bestel from './Componenten/Bestellingen';
-import Account from './Componenten/Profiel';
-import Producten from './Componenten/pages/home/producten';
-import { useLocation } from 'react-router-dom';
+import Log from "./Componenten/Login";
+import { useLocation } from "react-router-dom";
+import BestellingList from "./Componenten/pages/bestellingen/bestellinglist";
+import BestellingInfoPagina from "./Componenten/pages/bestellingen/bestellingInfo";
+import Producten from "./Componenten/pages/home/producten";
+import { KlantProfiel } from "./Componenten/KlantProfiel";
+import { LeverancierProfiel } from "./Componenten/LeverancierProfiel";
 
 export const Home = () => (
   <div>
-    <Producten/>
+    <Producten />
   </div>
 );
 
-// export const Product = () => (
-//   <div>
-//     <Producten/>
-//   </div>
-// )
-
-export const Bestellingen = () => (
-  <div>
-    <Bestel/>
-  </div>
-);
-
-export const Profiel = () => (
+export const Bestelling = () => {
+  return (
     <div>
-      <Account/>
+      <BestellingList />
     </div>
-)
+  );
+};
 
+export const BestellingInfo = () => {
+  return (
+    <div>
+      <BestellingInfoPagina />
+    </div>
+  );
+};
+
+export const Profiel = () => {
+  const isKlant = localStorage.getItem("idKlant") !== null;
+
+  return <div>{isKlant ? <KlantProfiel /> : <LeverancierProfiel />}</div>;
+};
 
 export const Login = () => {
   return (
     <div>
-      <Log/>
+      <Log />
     </div>
   );
 };
