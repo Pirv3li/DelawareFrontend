@@ -1,10 +1,11 @@
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Heading, Box } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
 import { getById } from '../../../api/index.js'
-
+import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 function BestellingList() {
+    const hoverColor = useColorModeValue("gray.400", "gray.700");
 
     const [items, setItems] = useState([]);
 
@@ -12,7 +13,6 @@ function BestellingList() {
     const navigate = useNavigate();
 
     const handleClick = (id) => {
-        console.log(`Row with id ${id} was clicked.`);
         sessionStorage.setItem('idOrder', id);
         navigate(`/bestellingInfo`);
     }
@@ -24,7 +24,6 @@ function BestellingList() {
     const fetchData = async () => {
         try {
             if (localStorage.getItem('roles') == 'leverancier') {
-                console.log('leverancier')
                 const idLeverancier = localStorage.getItem('idLeverancier')
                 const response = await getById(`order/leverancier/${idLeverancier}`);
                 setItems(response.items);
@@ -45,7 +44,7 @@ function BestellingList() {
         return (
             <Box>
                 <Heading textAlign="center" mt={2}>Bestellingen</Heading>
-                <Table variant="striped" colorScheme="orange" mt={10} mb={5}>
+                <Table colorScheme="Gray 500"  mt={10} mb={5}>
                     <Thead>
                         <Tr>
                             <Th>OrderID</Th>
@@ -58,7 +57,7 @@ function BestellingList() {
                     <Tbody>
                         {items.map((item) => (
 
-                            <Tr key={item.idOrder} onClick={() => handleClick(item.idOrder)}>
+                            <Tr key={item.idOrder} onClick={() => handleClick(item.idOrder)} borderBottom="1px solid" borderColor="gray.200" _hover={{ bg: hoverColor }}>
                                 <Td>{item.idOrder}</Td>
                                 <Td>{new Date(item.datum).toLocaleDateString('en-GB')}</Td>
                                 <Td>€ {item.totaalPrijs}</Td>
@@ -73,35 +72,33 @@ function BestellingList() {
     }
     if (localStorage.getItem('roles') == 'klant') {
         return (
-
-
-            <Table variant="striped" colorScheme="teal">
-                <Thead>
-                    <Tr>
-                        <Th>OrderID</Th>
-                        <Th>Date</Th>
-                        <Th>Date</Th>
-                        <Th>More Info</Th>
-                    </Tr>
-                </Thead>
-                <Tbody>
-                    {items.map((item) => (
-                        <Tr key={item.idOrder}>
-                            <Td>
-                                {item.idOrder}
-                            </Td>
-                            <Td>{item.datum}</Td>
-                            <Td>{item.naam}</Td>
-
-                            <Td>
-                                <Button onClick={() => handleClick(item.idProduct)}>
-                                    Meer info
-                                </Button>
-                            </Td>
+            <Box>
+                <Heading textAlign="center" mt={2}>Bestellingen</Heading>
+                <Table colorScheme="Gray 500"  mt={10} mb={5}>
+                    <Thead>
+                        <Tr>
+                            <Th>OrderID</Th>
+                            <Th>Datum</Th>
+                            <Th>Bedrag</Th>
+                            <Th>Order Status</Th>
+                            <Th>Betaling Status</Th>
                         </Tr>
-                    ))}
-                </Tbody>
-            </Table>
+                    </Thead>
+                    <Tbody>
+                        {items.map((item) => (
+
+                            <Tr key={item.idOrder} onClick={() => handleClick(item.idOrder)} borderBottom="1px solid" borderColor="gray.200" _hover={{ bg: hoverColor }}>
+                                <Td>{item.idOrder}</Td>
+                                <Td>{new Date(item.datum).toLocaleDateString('en-GB')}</Td>
+                                <Td>€ {item.totaalPrijs}</Td>
+                                <Td>{item.orderStatus}</Td>
+                                <Td>{item.betalingStatus}</Td>
+                                
+                            </Tr>
+                        ))}
+                    </Tbody>
+                </Table>
+            </Box>
         );
     }
 }
