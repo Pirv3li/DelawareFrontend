@@ -1,0 +1,7 @@
+.unopened {
+    background-color: red;
+}
+
+.unopened:hover {
+    background-color: gray;
+}

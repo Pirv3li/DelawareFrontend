@@ -6,6 +6,8 @@ import Producten from "./Componenten/pages/home/producten";
 import { KlantProfiel } from "./Componenten/KlantProfiel";
 import { LeverancierProfiel } from "./Componenten/LeverancierProfiel";
 import ProductInfo from "./Componenten/pages/home/productInfo";
+import NotificatieList from "./Componenten/pages/notificaties/notificatielist";
+import NotificatieInfoPagina from "./Componenten/pages/notificaties/notificatieInfo";
 export const Home = () => (
   <div>
     <Producten />
@@ -32,6 +34,22 @@ export const ProductInfoMeer = () => {
   return (
     <div>
       <ProductInfo />
+    </div>
+  );
+};
+
+export const Notificaties = () => {
+  return (
+    <div>
+      <NotificatieList />
+    </div>
+  );
+};
+
+export const NotificatieInfoMeer = () => {
+  return (
+    <div>
+      <NotificatieInfoPagina />
     </div>
   );
 };
