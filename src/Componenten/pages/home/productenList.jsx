@@ -3,8 +3,10 @@ import React, { useState, useEffect } from 'react';
 import { getAll } from '../../../api/index.js'
 import { useTheme } from '../../useThema.jsx';
 import { Link } from 'react-router-dom';
-import MeerInfo from './meerInfo.jsx';
+import MeerInfo from './productInfo.jsx';
 import CustomBox from '../themas/chakraBox.jsx';
+import { useNavigate } from "react-router-dom";
+
 
 function ProductenList() {
     const { boxbgColor, bgColor, textColor, buttonColor, buttonHoverColor } = useTheme();
@@ -25,17 +27,20 @@ function ProductenList() {
         }
     };
 
-    const handleClick = (id) => {
-        setSelectedProductId(id);
-        setShowList(false); 
+    const handleClick = (selectedProductId) => {
+        sessionStorage.setItem('idProduct', selectedProductId);
+        navigate(`/productinfo`);
     };
+
+    const navigate = useNavigate();
+
 
     return (
         <VStack spacing={5} height="">
             <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
                 Producten
             </Text>
-            {showList && ( 
+            {showList && (
                 <Wrap spacing={4} justify="flex-wrap" overflow="none">
                     {items.map((item) => (
                         <WrapItem key={item.idProduct}>
@@ -55,19 +60,23 @@ function ProductenList() {
                                         objectFit: 'contain'
                                     }}
                                 />
-                                <Text color={textColor}> {item.naam}</Text>
-                                <Text color={textColor}>
-                                    Prijs incl BTW {item.eenheidsprijs * (1 + item.btwtarief / 100)}
+                                <Text fontSize={45} color={textColor} textAlign={"center"}> {item.naam}</Text>
+                                <Text color={textColor} ml={3}>
+                                    prijs: € {item.eenheidsprijs.toFixed(2) }
                                 </Text>
-                                <Button onClick={() => handleClick(item.idProduct)}>
-                                    Meer info
-                                </Button>
+                                <Button
+                                    onClick={() => handleClick(item.idProduct)}
+                                    style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%' }}
+                                    mt={5}
+                                >
+                                    Bestellen
+                                </Button >
                             </CustomBox>
                         </WrapItem>
                     ))}
                 </Wrap>
-            )} 
-            {selectedProductId && <MeerInfo idProduct={selectedProductId} />}
+            )}
+
         </VStack>
     );
 }

@@ -5,7 +5,7 @@ import BestellingInfoPagina from "./Componenten/pages/bestellingen/bestellingInf
 import Producten from "./Componenten/pages/home/producten";
 import { KlantProfiel } from "./Componenten/KlantProfiel";
 import { LeverancierProfiel } from "./Componenten/LeverancierProfiel";
-
+import ProductInfo from "./Componenten/pages/home/productInfo";
 export const Home = () => (
   <div>
     <Producten />
@@ -27,6 +27,15 @@ export const BestellingInfo = () => {
     </div>
   );
 };
+
+export const ProductInfoMeer = () => {
+  return (
+    <div>
+      <ProductInfo />
+    </div>
+  );
+};
+
 
 export const Profiel = () => {
   const isKlant = localStorage.getItem("idKlant") !== null;
