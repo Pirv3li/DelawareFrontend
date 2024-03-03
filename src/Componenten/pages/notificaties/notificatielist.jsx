@@ -35,7 +35,7 @@ function NotificatieList() {
             };
 
             await update(`notificatie/${notificatie.idNotificatie}`, updatedNotificatie);
-
+            localStorage.setItem('idNotificatie', notificatie.idNotificatie);
             navigate(`/notificaties`);
 
         } catch (error) {
@@ -54,7 +54,6 @@ function NotificatieList() {
                 setItems(response);
             }
             if (localStorage.getItem('roles') == 'klant') {
-                console.log('klant')
                 const idKlant = localStorage.getItem('idKlant')
                 const response = await getById(`notificatie/klant/${idKlant}`);
                 setItems(response);
@@ -75,7 +74,6 @@ function NotificatieList() {
                             <Th>idNotificatie</Th>
                             <Th>Onderwerp</Th>
                             <Th>Datum</Th>
-                            <Th>Afgehandeld</Th>
                             <Th>Gezien</Th>
 
                         </Tr>
@@ -87,7 +85,6 @@ function NotificatieList() {
                                 <Td>{item.idNotificatie}</Td>
                                 <Td>{item.onderwerp}</Td>
                                 <Td>{new Date(item.datum).toLocaleDateString('en-GB')}</Td>
-                                <Td>{item.afgehandeld === 0 ? "nee" : "ja"}</Td>
                                 <Td >
                                     {item.geopend ? "✓" : "✗"}
                                 </Td>

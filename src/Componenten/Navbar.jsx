@@ -23,29 +23,29 @@ const Navbar = () => {
     }, []);
 
     const fetchData = async () => {
+        
         try {
-            if (localStorage.getItem('roles') == 'klant') {
-                const idKlant = localStorage.getItem('idKlant')
-                console.log('klant')
+            const roles = localStorage.getItem('roles');
+            if (roles) {
+                if (roles == 'klant') {
+                    const idKlant = localStorage.getItem('idKlant')
     
-                const aantalOngeopend = await getById(`notificatie/ongeopend/klant/${idKlant}`);
-                setAantalOngeopend(aantalOngeopend[0].count);
+                    const aantalOngeopend = await getById(`notificatie/ongeopend/klant/${idKlant}`);
+                    setAantalOngeopend(aantalOngeopend[0].count);
+                }
+                if (roles == 'leverancier') {
+    
+                    const idLeverancier = localStorage.getItem('idLeverancier')
+                    const aantalOngeopend = await getById(`notificatie/ongeopend/leverancier/${idLeverancier}`);
+                    setAantalOngeopend(aantalOngeopend[0].count);
+                }
             }
-            if (localStorage.getItem('roles') == 'leverancier') {
-                console.log('leverancier')
-    
-                const idLeverancier = localStorage.getItem('idLeverancier')
-                const aantalOngeopend = await getById(`notificatie/ongeopend/leverancier/${idLeverancier}`);
-                setAantalOngeopend(aantalOngeopend[0].count);
-            }
-    
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
 
     return (
-        console.log(aantalOngeopend),
         <Flex as="nav" p={4} bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center">
 
             <ChakraLink as={RouterLink} to="/" mx={2} _hover={{ color: hoverColor }}>

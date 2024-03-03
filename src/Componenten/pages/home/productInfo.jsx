@@ -26,7 +26,7 @@ function ProductInfo({ }) {
     const navigate = useNavigate();
 
 
-   
+
 
     return (
         <Box>
@@ -50,10 +50,9 @@ function ProductInfo({ }) {
                         <Flex>
                             <Heading ml={9} size={"3xl"}>{product.naam}</Heading>
                         </Flex>
+                        <Text fontSize={25} mt={5} mb={5}>{product.beschrijving}</Text>
                         <Table variant="striped" colorScheme='blue'>
-                           <Text fontSize={25} mt={5} mb={5}>{product.beschrijving}</Text>
                             <Tbody>
-                               
                                 <Tr>
                                     <Td>Aantal</Td>
                                     <Td>{product.aantal}</Td>

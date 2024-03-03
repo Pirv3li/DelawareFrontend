@@ -86,7 +86,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
       <ChakraProvider>
-            <RouterProvider router={router} />     
+            <RouterProvider router={router} />
       </ChakraProvider>
     </AuthProvider>
   </React.StrictMode>,

@@ -8,6 +8,9 @@ import { LeverancierProfiel } from "./Componenten/LeverancierProfiel";
 import ProductInfo from "./Componenten/pages/home/productInfo";
 import NotificatieList from "./Componenten/pages/notificaties/notificatielist";
 import NotificatieInfoPagina from "./Componenten/pages/notificaties/notificatieInfo";
+import PrintPdf from './Componenten/printpdf.jsx';
+
+
 export const Home = () => (
   <div>
     <Producten />
@@ -26,6 +29,7 @@ export const BestellingInfo = () => {
   return (
     <div>
       <BestellingInfoPagina />
+
     </div>
   );
 };

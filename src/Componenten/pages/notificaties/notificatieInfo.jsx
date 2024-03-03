@@ -21,7 +21,7 @@ function NotificatieInfoPagina() {
 
     const fetchData = async () => {
         try {
-            const idNotificatie = sessionStorage.getItem('idNotificatie');
+            const idNotificatie = localStorage.getItem('idNotificatie');
             console.log(idNotificatie);
             const notificatie = await getById(`notificatie/${idNotificatie}`);
             SetNotificatie(notificatie);
@@ -69,15 +69,7 @@ function NotificatieInfoPagina() {
             <Box p={5} shadow="md" borderWidth="1px">
                 <Text> {notificatie && notificatie.text}</Text>
             </Box>
-            <Box p={5} shadow="md" borderWidth="1px">
-                <Button
-                    colorScheme={notificatie && notificatie.afgehandeld ? "green" : "green"}
-                    onClick={() => handleAfgehandeld(notificatie.idNotificatie)}
-                    isDisabled={notificatie && notificatie.afgehandeld}
-                >
-                    Afhandelen
-                </Button>
-            </Box>
+           
         </div>
     )
 }
