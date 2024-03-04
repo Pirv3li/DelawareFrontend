@@ -11,11 +11,18 @@ export const KlantProfiel = () => {
     fetchKlantData();
   }, []);
 
+ 
+
   async function fetchKlantData() {
     try {
       const data = await getKlant();
-      setKlant(data);
+      if (data.length > 0) {
+        setKlant(data[0]);
+      } else {
+        console.error('No data returned from getLeverancier');
+      }
       setLoading(false);
+      console.log("data: " + data);
     } catch (error) {
       console.error(error);
     }
