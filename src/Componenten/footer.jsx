@@ -16,7 +16,7 @@ const Footer = () => {
 
     return (
         <Flex as="footer" bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center" position="fixed" bottom="0">
-    <Box role="contentinfo" mx="auto" maxW="7xl" py="12" px={{ base: '4', md: '8' }}>
+    <Box role="contentinfo" mx="auto" maxW="7xl" py="4" px={{ base: '4', md: '8' }}>
         <Text fontSize="sm">
             &copy; {new Date().getFullYear()} Delaware. All rights reserved.
             <ChakraLink href="#" ml="4" _hover={{ color: hoverColor }} textDecoration="underline">
