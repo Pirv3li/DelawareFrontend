@@ -1,93 +1,104 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { NotFound, Home, Login, Bestelling, Profiel, BestellingInfo, ProductInfoMeer, Notificaties, NotificatieInfoMeer } from './pages.jsx';
-import PrivateRoute from './Componenten/PrivateRoute.jsx'
-import Layout from './Componenten/Layout.jsx';
-import { AuthProvider } from './Componenten/contexts/Auth.contexts.jsx';
-import { ChakraProvider, extendTheme } from '@chakra-ui/react';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  NotFound,
+  Home,
+  Login,
+  Bestelling,
+  Profiel,
+  BestellingInfo,
+  ProductInfoMeer,
+  Notificaties,
+  NotificatieInfoMeer,
+} from "./pages.jsx";
+import PrivateRoute from "./Componenten/PrivateRoute.jsx";
+import Layout from "./Componenten/Layout.jsx";
+import { AuthProvider } from "./Componenten/contexts/Auth.contexts.jsx";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { NotificatieProvider } from "./Componenten/contexts/Notificatie.contexts.jsx";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Layout />,
     children: [
       { index: true, element: <Home /> },
-      { path: '/', element: <Home /> },
-      { path: '*', element: <NotFound /> },
-      { path: 'login', element: <Login /> },
+      { path: "/", element: <Home /> },
+      { path: "*", element: <NotFound /> },
+      { path: "login", element: <Login /> },
       {
-        path: 'Bestellingen',
+        path: "Bestellingen",
         element: <PrivateRoute />,
         children: [
           {
             index: true,
-            element: <Bestelling />
-          }
-        ]
+            element: <Bestelling />,
+          },
+        ],
       },
       {
-        path: 'bestellingInfo',
+        path: "bestellingInfo",
         element: <PrivateRoute />,
         children: [
           {
             index: true,
-            element: <BestellingInfo />
-          }
-        ]
+            element: <BestellingInfo />,
+          },
+        ],
       },
       {
-        path: 'profiel',
+        path: "profiel",
         element: <PrivateRoute />,
         children: [
           {
             index: true,
-            element: <Profiel />
-          }
-        ]
+            element: <Profiel />,
+          },
+        ],
       },
       {
-        path: 'productinfo',
-        
+        path: "productinfo",
+
         children: [
           {
             index: true,
-            element: <ProductInfoMeer/>
-          }
-        ]
+            element: <ProductInfoMeer />,
+          },
+        ],
       },
       {
-        path: 'notificaties',
-        
+        path: "notificaties",
+
         children: [
           {
             index: true,
-            element: <Notificaties/>
-          }
-        ]
+            element: <Notificaties />,
+          },
+        ],
       },
       {
-        path: 'notificatie-info',
-        
+        path: "notificatie-info",
+
         children: [
           {
             index: true,
-            element: <NotificatieInfoMeer/>
-          }
-        ]
+            element: <NotificatieInfoMeer />,
+          },
+        ],
       },
     ],
   },
 ]);
 
-
-
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <ChakraProvider>
-            <RouterProvider router={router} />
-      </ChakraProvider>
+      <NotificatieProvider>
+        <ChakraProvider>
+          <RouterProvider router={router} />
+        </ChakraProvider>
+      </NotificatieProvider>
     </AuthProvider>
-  </React.StrictMode>,
-)
+  </React.StrictMode>
+);
