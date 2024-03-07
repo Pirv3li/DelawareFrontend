@@ -1,7 +1,7 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { NotFound, Home, Login, Bestelling, Profiel, BestellingInfo, ProductInfoMeer } from './pages.jsx';
+import { NotFound, Home, Login, Bestelling, Profiel, BestellingInfo, ProductInfoMeer, Notificaties, NotificatieInfoMeer } from './pages.jsx';
 import PrivateRoute from './Componenten/PrivateRoute.jsx'
 import Layout from './Componenten/Layout.jsx';
 import { AuthProvider } from './Componenten/contexts/Auth.contexts.jsx';
@@ -56,6 +56,26 @@ const router = createBrowserRouter([
           }
         ]
       },
+      {
+        path: 'notificaties',
+        
+        children: [
+          {
+            index: true,
+            element: <Notificaties/>
+          }
+        ]
+      },
+      {
+        path: 'notificatie-info',
+        
+        children: [
+          {
+            index: true,
+            element: <NotificatieInfoMeer/>
+          }
+        ]
+      },
     ],
   },
 ]);
@@ -66,7 +86,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthProvider>
       <ChakraProvider>
-            <RouterProvider router={router} />     
+            <RouterProvider router={router} />
       </ChakraProvider>
     </AuthProvider>
   </React.StrictMode>,
