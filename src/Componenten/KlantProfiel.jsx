@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { Box, Center, Image, Text, VStack, Stack } from "@chakra-ui/react";
+import * as React from "react";
+import { Box, Center, Image, Text, VStack, Stack, Table, Tbody, Tr, Td, Button, Flex, Input } from "@chakra-ui/react";
 import { useAuth } from "./contexts/Auth.contexts";
 
 export const KlantProfiel = () => {
@@ -11,23 +12,37 @@ export const KlantProfiel = () => {
     fetchKlantData();
   }, []);
 
- 
-
   async function fetchKlantData() {
     try {
       const data = await getKlant();
       if (data.length > 0) {
         setKlant(data[0]);
       } else {
-        console.error('No data returned from getLeverancier');
+        console.error('No data returned from getKlant');
       }
       setLoading(false);
-      console.log("data: " + data);
     } catch (error) {
       console.error(error);
     }
   }
 
+  const [isEditing, setIsEditing] = useState(false);
+
+  const handleWeizigen = () => {
+    if (isEditing) {
+      setIsEditing(false);
+      klant.klant.gebruikersnaam = document.getElementById("gebruikersnaam").value;
+      klant.klant.bedrijf.sector = document.getElementById("sector").value;
+      klant.klant.bedrijf.adres.straat = document.getElementById("straat").value;
+      klant.klant.bedrijf.adres.nummer = document.getElementById("nummer").value;
+      klant.klant.bedrijf.adres.postcode = document.getElementById("postcode").value;
+      klant.klant.bedrijf.adres.stad = document.getElementById("stad").value;
+      klant.klant.email = document.getElementById("email").value;
+      klant.klant.bedrijf.telefoonnummer = document.getElementById("telefoonnummer").value;
+    } else {
+      setIsEditing(true);
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -35,55 +50,115 @@ export const KlantProfiel = () => {
 
   return (
     <Center py={6}>
-      <Box
-        maxW={"320px"}
-        w={"full"}
-        boxShadow={"2xl"}
-        borderWidth={1}
-        borderRadius={"lg"}
-        overflow={"hidden"}
-         
-      >
-        
-        <Image
-          mt={6}
-          h={"120px"}
-          w={"full"}
-          src={klant.klant.bedrijf.logo}
-          objectFit={"contain"}
-        />
-        <VStack p={6} spacing={2} align={"start"}>
-          <Text fontWeight={"bold"} fontSize={"2xl"}>
-            {klant.klant.gebruikersnaam}
-          </Text>
-          <Text fontStyle={"italic"} fontSize={"x-small"} color={"gray.500"}>
-            {klant.klant.bedrijf.sector}
-          </Text>
-          <Text fontSize={"sm"} color={"gray.500"}>
-            {klant.klant.bedrijf.adres.straat}{" "}
-            {klant.klant.bedrijf.adres.nummer} <br />
-            {klant.klant.bedrijf.adres.postcode}{" "}
-            {klant.klant.bedrijf.adres.stad}
-          </Text>
+      <VStack width="80%">
+        <Table variant="striped" colorScheme="blue">
+          <Tbody>
+            <Tr>
+              <Td>Logo</Td>
+              <Td>
+                <Image src={klant.klant.bedrijf.logo} maxH={"100px"} />
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Gebruikersnaam</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.gebruikersnaam} borderColor={"gray"} id="gebruikersnaam"/>
+                ) : (
+                  klant.klant.gebruikersnaam
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Sector</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.bedrijf.sector} borderColor={"gray"} id="sector"/>
+                ) : (
+                  klant.klant.bedrijf.sector
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Straat</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.bedrijf.adres.straat} borderColor={"gray"} id="straat"/>
+                ) : (
+                  klant.klant.bedrijf.adres.straat
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Nummer</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.bedrijf.adres.nummer} borderColor={"gray"} id="nummer"/>
+                ) : (
+                  klant.klant.bedrijf.adres.nummer
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Postcode</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.bedrijf.adres.postcode} borderColor={"gray"} id="postcode"/>
+                ) : (
+                  klant.klant.bedrijf.adres.postcode
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Stad</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.bedrijf.adres.stad} borderColor={"gray"} id="stad"/>
+                ) : (
+                  klant.klant.bedrijf.adres.stad
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Email</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.email} borderColor={"gray"} id="email"/>
+                ) : (
+                  klant.klant.email
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Telefoonnummer</Td>
+              <Td>
+                {isEditing ? (
+                  <Input defaultValue={klant.klant.bedrijf.telefoonnummer} borderColor={"gray"} id="telefoonnummer"/>
+                ) : (
+                  klant.klant.bedrijf.telefoonnummer
+                )}
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Leveranciernummer</Td>
+              <Td>
 
-          <Stack spacing={0}>
-            <Text fontSize={"sm"}>Email: {klant.klant.email}</Text>
-            <Text fontSize={"sm"}>
-              Tel: {klant.klant.bedrijf.telefoonnummer}
-            </Text>
-          </Stack>
-          <Stack spacing={1}>
-            <Text fontSize={"sm"}>Account Type: Klant</Text>
-            <Text fontSize={"sm"}>Klantnummer: {klant.klant.klantNummer}</Text>
-          </Stack>
-          <Text fontSize={"x-small"} color={"gray.500"}>
-            Klant sinds:{" "}
-            {new Date(klant.klant.bedrijf.gebruikerSinds).toLocaleDateString(
-              "en-GB"
-            )}
-          </Text>
-        </VStack>
-      </Box>
+                <Text>{klant.klant.klantNummer}</Text>
+
+              </Td>
+            </Tr>
+            <Tr>
+              <Td>Leverancier sinds</Td>
+              <Td>
+                <Text>{new Date(klant.klant.bedrijf.gebruikerSinds).toLocaleDateString("en-GB")}</Text>
+              </Td>
+            </Tr>
+          </Tbody>
+        </Table>
+        <Button colorScheme="blue" variant="solid" mt={4} onClick={handleWeizigen}>weizigen </Button>
+      </VStack>
     </Center>
   );
 };
+
+export default KlantProfiel;
