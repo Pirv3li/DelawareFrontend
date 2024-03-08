@@ -123,6 +123,15 @@ const Navbar = () => {
               </ChakraLink>
               <ChakraLink
                 as={RouterLink}
+                to="/"
+                ml={5}
+                _hover={{ color: hoverColor }}
+                fontSize="2xl"
+              >
+                Producten
+              </ChakraLink>
+              <ChakraLink
+                as={RouterLink}
                 to="/profiel"
                 ml={5}
                 _hover={{ color: hoverColor }}
