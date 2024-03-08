@@ -27,6 +27,11 @@ const Navbar = () => {
   useEffect(() => {
     fetchData();
   }, [aantalOngeopend]);
+  useEffect(() => {
+    if (isAuthed) {
+      fetchData();
+    }
+  }, [isAuthed]);
 
   const fetchData = async () => {
     try {
