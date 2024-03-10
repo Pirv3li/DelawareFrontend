@@ -6,6 +6,8 @@ import {
   Button,
   Input,
   useColorModeValue,
+  Checkbox,
+  HStack,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { getAll } from "../../../api/index.js";
@@ -16,11 +18,18 @@ import CustomBox from "../themas/chakraBox.jsx";
 import { useNavigate } from "react-router-dom";
 
 function ProductenList() {
-  const { boxbgColor, bgColor, textColor, buttonColor, buttonHoverColor } =
-    useTheme();
+  const {
+    boxbgColor,
+    bgColor,
+    textColor,
+    buttonColor,
+    buttonHoverColor,
+  } = useTheme();
   const [items, setItems] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedProductId, setSelectedProductId] = useState(null);
-  const [showList, setShowList] = useState(true); // Add this line
+  const [showList, setShowList] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
@@ -30,15 +39,47 @@ function ProductenList() {
   const fetchData = async () => {
     try {
       const items = await getAll("producten/");
+      const categories = await getAll("producten/categories");
       setItems(items);
+      setCategories(categories);
+      console.log("items:", items);
+      console.log("categories:", categories);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const filteredItems = items.filter((item) =>
+  const handleCategoryChange = (event) => {
+    const category = event.target.name;
+    if (selectedCategories.includes(category)) {
+      setSelectedCategories(selectedCategories.filter((c) => c !== category));
+    } else {
+      setSelectedCategories([...selectedCategories, category]);
+    }
+  };
+
+  const filteredItems = items.filter(
+    (item) =>
+      selectedCategories.length === 0 ||
+      selectedCategories.includes(item.categorie)
+  );
+
+  const searchedItems = filteredItems.filter((item) =>
     item.naam.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const sortedItems = searchedItems.sort((a, b) => {
+    const aIsSelected = selectedCategories.includes(a.categorie);
+    const bIsSelected = selectedCategories.includes(b.categorie);
+
+    if (aIsSelected && !bIsSelected) {
+      return -1;
+    } else if (!aIsSelected && bIsSelected) {
+      return 1;
+    } else {
+      return 0;
+    }
+  });
 
   const handleClick = (selectedProductId) => {
     sessionStorage.setItem("idProduct", selectedProductId);
@@ -48,7 +89,7 @@ function ProductenList() {
   const navigate = useNavigate();
 
   return (
-    <VStack spacing={5} height="">
+    <VStack spacing={5} height="250px" align={"center"} marginX={20}>
       <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
         Producten
       </Text>
@@ -57,17 +98,28 @@ function ProductenList() {
           <Input
             placeholder="Zoek producten op naam"
             value={searchTerm}
+            height={35}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <HStack spacing={5}>
+            {categories.map((category) => (
+              <Checkbox
+                key={category}
+                name={category}
+                onChange={handleCategoryChange}
+              >
+                {category}
+              </Checkbox>
+            ))}
+          </HStack>
           <Wrap spacing={4} justify="flex-wrap" overflow="none">
-            {filteredItems.map((item) => (
+            {sortedItems.map((item) => (
               <WrapItem key={item.idProduct}>
                 <CustomBox
                   bgColor={boxbgColor}
-                  maxWidth="250px"
-                  maxHeight="250px"
-                  minWidth="250px"
-                  minHeight="250px"
+                  width="300px"
+                  height="400px"
+                  overflow="hidden"
                 >
                   <img
                     src={item.foto}
@@ -78,8 +130,13 @@ function ProductenList() {
                       objectFit: "contain",
                     }}
                   />
-                  <Text fontSize={45} color={textColor} textAlign={"center"}>
-                    {" "}
+                  <Text
+                    fontSize={30}
+                    color={textColor}
+                    textAlign={"center"}
+                    maxWidth={250}
+                    height={100}
+                  >
                     {item.naam}
                   </Text>
                   <Text color={textColor} ml={3}>
