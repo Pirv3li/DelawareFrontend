@@ -95,11 +95,11 @@ const handleLogin = useCallback(
             >
               Sign in
             </Button>
-            <Link to="/register">
+            {/* <Link to="/register">
               <Button ml={4} colorScheme="teal">
                 Register
               </Button>
-            </Link>
+            </Link> */}
           </Flex>
         </Box>
       </Flex>

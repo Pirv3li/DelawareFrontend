@@ -50,8 +50,10 @@ export const AuthProvider = ({ children }) => {
     api.post
   );
 
-  const { isMutating: loadingLeverancier, trigger: doLoginLeverancier } =
-    useSWRMutation("leverancier/login", api.post);
+  const {
+    isMutating: loadingLeverancier,
+    trigger: doLoginLeverancier,
+  } = useSWRMutation("leverancier/login", api.post);
 
   const login = useCallback(
     async (username, password) => {
@@ -172,7 +174,6 @@ export const AuthProvider = ({ children }) => {
       login,
       logOut,
       getAfspraken,
-      // register,
       getKlant,
       getLeverancier,
     }),
