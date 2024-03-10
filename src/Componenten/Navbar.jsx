@@ -64,7 +64,7 @@ const Navbar = () => {
       p={4}
       bgColor={bgColor}
       color={color}
-      width="100vw"
+      width="auto"
       justifyContent="space-between"
       alignItems="center"
     >
@@ -72,104 +72,103 @@ const Navbar = () => {
         <img
           src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
           alt=""
-          style={{ maxWidth: "50%" }}
+          style={{ maxWidth: "60%" }}
         />
       </ChakraLink>
 
       <Flex
         as="nav"
+        ml="auto"
         bgColor={bgColor}
         color={color}
-        width="100vw"
+        width="auto"
         justifyContent="space-between"
-        alignItems="flex-end"
+        alignItems="center"
         flexWrap="nowrap"
       >
-        {isAuthed ? (
-          <>
-            <Flex ml="auto">
+            <ChakraLink
+              as={RouterLink}
+              to="/notificaties"
+              mr={5}
+              _hover={{ color: hoverColor }}
+              fontSize={"2xl"}
+              display="flex"
+              alignItems="center"
+              position="relative"
+            >
+              Notificatie
+              {aantalOngeopend > 0 && (
+                <p
+                  className="notificatie-getal"
+                  style={{
+                    fontSize: "20px",
+                    color: "red",
+                    position: "absolute",
+                    top: "-10px",
+                    right: "-10px",
+                  }}
+                >
+                  {aantalOngeopend}
+                </p>
+              )}
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/bestellingen"
+              mr={5}
+              _hover={{ color: hoverColor }}
+              fontSize="2xl"
+            >
+              Bestellingen
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/"
+              mr={5}
+              _hover={{ color: hoverColor }}
+              fontSize="2xl"
+            >
+              Producten
+            </ChakraLink>
+            <ChakraLink
+              as={RouterLink}
+              to="/profiel"
+              mr={5}
+              _hover={{ color: hoverColor }}
+              fontSize="2xl"
+            >
+              Profiel
+            </ChakraLink>
+            {isAuthed ? (
+              <ChakraLink
+              as={RouterLink}
+              onClick={handleLogout}
+              mr={5}
+              _hover={{ color: hoverColor }}
+              fontSize={"2xl"}
+              whiteSpace="nowrap"
+            >
+              Log uit
+            </ChakraLink>
+            ) : (
               <ChakraLink
                 as={RouterLink}
-                to="/notificaties"
-                ml={5}
-                _hover={{ color: hoverColor }}
-                fontSize={"2xl"}
-                display="flex"
-                alignItems="center"
-                position="relative"
-              >
-                Notificatie
-                {aantalOngeopend > 0 && (
-                  <p
-                    className="notificatie-getal"
-                    style={{
-                      color: "red",
-                      position: "absolute",
-                      top: "-15px",
-                      right: "-10px",
-                    }}
-                  >
-                    {aantalOngeopend}
-                  </p>
-                )}
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to="/bestellingen"
-                ml={5}
+                to="/login"
+                ml={300}
                 _hover={{ color: hoverColor }}
                 fontSize="2xl"
               >
-                Bestellingen
+                Login
               </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to="/"
-                ml={5}
-                _hover={{ color: hoverColor }}
-                fontSize="2xl"
-              >
-                Producten
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                to="/profiel"
-                ml={5}
-                _hover={{ color: hoverColor }}
-                fontSize="2xl"
-              >
-                Profiel
-              </ChakraLink>
-              <ChakraLink
-                as={RouterLink}
-                onClick={handleLogout}
-                ml={5}
-                _hover={{ color: hoverColor }}
-                fontSize={"2xl"}
-              >
-                Log uit
-              </ChakraLink>
-            </Flex>
-          </>
-        ) : (
-          <ChakraLink
-            as={RouterLink}
-            to="/login"
-            ml={300}
-            _hover={{ color: hoverColor }}
-            fontSize="2xl"
-          >
-            Login
-          </ChakraLink>
-        )}
-        <IconButton
-          aria-label="Toggle color mode"
-          icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-          onClick={toggleColorMode}
-          ml="auto"
-        />
+            )}
+            <IconButton
+              aria-label="Toggle color mode"
+              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+              onClick={toggleColorMode}
+              ml="auto"
+            />
+          </Flex>
       </Flex>
-    </Flex>
   );
 };
 
