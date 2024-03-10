@@ -20,7 +20,6 @@ function NotificatieInfoPagina() {
   const fetchData = async () => {
     try {
       const idNotificatie = localStorage.getItem("idNotificatie");
-      console.log(idNotificatie);
       const notificatie = await getById(`notificatie/${idNotificatie}`);
       SetNotificatie(notificatie);
     } catch (error) {

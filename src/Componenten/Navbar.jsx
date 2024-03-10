@@ -8,7 +8,7 @@ import {
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
-import { getById } from "../api/index.js";
+import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./useThemaNavbar";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
@@ -25,6 +25,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
+    setAuthToken(localStorage.getItem("jwtToken"));
     fetchData();
   }, [aantalOngeopend]);
   useEffect(() => {

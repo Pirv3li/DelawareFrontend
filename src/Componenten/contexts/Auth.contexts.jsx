@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }) => {
         return true;
       } catch (error) {
         // Ignore the error from the first login attempt
+        
       }
 
       try {
@@ -76,7 +77,6 @@ export const AuthProvider = ({ children }) => {
         setSession(token, user);
         return true;
       } catch (error) {
-        throw new Error("Foute login gegevens");
       }
     },
     [doLoginKlant, doLoginLeverancier, setSession]
@@ -103,7 +103,13 @@ export const AuthProvider = ({ children }) => {
     try {
       setToken(null);
       setGebruiker(null);
-
+  
+      const chakraColor = sessionStorage.getItem('chakra-ui-color');
+      sessionStorage.clear();
+      if (chakraColor) {
+        sessionStorage.setItem('chakra-ui-color', chakraColor);
+      }
+  
       localStorage.removeItem(JWT_TOKEN_KEY);
       if (gebruiker && gebruiker.roles == "klant") {
         localStorage.removeItem(KLANT_ID_KEY);
@@ -120,7 +126,6 @@ export const AuthProvider = ({ children }) => {
 
   const getAfspraken = useCallback(async () => {
     try {
-      console.log("Attempting ophalen van Afspraken voor gebruiker");
       const response = await api.get(`/api/afspraken/`);
       if (response) {
         return response.items;
@@ -133,11 +138,9 @@ export const AuthProvider = ({ children }) => {
 
   const getKlant = useCallback(async () => {
     try {
-      console.log(`Attempting ophalen van Klant`);
 
       const response = await api.getAll(`klant/`);
       if (response) {
-        console.log("response:", response);
         return response;
       }
     } catch (error) {
@@ -148,11 +151,9 @@ export const AuthProvider = ({ children }) => {
 
   const getLeverancier = useCallback(async () => {
     try {
-      console.log(`Attempting ophalen van Leverancier`);
 
       const response = await api.getAll(`leverancier/`);
       if (response) {
-        console.log("response:", response);
         return response;
       }
     } catch (error) {

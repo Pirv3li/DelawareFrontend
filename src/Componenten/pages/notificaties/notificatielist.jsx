@@ -10,21 +10,26 @@ import {
   Box,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
-import { getById, update } from "../../../api/index.js";
+import { getById, update, setAuthToken } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { NotificatieContext } from "../../contexts/Notificatie.contexts";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 function NotificatieList() {
   const { setAantalOngeopend } = useContext(NotificatieContext);
 
   const hoverColor = useColorModeValue("gray.400", "gray.700");
   const [items, setItems] = useState([]);
+  const [begin, setBegin] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+
   const navigate = useNavigate();
 
   useEffect(() => {
+    setAuthToken(localStorage.getItem("jwtToken"));
     fetchData();
-  }, []);
+  }, [begin]);
 
   const handleClick = async (notificatie) => {
     try {
@@ -45,7 +50,7 @@ function NotificatieList() {
       setAantalOngeopend((prevAantal) => prevAantal - 1);
 
       localStorage.setItem("idNotificatie", notificatie.idNotificatie);
-      navigate(`/notificaties`);
+      navigate(`/notificaties/`);
     } catch (error) {
       console.error("Error updating notificatie:", error);
     }
@@ -56,27 +61,39 @@ function NotificatieList() {
   const fetchData = async () => {
     try {
       if (localStorage.getItem("roles") == "leverancier") {
-        const idLeverancier = localStorage.getItem("idLeverancier");
+        const aantal = 0;
         const response = await getById(
-          `notificatie/leverancier/${idLeverancier}`
+          `notificatie/leverancier/${begin}`
         );
         setItems(response);
+        setTotalOrders(response.total);
+
       }
       if (localStorage.getItem("roles") == "klant") {
-        const idKlant = localStorage.getItem("idKlant");
-        const response = await getById(`notificatie/klant/${idKlant}`);
+        const aantal = 0;
+        const response = await getById(`notificatie/klant/${begin}`);
         setItems(response);
+        setTotalOrders(response.total);
+
       }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
+  const incrementBegin = () => {
+    setBegin(prevBegin => prevBegin + 10);
+  };
+
+  const decrementBegin = () => {
+    setBegin(prevBegin => prevBegin - 10);
+  };
+
   if (localStorage.getItem("roles") == "leverancier") {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>
-          Bestellingen
+          Notificatie's
         </Heading>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
@@ -104,6 +121,10 @@ function NotificatieList() {
             ))}
           </Tbody>
         </Table>
+        <Box>
+                        {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={10 != totalOrders} />
+                    </Box>
       </Box>
     );
   }
@@ -141,6 +162,10 @@ function NotificatieList() {
             ))}
           </Tbody>
         </Table>
+        <Box>
+                        {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={10 != totalOrders} />
+                    </Box>
       </Box>
     );
   }
