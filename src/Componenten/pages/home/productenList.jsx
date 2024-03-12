@@ -180,8 +180,8 @@ function ProductenList() {
       )}
 
       <Flex alignSelf={"end"} >
-        {beginPagina > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left"  mb={5000} w={"400px"} h={50} bg={"gray.500"}/>}
-        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={20 != totalOrders} mb={5000} w={"400px"} h={50} bg={"gray.500"}  ml={5}/>
+        {beginPagina > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left"  mb={200} w={"400px"} h={50} bg={"gray.500"}/>}
+        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={20 != totalOrders} mb={200} w={"400px"} h={50} bg={"gray.500"}  ml={5}/>
       </Flex>
 
     </VStack>
