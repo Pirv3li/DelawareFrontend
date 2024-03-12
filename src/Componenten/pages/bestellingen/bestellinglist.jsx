@@ -125,9 +125,9 @@ function BestellingList() {
                     </Tbody>
                 </Table>
                 <Box>
-                    <Box>
+                <Box>
                         {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={begin >= totalOrders} />
+                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={10 != totalOrders} />
                     </Box>
                 </Box>
             </Box>
