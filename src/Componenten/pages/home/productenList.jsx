@@ -1,5 +1,5 @@
 import {
-  Text, VStack, Wrap, WrapItem, Button, Input, Checkbox, HStack, Box
+  Text, VStack, Wrap, WrapItem, Button, Input, Checkbox, HStack, Box, Flex
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -26,40 +26,42 @@ function ProductenList() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [showList, setShowList] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-  const [begin, setBegin] = useState(0);
+  const [beginPagina, setBegin] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
   const [body, setBody] = useState([])
 
   useEffect(() => {
     fetchData();
-  }, [begin, totalOrders]);
+  }, [beginPagina, totalOrders]);
 
   const fetchData = async () => {
     try {
       let body = {
-        begin: 5, 
+        begin: (beginPagina + 1),
       };
       setBody(body);
-      console.log("BODY:", body);
-      const items = await post(`producten/begin`, { arg: body }); 
+      const items = await post(`producten/begin`, { arg: body });
       const categories = await getAll("producten/categories");
       setItems(items);
       setCategories(categories);
       setTotalOrders(items.length);
-  
-  
-      console.log("BODY:", body);
+
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   const incrementBegin = () => {
-    setBegin(begin => begin + 20);
+    setBegin(beginPagina => beginPagina + 20);
+    window.scrollTo(0, 20);
+
   };
 
   const decrementBegin = () => {
-    setBegin(begin => begin - 20);
+    setBegin(beginPagina => beginPagina - 20);
+    window.scrollTo(0, 0);
+
   };
 
   const handleCategoryChange = (event) => {
@@ -102,10 +104,10 @@ function ProductenList() {
   const navigate = useNavigate();
 
   return (
-    <VStack spacing={5} height="250px" align={"center"} marginX={20}>
-      <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
-        Producten
-      </Text>
+    <VStack spacing={5} minHeight={"200%"} align={"center"} marginX={20}>      
+    <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
+      Producten
+    </Text>
       {showList && (
         <>
           <Input
@@ -176,13 +178,14 @@ function ProductenList() {
 
         </>
       )}
-      <Box alignSelf={"end"}>
-        {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={20 != totalOrders} />
-      </Box>
 
+      <Flex alignSelf={"end"} >
+        {beginPagina > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left"  mb={5000} w={"400px"} h={50} bg={"gray.500"}/>}
+        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={20 != totalOrders} mb={5000} w={"400px"} h={50} bg={"gray.500"}  ml={5}/>
+      </Flex>
 
     </VStack>
+
   );
 }
 

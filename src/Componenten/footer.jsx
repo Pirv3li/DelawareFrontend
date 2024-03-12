@@ -15,7 +15,7 @@ const Footer = () => {
     const { bgColor, color, hoverColor } = useNavbarStyles();
 
     return (
-        <Flex as="footer" bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center" position="fixed" bottom="0">
+        <Flex as="footer" bgColor={bgColor} color={color} width="100vw" justifyContent="space-between" alignItems="center" position="fixed" bottom="0" mt={5}>
             <Box role="contentinfo" mx="auto" maxW="7xl" py="4" px={{ base: '4', md: '8' }}>
                 <Flex align="center" fontSize="sm">
                     <Text>&copy; {new Date().getFullYear()}</Text>
