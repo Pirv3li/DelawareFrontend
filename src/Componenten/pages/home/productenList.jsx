@@ -1,21 +1,16 @@
 import {
-  Text,
-  VStack,
-  Wrap,
-  WrapItem,
-  Button,
-  Input,
-  useColorModeValue,
-  Checkbox,
-  HStack,
+  Text, VStack, Wrap, WrapItem, Button, Input, Checkbox, HStack, Box
 } from "@chakra-ui/react";
+import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
+
 import React, { useState, useEffect } from "react";
-import { getAll } from "../../../api/index.js";
+import { getAll, post } from "../../../api/index.js";
 import { useTheme } from "../../useThema.jsx";
 import { Link } from "react-router-dom";
 import MeerInfo from "./productInfo.jsx";
 import CustomBox from "../themas/chakraBox.jsx";
 import { useNavigate } from "react-router-dom";
+
 
 function ProductenList() {
   const {
@@ -31,22 +26,40 @@ function ProductenList() {
   const [selectedProductId, setSelectedProductId] = useState(null);
   const [showList, setShowList] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const [begin, setBegin] = useState(0);
+  const [totalOrders, setTotalOrders] = useState(0);
+  const [body, setBody] = useState([])
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [begin, totalOrders]);
 
   const fetchData = async () => {
     try {
-      const items = await getAll("producten/");
+      let body = {
+        begin: 5, 
+      };
+      setBody(body);
+      console.log("BODY:", body);
+      const items = await post(`producten/begin`, body); 
       const categories = await getAll("producten/categories");
       setItems(items);
       setCategories(categories);
-      console.log("items:", items);
-      console.log("categories:", categories);
+      setTotalOrders(items.length);
+  
+  
+      console.log("BODY:", body);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
+  };
+
+  const incrementBegin = () => {
+    setBegin(begin => begin + 20);
+  };
+
+  const decrementBegin = () => {
+    setBegin(begin => begin - 20);
   };
 
   const handleCategoryChange = (event) => {
@@ -155,11 +168,20 @@ function ProductenList() {
                     Bestellen
                   </Button>
                 </CustomBox>
+
               </WrapItem>
             ))}
+
           </Wrap>
+
         </>
       )}
+      <Box alignSelf={"end"}>
+        {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={20 != totalOrders} />
+      </Box>
+
+
     </VStack>
   );
 }
