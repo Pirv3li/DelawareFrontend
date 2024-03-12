@@ -91,7 +91,7 @@ function BestellingInfoPagina() {
                             <Text mt={2}>Order Status: <b>{order && order.orderStatus}</b></Text>
                             <Text mt={2}>Betaling status: <b>{order && order.betalingStatus}</b></Text>
     
-                            {order && order.betalingStatus != "betaald" && <PrintButton bg="green" mt={5} w={300}> betalen</PrintButton>}                        </Box>
+                            {order && order.betalingStatus != "1" && <PrintButton bg="green" mt={5} w={300}> betalen</PrintButton>}                        </Box>
                     </Flex>
     
                     <Box ml={5} mt={5}>
@@ -179,7 +179,7 @@ function BestellingInfoPagina() {
                             <Text mt={2}>Order Status:</Text>
                             <Text mt={2}><b>{order && order.betalingStatus}</b></Text>
 
-                            {order && order.betalingStatus != "betaald" &&
+                            {order && order.betalingStatus != "1" &&
                                 <PrintButton bg="green">
                                     verander betaling status
                                 </PrintButton>

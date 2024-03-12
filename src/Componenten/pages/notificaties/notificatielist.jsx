@@ -10,7 +10,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
-import { getById, update, setAuthToken } from "../../../api/index.js";
+import { getById, update, setAuthToken, post } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { NotificatieContext } from "../../contexts/Notificatie.contexts";
@@ -22,6 +22,8 @@ function NotificatieList() {
   const hoverColor = useColorModeValue("gray.400", "gray.700");
   const [items, setItems] = useState([]);
   const [begin, setBegin] = useState(0);
+  const [body, setBody] = useState([])
+
   const [totalOrders, setTotalOrders] = useState(0);
 
   const navigate = useNavigate();
@@ -29,7 +31,7 @@ function NotificatieList() {
   useEffect(() => {
     setAuthToken(localStorage.getItem("jwtToken"));
     fetchData();
-  }, [begin]);
+  }, [begin, totalOrders]);
 
   const handleClick = async (notificatie) => {
     try {
@@ -60,18 +62,21 @@ function NotificatieList() {
 
   const fetchData = async () => {
     try {
+      let body = {
+        "begin": begin
+    };
+    setBody(body);
+
       if (localStorage.getItem("roles") == "leverancier") {
-        const aantal = 0;
-        const response = await getById(
-          `notificatie/leverancier/${begin}`
+        const response = await post(
+          `notificatie/leverancier/`, body
         );
         setItems(response);
         setTotalOrders(response.total);
 
       }
       if (localStorage.getItem("roles") == "klant") {
-        const aantal = 0;
-        const response = await getById(`notificatie/klant/${begin}`);
+        const response = await post(`notificatie/klant/`, body);
         setItems(response);
         setTotalOrders(response.total);
 
