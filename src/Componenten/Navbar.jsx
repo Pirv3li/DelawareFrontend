@@ -20,6 +20,7 @@ const Navbar = () => {
   const { aantalOngeopend, setAantalOngeopend } = useContext(
     NotificatieContext
   );
+
   const handleLogout = () => {
     logOut();
   };
@@ -28,6 +29,7 @@ const Navbar = () => {
     setAuthToken(localStorage.getItem("jwtToken"));
     fetchData();
   }, [aantalOngeopend]);
+
   useEffect(() => {
     if (isAuthed) {
       fetchData();
@@ -81,11 +83,13 @@ const Navbar = () => {
         ml="auto"
         bgColor={bgColor}
         color={color}
-        width="auto"
+        width="50%"
         justifyContent="space-between"
         alignItems="center"
         flexWrap="nowrap"
       >
+        {isAuthed ? (
+          <>
             <ChakraLink
               as={RouterLink}
               to="/notificaties"
@@ -139,8 +143,7 @@ const Navbar = () => {
             >
               Profiel
             </ChakraLink>
-            {isAuthed ? (
-              <ChakraLink
+            <ChakraLink
               as={RouterLink}
               onClick={handleLogout}
               mr={5}
@@ -150,25 +153,26 @@ const Navbar = () => {
             >
               Log uit
             </ChakraLink>
-            ) : (
-              <ChakraLink
-                as={RouterLink}
-                to="/login"
-                ml={300}
-                _hover={{ color: hoverColor }}
-                fontSize="2xl"
-              >
-                Login
-              </ChakraLink>
-            )}
-            <IconButton
-              aria-label="Toggle color mode"
-              icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-              onClick={toggleColorMode}
-              ml="auto"
-            />
-          </Flex>
+          </>
+        ) : (
+          <ChakraLink
+            as={RouterLink}
+            to="/login"
+            ml={150}
+            _hover={{ color: hoverColor }}
+            fontSize="2xl"
+          >
+            Login
+          </ChakraLink>
+        )}
+        <IconButton
+          aria-label="Toggle color mode"
+          icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
+          onClick={toggleColorMode}
+          ml="auto"
+        />
       </Flex>
+    </Flex>
   );
 };
 
