@@ -41,7 +41,7 @@ function ProductenList() {
       };
       setBody(body);
       console.log("BODY:", body);
-      const items = await post(`producten/begin`, body); 
+      const items = await post(`producten/begin`, { arg: body }); 
       const categories = await getAll("producten/categories");
       setItems(items);
       setCategories(categories);
