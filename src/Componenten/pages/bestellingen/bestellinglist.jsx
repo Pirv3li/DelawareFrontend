@@ -1,6 +1,6 @@
 import { Table, Thead, Tbody, Tr, Th, Td, Heading, Box, Button } from "@chakra-ui/react";
 import React, { useState, useEffect } from 'react';
-import { getById, setAuthToken } from '../../../api/index.js'
+import { post, setAuthToken } from '../../../api/index.js'
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
@@ -11,32 +11,37 @@ function BestellingList() {
     const [items, setItems] = useState([]);
     const [begin, setBegin] = useState(0);
     const [totalOrders, setTotalOrders] = useState(0);
-
+    const [body, setBody] = useState([])
     const navigate = useNavigate();
 
     const handleClick = (id) => {
         sessionStorage.setItem('idOrder', id);
         navigate(`/bestellingInfo`);
     }
-
+    
     useEffect(() => {
         setAuthToken(localStorage.getItem("jwtToken"));
+        
         fetchData();
-    }, [begin]);
+
+    }, [begin, totalOrders]);
 
     const fetchData = async () => {
         try {
+            let body = {
+                "begin": begin
+            };
+            setBody(body);
+    
             if (localStorage.getItem('roles') == 'leverancier') {
-                const response = await getById(`order/leverancier/${begin}`);
-                setItems(response.items);
-                setTotalOrders(response.total);
-
+                const response = await post(`order/leverancier`, body);
+                setItems(response);
+                setTotalOrders(response.length);
             }
             if (localStorage.getItem('roles') == 'klant') {
-                const response = await getById(`order/klant/${begin}`);
-                setItems(response.items);
-                setTotalOrders(response.total);
-
+                const response = await post(`order/klant`, body);
+                setItems(response);
+                setTotalOrders(response.length);
             }
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -90,6 +95,7 @@ function BestellingList() {
             </Box >
         );
     }
+    console.log(totalOrders)
     if (localStorage.getItem('roles') == 'klant') {
         return (
             <Box>
