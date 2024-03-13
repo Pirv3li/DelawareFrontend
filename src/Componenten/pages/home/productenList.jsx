@@ -40,27 +40,40 @@ function ProductenList() {
         begin: (beginPagina + 1),
       };
       setBody(body);
-      const items = await post(`producten/begin`, { arg: body });
+      let items;
+      if (localStorage.getItem("roles") === "leverancier") {
+        items = await post(`producten/leverancier`, { arg: body });
+      } else {
+        items = await post(`producten/begin`, { arg: body });
+      }
       const categories = await getAll("producten/categories");
       setItems(items);
       setCategories(categories);
       setTotalOrders(items.length);
-
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   const incrementBegin = () => {
-    setBegin(beginPagina => beginPagina + 20);
+    if (localStorage.getItem("roles") === "leverancier") {
+    setBegin(beginPagina => beginPagina + 10);
     window.scrollTo(0, 20);
+    }else{
+      setBegin(beginPagina => beginPagina + 20);
+      window.scrollTo(0, 20);
+    }
 
   };
 
   const decrementBegin = () => {
-    setBegin(beginPagina => beginPagina - 20);
-    window.scrollTo(0, 0);
+    if (localStorage.getItem("roles") === "leverancier") {
+      setBegin(beginPagina => beginPagina - 10);
+      window.scrollTo(0, 0);
+    }else{
+      setBegin(beginPagina => beginPagina - 20);
+      window.scrollTo(0, 0);
+    }
 
   };
 
@@ -104,10 +117,10 @@ function ProductenList() {
   const navigate = useNavigate();
 
   return (
-    <VStack spacing={5} minHeight={"200%"} align={"center"} marginX={20}>      
-    <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
-      Producten
-    </Text>
+    <VStack spacing={5} minHeight={"200%"} align={"center"} marginX={20}>
+      <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
+        {localStorage.getItem("roles") === "leverancier" ? "Mijn Producten" : "Producten"}
+      </Text>
       {showList && (
         <>
           <Input
@@ -180,8 +193,8 @@ function ProductenList() {
       )}
 
       <Flex alignSelf={"end"} >
-        {beginPagina > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left"  mb={200} w={"400px"} h={50} bg={"gray.500"}/>}
-        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={20 != totalOrders} mb={200} w={"400px"} h={50} bg={"gray.500"}  ml={5}/>
+        {beginPagina > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" mb={200} w={"400px"} h={50} bg={"gray.500"} />}
+        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={localStorage.getItem("roles") === "leverancier" ? 10 != totalOrders : 20 != totalOrders} mb={200} w={"400px"} h={50} bg={"gray.500"} ml={5} />
       </Flex>
 
     </VStack>

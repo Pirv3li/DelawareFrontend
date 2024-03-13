@@ -119,6 +119,8 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem(LEVERANCIER_ID_KEY);
       }
       localStorage.removeItem(Roles);
+      window.location.reload();
+      
       return true;
     } catch (error) {
       console.error("Error during logOut:", error);
