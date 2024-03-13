@@ -28,7 +28,7 @@ export const LeverancierProfiel = () => {
 
   const [isEditing, setIsEditing] = useState(false);
 
-  const handleWeizigen = () => {
+  const handleWijzigen = () => {
     if (isEditing) {
       setIsEditing(false);
       klant.klant.gebruikersnaam = document.getElementById("gebruikersnaam").value;
@@ -160,7 +160,7 @@ export const LeverancierProfiel = () => {
     </Tr>
   </Tbody>
 </Table>
-                <Button colorScheme="blue" variant="solid" mt={4} onClick={handleWeizigen}>weizigen </Button>
+                <Button colorScheme="blue" variant="solid" mt={4} onClick={handleWijzigen}>wijzigen </Button>
                 </VStack>
 
     </Center>
