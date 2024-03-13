@@ -137,7 +137,7 @@ function NotificatieList() {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>
-          Bestellingen
+          Notificatie's
         </Heading>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
