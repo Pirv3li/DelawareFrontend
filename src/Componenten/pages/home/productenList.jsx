@@ -1,5 +1,14 @@
 import {
-  Text, VStack, Wrap, WrapItem, Button, Input, Checkbox, HStack, Box, Flex
+  Text,
+  VStack,
+  Wrap,
+  WrapItem,
+  Button,
+  Input,
+  Checkbox,
+  HStack,
+  Box,
+  Flex,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -11,15 +20,9 @@ import MeerInfo from "./productInfo.jsx";
 import CustomBox from "../themas/chakraBox.jsx";
 import { useNavigate } from "react-router-dom";
 
-
 function ProductenList() {
-  const {
-    boxbgColor,
-    bgColor,
-    textColor,
-    buttonColor,
-    buttonHoverColor,
-  } = useTheme();
+  const { boxbgColor, bgColor, textColor, buttonColor, buttonHoverColor } =
+    useTheme();
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -28,7 +31,7 @@ function ProductenList() {
   const [searchTerm, setSearchTerm] = useState("");
   const [beginPagina, setBegin] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
-  const [body, setBody] = useState([])
+  const [body, setBody] = useState([]);
   const [actualSearchTerm, setActualSearchTerm] = useState("");
 
   useEffect(() => {
@@ -38,7 +41,7 @@ function ProductenList() {
   const fetchData = async () => {
     try {
       let body = {
-        begin: (beginPagina + 1),
+        begin: beginPagina + 1,
       };
       setBody(body);
       let items;
@@ -63,7 +66,7 @@ function ProductenList() {
 
     const body = {
       begin: 1,
-      zoekterm: finalSearchTerm
+      zoekterm: finalSearchTerm,
     };
 
     try {
@@ -76,10 +79,13 @@ function ProductenList() {
   };
 
   const incrementBegin = async () => {
-    let newBegin = localStorage.getItem("roles") === "leverancier" ? beginPagina + 10 : beginPagina + 20;
+    let newBegin =
+      localStorage.getItem("roles") === "leverancier"
+        ? beginPagina + 10
+        : beginPagina + 20;
     setBegin(newBegin);
     window.scrollTo(0, 20);
-  
+
     let response;
     if (selectedCategories.length > 0) {
       const body = {
@@ -90,7 +96,7 @@ function ProductenList() {
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
-        zoekterm: actualSearchTerm
+        zoekterm: actualSearchTerm,
       };
       response = await post(`producten/zoekterm`, { arg: body });
     } else {
@@ -106,12 +112,15 @@ function ProductenList() {
     setItems(response);
     setTotalOrders(response.length);
   };
-  
+
   const decrementBegin = async () => {
-    let newBegin = localStorage.getItem("roles") === "leverancier" ? beginPagina - 10 : beginPagina - 20;
+    let newBegin =
+      localStorage.getItem("roles") === "leverancier"
+        ? beginPagina - 10
+        : beginPagina - 20;
     setBegin(newBegin);
     window.scrollTo(0, 0);
-  
+
     let response;
     if (selectedCategories.length > 0) {
       const body = {
@@ -122,7 +131,7 @@ function ProductenList() {
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
-        zoekterm: actualSearchTerm
+        zoekterm: actualSearchTerm,
       };
       response = await post(`producten/zoekterm`, { arg: body });
     } else {
@@ -148,13 +157,13 @@ function ProductenList() {
       updatedCategories = [...selectedCategories, category];
     }
     setSelectedCategories(updatedCategories);
-  
+
     try {
       let response;
       if (updatedCategories.length === 0) {
         // If no categories are selected, make the original API call
         let body = {
-          begin: (beginPagina + 1),
+          begin: beginPagina + 1,
         };
         if (localStorage.getItem("roles") === "leverancier") {
           response = await post(`producten/leverancier`, { arg: body });
@@ -207,9 +216,18 @@ function ProductenList() {
   const navigate = useNavigate();
 
   return (
-    <VStack spacing={5} minHeight={"200%"} align={"center"} marginX={20}>
+    <VStack
+      spacing={5}
+      minHeight={"200%"}
+      align={"center"}
+      justify={"center"}
+      marginX={20}
+    >
+      {" "}
       <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
-        {localStorage.getItem("roles") === "leverancier" ? "Mijn Producten" : "Producten"}
+        {localStorage.getItem("roles") === "leverancier"
+          ? "Mijn Producten"
+          : "Producten"}
       </Text>
       {showList && (
         <>
@@ -274,22 +292,38 @@ function ProductenList() {
                     Bestellen
                   </Button>
                 </CustomBox>
-
               </WrapItem>
             ))}
-
           </Wrap>
-
         </>
       )}
-
-      <Flex alignSelf={"end"} >
-        {beginPagina > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" mb={200} w={"400px"} h={50} bg={"gray.500"} />}
-        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={localStorage.getItem("roles") === "leverancier" ? 10 != totalOrders : 20 != totalOrders} mb={200} w={"400px"} h={50} bg={"gray.500"} ml={5} />
+      <Flex alignSelf={"end"}>
+        {beginPagina > 0 && (
+          <Button
+            leftIcon={<ArrowBackIcon />}
+            onClick={decrementBegin}
+            float="left"
+            w={"400px"}
+            h={50}
+            bg={"gray.500"}
+          />
+        )}
+        <Button
+          rightIcon={<ArrowForwardIcon />}
+          onClick={incrementBegin}
+          float="right"
+          isDisabled={
+            localStorage.getItem("roles") === "leverancier"
+              ? 10 != totalOrders
+              : 20 != totalOrders
+          }
+          w={"400px"}
+          h={50}
+          bg={"gray.500"}
+          ml={5}
+        />
       </Flex>
-
     </VStack>
-
   );
 }
 
