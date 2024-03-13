@@ -134,7 +134,7 @@ function BestellingInfoPagina() {
                         </Table>
                     </Box>
                 </Flex>
-                <Button onClick={handlePrint}>Print this page</Button>
+                <Button onClick={handlePrint} bg={"red"} w={"350"}>PDF</Button>
             </div>
         )
     }
