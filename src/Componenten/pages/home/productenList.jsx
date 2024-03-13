@@ -216,7 +216,14 @@ function ProductenList() {
   const navigate = useNavigate();
 
   return (
-    <VStack spacing={5} minHeight={"200%"} align={"center"} marginX={20}>
+    <VStack
+      spacing={5}
+      minHeight={"200%"}
+      align={"center"}
+      justify={"center"}
+      marginX={20}
+    >
+      {" "}
       <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
         {localStorage.getItem("roles") === "leverancier"
           ? "Mijn Producten"
@@ -290,7 +297,6 @@ function ProductenList() {
           </Wrap>
         </>
       )}
-
       <Flex alignSelf={"end"}>
         {beginPagina > 0 && (
           <Button

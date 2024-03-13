@@ -74,7 +74,7 @@ const Navbar = () => {
         <img
           src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
           alt=""
-          style={{ maxWidth: "60%" }}
+          style={{ maxWidth: "auto",height: "100px"}}
         />
       </ChakraLink>
 
@@ -84,6 +84,7 @@ const Navbar = () => {
         bgColor={bgColor}
         color={color}
         width="50%"
+        
         justifyContent="space-between"
         alignItems="center"
         flexWrap="nowrap"
