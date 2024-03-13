@@ -98,7 +98,7 @@ function NotificatieList() {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>
-          Notificatie's
+          Notificaties
         </Heading>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
@@ -137,7 +137,7 @@ function NotificatieList() {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>
-          Notificatie's
+          Notificaties
         </Heading>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
