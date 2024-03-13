@@ -29,10 +29,11 @@ function ProductenList() {
   const [beginPagina, setBegin] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
   const [body, setBody] = useState([])
+  const [actualSearchTerm, setActualSearchTerm] = useState("");
 
   useEffect(() => {
     fetchData();
-  }, [beginPagina, totalOrders]);
+  }, [beginPagina]);
 
   const fetchData = async () => {
     try {
@@ -55,34 +56,123 @@ function ProductenList() {
     }
   };
 
-  const incrementBegin = () => {
-    if (localStorage.getItem("roles") === "leverancier") {
-    setBegin(beginPagina => beginPagina + 10);
+  const handleSearch = async () => {
+    // If searchTerm is null or undefined, set it to an empty string
+    const finalSearchTerm = searchTerm || "";
+    setActualSearchTerm(finalSearchTerm);
+
+    const body = {
+      begin: 1,
+      zoekterm: finalSearchTerm
+    };
+
+    try {
+      const response = await post(`producten/zoekterm`, { arg: body });
+      setItems(response);
+      setTotalOrders(response.length);
+    } catch (error) {
+      console.error("Error during search:", error);
+    }
+  };
+
+  const incrementBegin = async () => {
+    let newBegin = localStorage.getItem("roles") === "leverancier" ? beginPagina + 10 : beginPagina + 20;
+    setBegin(newBegin);
     window.scrollTo(0, 20);
-    }else{
-      setBegin(beginPagina => beginPagina + 20);
-      window.scrollTo(0, 20);
-    }
-
-  };
-
-  const decrementBegin = () => {
-    if (localStorage.getItem("roles") === "leverancier") {
-      setBegin(beginPagina => beginPagina - 10);
-      window.scrollTo(0, 0);
-    }else{
-      setBegin(beginPagina => beginPagina - 20);
-      window.scrollTo(0, 0);
-    }
-
-  };
-
-  const handleCategoryChange = (event) => {
-    const category = event.target.name;
-    if (selectedCategories.includes(category)) {
-      setSelectedCategories(selectedCategories.filter((c) => c !== category));
+  
+    let response;
+    if (selectedCategories.length > 0) {
+      const body = {
+        begin: newBegin + 1,
+        categories: selectedCategories,
+      };
+      response = await post(`producten/zoekcategorie`, { arg: body });
+    } else if (actualSearchTerm) {
+      const body = {
+        begin: newBegin + 1,
+        zoekterm: actualSearchTerm
+      };
+      response = await post(`producten/zoekterm`, { arg: body });
     } else {
-      setSelectedCategories([...selectedCategories, category]);
+      let body = {
+        begin: newBegin + 1,
+      };
+      if (localStorage.getItem("roles") === "leverancier") {
+        response = await post(`producten/leverancier`, { arg: body });
+      } else {
+        response = await post(`producten/begin`, { arg: body });
+      }
+    }
+    setItems(response);
+    setTotalOrders(response.length);
+  };
+  
+  const decrementBegin = async () => {
+    let newBegin = localStorage.getItem("roles") === "leverancier" ? beginPagina - 10 : beginPagina - 20;
+    setBegin(newBegin);
+    window.scrollTo(0, 0);
+  
+    let response;
+    if (selectedCategories.length > 0) {
+      const body = {
+        begin: newBegin + 1,
+        categories: selectedCategories,
+      };
+      response = await post(`producten/zoekcategorie`, { arg: body });
+    } else if (actualSearchTerm) {
+      const body = {
+        begin: newBegin + 1,
+        zoekterm: actualSearchTerm
+      };
+      response = await post(`producten/zoekterm`, { arg: body });
+    } else {
+      let body = {
+        begin: newBegin + 1,
+      };
+      if (localStorage.getItem("roles") === "leverancier") {
+        response = await post(`producten/leverancier`, { arg: body });
+      } else {
+        response = await post(`producten/begin`, { arg: body });
+      }
+    }
+    setItems(response);
+    setTotalOrders(response.length);
+  };
+
+  const handleCategoryChange = async (event) => {
+    const category = event.target.name;
+    let updatedCategories;
+    if (selectedCategories.includes(category)) {
+      updatedCategories = selectedCategories.filter((c) => c !== category);
+    } else {
+      updatedCategories = [...selectedCategories, category];
+    }
+    setSelectedCategories(updatedCategories);
+  
+    try {
+      let response;
+      if (updatedCategories.length === 0) {
+        // If no categories are selected, make the original API call
+        let body = {
+          begin: (beginPagina + 1),
+        };
+        if (localStorage.getItem("roles") === "leverancier") {
+          response = await post(`producten/leverancier`, { arg: body });
+        } else {
+          response = await post(`producten/begin`, { arg: body });
+        }
+      } else {
+        // If categories are selected, make the category search API call
+        const body = {
+          begin: 1,
+          categories: updatedCategories,
+        };
+        response = await post(`producten/zoekcategorie`, { arg: body });
+      }
+      setItems(response);
+      setTotalOrders(response.length);
+    } catch (error) {
+      console.error("Error during category search:", error);
     }
   };
 
@@ -92,11 +182,11 @@ function ProductenList() {
       selectedCategories.includes(item.categorie)
   );
 
-  const searchedItems = filteredItems.filter((item) =>
-    item.naam.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // const searchedItems = filteredItems.filter((item) =>
+  //   item.naam.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
 
-  const sortedItems = searchedItems.sort((a, b) => {
+  const sortedItems = filteredItems.sort((a, b) => {
     const aIsSelected = selectedCategories.includes(a.categorie);
     const bIsSelected = selectedCategories.includes(b.categorie);
 
@@ -129,6 +219,7 @@ function ProductenList() {
             height={35}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
+          <Button onClick={handleSearch}>Zoek</Button>
           <HStack spacing={5}>
             {categories.map((category) => (
               <Checkbox
