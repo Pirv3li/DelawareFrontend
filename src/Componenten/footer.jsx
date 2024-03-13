@@ -41,7 +41,7 @@ const Footer = () => {
           py="4"
           px={{ base: "4", md: "8" }}
         >
-          <Flex align="center" fontSize="sm">
+          <Flex align="center" justifyContent={"center"} fontSize="sm">
             <Text>&copy; {new Date().getFullYear()}</Text>
             <Image
               src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
