@@ -79,8 +79,7 @@ function BestellingList() {
                                 <Td>{new Date(item.datum).toLocaleDateString('en-GB')}</Td>
                                 <Td>€ {item.totaalPrijs}</Td>
                                 <Td>{item.orderStatus}</Td>
-                                <Td>{item.betalingStatus}</Td>
-                            </Tr>
+                                <Td>{item.betalingStatus === 1 ? "Betaald" : "Niet Betaald"}</Td>                            </Tr>
                         ))}
                     </Tbody>
                 </Table>
@@ -118,9 +117,8 @@ function BestellingList() {
                                 <Td>{new Date(item.datum).toLocaleDateString('en-GB')}</Td>
                                 <Td>€ {item.totaalPrijs}</Td>
                                 <Td>{item.orderStatus}</Td>
-                                <Td>{item.betalingStatus}</Td>
+                                <Td>{item.betalingStatus === 1 ? "Betaald" : "Niet Betaald"}</Td>                            </Tr>
 
-                            </Tr>
                         ))}
                     </Tbody>
                 </Table>

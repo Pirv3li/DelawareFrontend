@@ -89,8 +89,7 @@ function BestellingInfoPagina() {
                             <Text mt={2}>Order nummer: <b>{order && order.idOrder}</b></Text>
                             <Text mt={2}>Datum: <b>{order && new Date(order.datum).toLocaleDateString('en-GB')}</b></Text>
                             <Text mt={2}>Order Status: <b>{order && order.orderStatus}</b></Text>
-                            <Text mt={2}>Betaling status: <b>{order && order.betalingStatus}</b></Text>
-    
+                            <Text mt={2}>Betaling Status: <b>{order && (order.betalingStatus === 1 ? "Betaald" : "Niet Betaald")}</b></Text>
                             {order && order.betalingStatus != "1" && <PrintButton bg="green" mt={5} w={300}> betalen</PrintButton>}                        </Box>
                     </Flex>
     
@@ -168,22 +167,15 @@ function BestellingInfoPagina() {
                             </Text>
                             <Text mt={2}>Order nummer: <b>{order && order.idOrder}</b></Text>
                             <Text mt={2}>Datum: <b>{order && new Date(order.datum).toLocaleDateString('en-GB')}</b></Text>
-                            <Text mt={2}>Order Status:</Text>
-                            <Text mt={2}><b>{order && order.orderStatus}</b></Text>
+                            <Text mt={2}>Order Status: <b>{order && order.orderStatus}</b></Text>
 
                             {order && order.orderStatus != "geleverd" &&
                                 <PrintButton bg="green">
                                     verander levering status
                                 </PrintButton>
                             }
-                            <Text mt={2}>Order Status:</Text>
-                            <Text mt={2}><b>{order && order.betalingStatus}</b></Text>
-
-                            {order && order.betalingStatus != "1" &&
-                                <PrintButton bg="green">
-                                    verander betaling status
-                                </PrintButton>
-                            }
+                            <Text mt={2}>Betaling Status: <b>{order && (order.betalingStatus === 1 ? "Betaald" : "Niet Betaald")}</b></Text>
+                           
                         </Box>
                     </Flex>
 
