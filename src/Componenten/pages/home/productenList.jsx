@@ -45,12 +45,14 @@ function ProductenList() {
       };
       setBody(body);
       let items;
+      let categories;
       if (localStorage.getItem("roles") === "leverancier") {
         items = await post(`producten/leverancier`, { arg: body });
+        categories = await getAll("producten/leverancier/categories");
       } else {
         items = await post(`producten/begin`, { arg: body });
+        categories = await getAll("producten/categories");
       }
-      const categories = await getAll("producten/categories");
       setItems(items);
       setCategories(categories);
       setTotalOrders(items.length);
@@ -63,14 +65,19 @@ function ProductenList() {
     // If searchTerm is null or undefined, set it to an empty string
     const finalSearchTerm = searchTerm || "";
     setActualSearchTerm(finalSearchTerm);
-
+  
     const body = {
       begin: 1,
       zoekterm: finalSearchTerm,
     };
-
+  
     try {
-      const response = await post(`producten/zoekterm`, { arg: body });
+      let response;
+      if (localStorage.getItem("roles") === "leverancier") {
+        response = await post(`producten/leverancier/zoekterm`, { arg: body });
+      } else {
+        response = await post(`producten/zoekterm`, { arg: body });
+      }
       setItems(response);
       setTotalOrders(response.length);
     } catch (error) {
