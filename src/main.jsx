@@ -11,6 +11,7 @@ import {
   ProductInfoMeer,
   Notificaties,
   NotificatieInfoMeer,
+  ProductenList
 } from "./pages.jsx";
 import PrivateRoute from "./Componenten/PrivateRoute.jsx";
 import Layout from "./Componenten/Layout.jsx";
@@ -54,6 +55,15 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <Profiel />,
+          },
+        ],
+      },
+      {
+        path: "producten",
+        children: [
+          {
+            index: true,
+            element: <ProductenList />,
           },
         ],
       },

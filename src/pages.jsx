@@ -10,8 +10,23 @@ import NotificatieList from "./Componenten/pages/notificaties/notificatielist";
 import NotificatieInfoPagina from "./Componenten/pages/notificaties/notificatieInfo";
 import PrintPdf from './Componenten/printpdf.jsx';
 
-
-export const Home = () => (
+export const Home = () => {
+  if(localStorage.getItem("roles") === "leverancier"){
+    return (
+      <div>
+      <BestellingList />
+    </div>
+    );
+  } else {
+    return (
+      
+       <div>
+       <Producten />
+     </div>
+    );
+  }
+};
+export const ProductenList = () => (
   <div>
     <Producten />
   </div>
