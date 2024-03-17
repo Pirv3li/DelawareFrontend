@@ -8,6 +8,8 @@ import {
   Button,
   Heading,
   Box,
+  Select,
+  FormLabel,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import { getById, update, setAuthToken, post } from "../../../api/index.js";
@@ -21,17 +23,23 @@ function NotificatieList() {
 
   const hoverColor = useColorModeValue("gray.400", "gray.700");
   const [items, setItems] = useState([]);
-  const [begin, setBegin] = useState(0);
+  const [begin, setBegin] = useState(1);
   const [body, setBody] = useState([])
 
   const [totalOrders, setTotalOrders] = useState(0);
+
+  const [itemsPerPage, setItemsPerPage] = useState(10);
+
+  const handleItemsPerPage = (e) => {
+    setItemsPerPage(Number(e.target.value));
+  };
 
   const navigate = useNavigate();
 
   useEffect(() => {
     setAuthToken(localStorage.getItem("jwtToken"));
     fetchData();
-  }, [begin, totalOrders]);
+  }, [begin, totalOrders, itemsPerPage]);
 
   const handleClick = async (notificatie) => {
     try {
@@ -63,20 +71,22 @@ function NotificatieList() {
   const fetchData = async () => {
     try {
       let body = {
-        "begin": begin
+        "begin": begin,
+        "aantal": itemsPerPage
     };
     setBody(body);
 
       if (localStorage.getItem("roles") == "leverancier") {
+        console.log("body: ", body)
         const response = await post(
-          `notificatie/leverancier/`, body
+          `notificatie/leverancier/`, {arg: body}
         );
         setItems(response);
         setTotalOrders(response.total);
 
       }
       if (localStorage.getItem("roles") == "klant") {
-        const response = await post(`notificatie/klant/`, body);
+        const response = await post(`notificatie/klant/`, {arg: body});
         setItems(response);
         setTotalOrders(response.total);
 
@@ -87,11 +97,11 @@ function NotificatieList() {
   };
 
   const incrementBegin = () => {
-    setBegin(prevBegin => prevBegin + 10);
+    setBegin(prevBegin => prevBegin + itemsPerPage);
   };
 
   const decrementBegin = () => {
-    setBegin(prevBegin => prevBegin - 10);
+    setBegin(prevBegin => prevBegin - itemsPerPage);
   };
 
   if (localStorage.getItem("roles") == "leverancier") {
@@ -100,6 +110,12 @@ function NotificatieList() {
         <Heading textAlign="center" mt={2}>
           Notificaties
         </Heading>
+        <FormLabel>Aantal</FormLabel>
+        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+        </Select>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
             <Tr>
@@ -139,6 +155,12 @@ function NotificatieList() {
         <Heading textAlign="center" mt={2}>
           Notificaties
         </Heading>
+        <FormLabel>Aantal</FormLabel>
+        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+        </Select>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
             <Tr>
