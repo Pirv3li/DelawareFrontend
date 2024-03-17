@@ -9,6 +9,8 @@ import {
   HStack,
   Box,
   Flex,
+  Select,
+  FormLabel,
 } from "@chakra-ui/react";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
@@ -33,15 +35,22 @@ function ProductenList() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [body, setBody] = useState([]);
   const [actualSearchTerm, setActualSearchTerm] = useState("");
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+
+  const handleItemsPerPageChange = (event) => {
+    setItemsPerPage(Number(event.target.value));
+  };
+
 
   useEffect(() => {
     fetchData();
-  }, [beginPagina]);
+  }, [beginPagina, itemsPerPage]);
 
   const fetchData = async () => {
     try {
       let body = {
         begin: beginPagina + 1,
+        aantal: itemsPerPage,
       };
       setBody(body);
       let items;
@@ -65,12 +74,14 @@ function ProductenList() {
     // If searchTerm is null or undefined, set it to an empty string
     const finalSearchTerm = searchTerm || "";
     setActualSearchTerm(finalSearchTerm);
-  
+
     const body = {
       begin: 1,
       zoekterm: finalSearchTerm,
+      aantal: itemsPerPage,
+
     };
-  
+
     try {
       let response;
       if (localStorage.getItem("roles") === "leverancier") {
@@ -86,10 +97,9 @@ function ProductenList() {
   };
 
   const incrementBegin = async () => {
-    let newBegin =
-      localStorage.getItem("roles") === "leverancier"
-        ? beginPagina + 10
-        : beginPagina + 20;
+    
+    let newBegin = beginPagina + itemsPerPage;
+
     setBegin(newBegin);
     window.scrollTo(0, 20);
 
@@ -98,12 +108,16 @@ function ProductenList() {
       const body = {
         begin: newBegin + 1,
         categories: selectedCategories,
+        aantal: itemsPerPage,
+
       };
       response = await post(`producten/zoekcategorie`, { arg: body });
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
+        aantal: itemsPerPage,
+
       };
       response = await post(`producten/zoekterm`, { arg: body });
     } else {
@@ -121,10 +135,8 @@ function ProductenList() {
   };
 
   const decrementBegin = async () => {
-    let newBegin =
-      localStorage.getItem("roles") === "leverancier"
-        ? beginPagina - 10
-        : beginPagina - 20;
+    let newBegin = beginPagina - itemsPerPage;
+
     setBegin(newBegin);
     window.scrollTo(0, 0);
 
@@ -133,17 +145,22 @@ function ProductenList() {
       const body = {
         begin: newBegin + 1,
         categories: selectedCategories,
+        aantal: 20,
+
       };
       response = await post(`producten/zoekcategorie`, { arg: body });
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
+        aantal: 20,
+
       };
       response = await post(`producten/zoekterm`, { arg: body });
     } else {
       let body = {
         begin: newBegin + 1,
+
       };
       if (localStorage.getItem("roles") === "leverancier") {
         response = await post(`producten/leverancier`, { arg: body });
@@ -171,6 +188,7 @@ function ProductenList() {
         // If no categories are selected, make the original API call
         let body = {
           begin: beginPagina + 1,
+          aantal: itemsPerPage,
         };
         if (localStorage.getItem("roles") === "leverancier") {
           response = await post(`producten/leverancier`, { arg: body });
@@ -182,6 +200,7 @@ function ProductenList() {
         const body = {
           begin: 1,
           categories: updatedCategories,
+          aantal:itemsPerPage
         };
         response = await post(`producten/zoekcategorie`, { arg: body });
       }
@@ -245,6 +264,7 @@ function ProductenList() {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <Button onClick={handleSearch}>Zoek</Button>
+
           <HStack spacing={5}>
             {categories.map((category) => (
               <Checkbox
@@ -255,7 +275,14 @@ function ProductenList() {
                 {category}
               </Checkbox>
             ))}
+            <FormLabel>Aantal</FormLabel>
+            <Select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+              <option value={10}>10</option>
+              <option value={20}>20</option>
+              <option value={30}>30</option>
+            </Select>
           </HStack>
+
           <Wrap spacing={4} justify="flex-wrap" overflow="none">
             {sortedItems.map((item) => (
               <WrapItem key={item.idProduct}>
@@ -298,6 +325,7 @@ function ProductenList() {
                   >
                     Bestellen
                   </Button>
+
                 </CustomBox>
               </WrapItem>
             ))}
