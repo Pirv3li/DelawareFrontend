@@ -11,6 +11,8 @@ import {
   Select,
   FormLabel,
   Input,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import { getById, update, setAuthToken, post } from "../../../api/index.js";
@@ -28,9 +30,9 @@ function NotificatieList() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
-  const handleItemsPerPage = (event) => {
-    const newValue = event.target.value;
-    if (newValue >= 1 && newValue <= 100) {
+  const handleItemsPerPage = (e) => {
+    const newValue = Number(e.target.value);
+    if (newValue >= 1 && newValue <= 50) {
       setItemsPerPage(newValue);
     }
   };
@@ -119,10 +121,35 @@ function NotificatieList() {
     sessionStorage.getItem("roles") == "klant"
   ) {
     return (
-      <Box>
+      <Box
+        alignContent={"center"}
+        justifyContent={"center"}
+        alignSelf={"center"}
+        display={"flex"}
+        flexDirection={"column"}
+      >
         <Heading textAlign="center" mt={2}>
           Notificaties
         </Heading>
+        <Text alignSelf={"center"}>
+          Aantal notificaties per pagina (max 50)
+        </Text>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          {begin > 0 && (
+            <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} />
+          )}
+          <Input
+            style={{ width: "5%" }}
+            value={itemsPerPage}
+            onChange={handleItemsPerPage}
+          />
+          <Button
+            rightIcon={<ArrowForwardIcon />}
+            onClick={incrementBegin}
+            isDisabled={totalOrders % itemsPerPage !== 0}
+            ml={2}
+          />
+        </Box>
         <Table colorScheme="Gray 500" mt={10} mb={5} variant={"unstyled"}>
           <Thead>
             <Tr>
@@ -155,22 +182,6 @@ function NotificatieList() {
             ))}
           </Tbody>
         </Table>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          {begin > 0 && (
-            <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} />
-          )}
-          <Input
-            style={{ width: "5%" }}
-            value={itemsPerPage}
-            onChange={handleItemsPerPage}
-          />
-          <Button
-            rightIcon={<ArrowForwardIcon />}
-            onClick={incrementBegin}
-            isDisabled={totalOrders % itemsPerPage !== 0}
-            ml={2}
-          />
-        </Box>
       </Box>
     );
   }
