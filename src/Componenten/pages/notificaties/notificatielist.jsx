@@ -28,8 +28,11 @@ function NotificatieList() {
   const [totalOrders, setTotalOrders] = useState(0);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
-  const handleItemsPerPage = (e) => {
-    setItemsPerPage(Number(e.target.value));
+  const handleItemsPerPage = (event) => {
+    const newValue = event.target.value;
+    if (newValue >= 1 && newValue <= 100) {
+      setItemsPerPage(newValue);
+    }
   };
 
   useEffect(() => {
