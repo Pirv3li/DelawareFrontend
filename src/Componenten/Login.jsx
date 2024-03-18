@@ -5,6 +5,7 @@ import { Box, Button, Flex, Heading,Alert, AlertIcon  } from '@chakra-ui/react';
 import LabelInput from '../Componenten/LabelInput';
 import { useAuth } from './contexts/Auth.contexts';
 import Error from '../Componenten/Error';
+import { Kbd } from '@chakra-ui/react'
 
 
 
@@ -59,7 +60,7 @@ const handleLogin = useCallback(
             justify="center">Sign in</Heading>
 
           <Error error={error} />
-
+          <form onSubmit={handleSubmit(handleLogin)}> {/* Add this line */}
           <LabelInput
 
             label="gebruikersnaam: "
@@ -101,6 +102,7 @@ const handleLogin = useCallback(
               </Button>
             </Link> */}
           </Flex>
+          </form>
         </Box>
       </Flex>
     </FormProvider>
