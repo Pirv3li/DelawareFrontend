@@ -131,25 +131,21 @@ function NotificatieList() {
         <Heading textAlign="center" mt={2}>
           Notificaties
         </Heading>
-        <Text alignSelf={"center"}>
-          Aantal notificaties per pagina (max 50)
-        </Text>
-        <Box display="flex" justifyContent="center" alignItems="center">
-          {begin > 0 && (
-            <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} />
-          )}
+        <Box display="flex" alignItems="center" mt={5}>
+
           <Input
-            style={{ width: "5%" }}
+            
+            style={{ width: "60px" }}
             value={itemsPerPage}
             onChange={handleItemsPerPage}
+            onClick={(e) => e.target.select()}
+            textAlign={"center"}
+            margin={"auto"}
           />
-          <Button
-            rightIcon={<ArrowForwardIcon />}
-            onClick={incrementBegin}
-            isDisabled={totalOrders % itemsPerPage !== 0}
-            ml={2}
-          />
+
         </Box>
+
+
         <Table colorScheme="Gray 500" mt={10} mb={5} variant={"unstyled"}>
           <Thead>
             <Tr>
@@ -182,6 +178,31 @@ function NotificatieList() {
             ))}
           </Tbody>
         </Table>
+
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          {begin > 0 && (
+            <Button
+              alignSelf="flex-start"
+              colorScheme="blue"
+              leftIcon={<ArrowBackIcon />}
+              onClick={decrementBegin}
+              style={{ borderRadius: "20px" }}
+            />
+          )}
+
+          <Box flex="1" />
+
+          <Button
+            colorScheme="blue"
+            rightIcon={<ArrowForwardIcon />}
+            onClick={incrementBegin}
+            style={{ borderRadius: "20px", visibility: totalOrders % itemsPerPage !== 0 ? "hidden" : "visible" }}
+            alignSelf="flex-end"
+          />
+        </Box>
+
+
+
       </Box>
     );
   }

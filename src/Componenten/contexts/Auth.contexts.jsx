@@ -119,7 +119,8 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.removeItem(LEVERANCIER_ID_KEY);
       }
       sessionStorage.removeItem(Roles);
-      window.location.reload();
+      navigate(`/`);
+
       
       return true;
     } catch (error) {
