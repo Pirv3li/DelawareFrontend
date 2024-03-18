@@ -11,7 +11,7 @@ import NotificatieInfoPagina from "./Componenten/pages/notificaties/notificatieI
 import PrintPdf from './Componenten/printpdf.jsx';
 
 export const Home = () => {
-  if(localStorage.getItem("roles") === "leverancier"){
+  if(sessionStorage.getItem("roles") === "leverancier"){
     return (
       <div>
       <BestellingList />
@@ -75,7 +75,7 @@ export const NotificatieInfoMeer = () => {
 
 
 export const Profiel = () => {
-  const isKlant = localStorage.getItem("idKlant") !== null;
+  const isKlant = sessionStorage.getItem("idKlant") !== null;
 
   return <div>{isKlant ? <KlantProfiel /> : <LeverancierProfiel />}</div>;
 };

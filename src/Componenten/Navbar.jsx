@@ -26,7 +26,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    setAuthToken(localStorage.getItem("jwtToken"));
+    setAuthToken(sessionStorage.getItem("jwtToken"));
     fetchData();
   }, [aantalOngeopend]);
 
@@ -38,17 +38,17 @@ const Navbar = () => {
 
   const fetchData = async () => {
     try {
-      const roles = localStorage.getItem("roles");
+      const roles = sessionStorage.getItem("roles");
       if (roles) {
         if (roles == "klant") {
-          const idKlant = localStorage.getItem("idKlant");
+          const idKlant = sessionStorage.getItem("idKlant");
           const aantalOngeopend = await getById(
             `notificatie/ongeopend/klant/${idKlant}`
           );
           setAantalOngeopend(aantalOngeopend[0].count);
         }
         if (roles == "leverancier") {
-          const idLeverancier = localStorage.getItem("idLeverancier");
+          const idLeverancier = sessionStorage.getItem("idLeverancier");
           const aantalOngeopend = await getById(
             `notificatie/ongeopend/leverancier/${idLeverancier}`
           );

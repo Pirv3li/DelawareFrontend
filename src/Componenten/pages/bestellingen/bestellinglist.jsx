@@ -37,7 +37,7 @@ function BestellingList() {
   };
 
   useEffect(() => {
-    setAuthToken(localStorage.getItem("jwtToken"));
+    setAuthToken(sessionStorage.getItem("jwtToken"));
 
     fetchData();
   }, [begin, totalOrders, itemsPerPage]);
@@ -50,12 +50,12 @@ function BestellingList() {
       };
       setBody(body);
 
-      if (localStorage.getItem("roles") == "leverancier") {
+      if (sessionStorage.getItem("roles") == "leverancier") {
         const response = await post(`order/leverancier`, {arg: body});
         setItems(response);
         setTotalOrders(response.length);
       }
-      if (localStorage.getItem("roles") == "klant") {
+      if (sessionStorage.getItem("roles") == "klant") {
         const response = await post(`order/klant`, {arg: body});
         setItems(response);
         setTotalOrders(response.length);
@@ -75,7 +75,7 @@ function BestellingList() {
     };
   
     let response;
-    if (localStorage.getItem("roles") === "leverancier") {
+    if (sessionStorage.getItem("roles") === "leverancier") {
       response = await post(`order/leverancier`, { arg: body });
     } else {
       response = await post(`order/klant`, { arg: body });
@@ -89,7 +89,7 @@ function BestellingList() {
     setBegin((prevBegin) => prevBegin - itemsPerPage);
   };
 
-  if (localStorage.getItem("roles") == "leverancier") {
+  if (sessionStorage.getItem("roles") == "leverancier") {
     return (
       <Box mb={5}>
         <Heading textAlign="center" mt={2}>
@@ -152,7 +152,7 @@ function BestellingList() {
     );
   }
   console.log(totalOrders);
-  if (localStorage.getItem("roles") == "klant") {
+  if (sessionStorage.getItem("roles") == "klant") {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>

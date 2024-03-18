@@ -19,7 +19,7 @@ const LEVERANCIER_ID_KEY = "idLeverancier";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem(JWT_TOKEN_KEY));
+  const [token, setToken] = useState(sessionStorage.getItem(JWT_TOKEN_KEY));
   const [gebruiker, setGebruiker] = useState(null);
   const [ready, setReady] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
@@ -36,12 +36,12 @@ export const AuthProvider = ({ children }) => {
     setToken(token);
     setGebruiker(user);
 
-    localStorage.setItem(JWT_TOKEN_KEY, token);
-    localStorage.setItem(Roles, user.roles);
+    sessionStorage.setItem(JWT_TOKEN_KEY, token);
+    sessionStorage.setItem(Roles, user.roles);
     if (user.roles == "klant") {
-      localStorage.setItem(KLANT_ID_KEY, user.idKlant);
+      sessionStorage.setItem(KLANT_ID_KEY, user.idKlant);
     } else {
-      localStorage.setItem(LEVERANCIER_ID_KEY, user.idLeverancier);
+      sessionStorage.setItem(LEVERANCIER_ID_KEY, user.idLeverancier);
     }
   }, []);
 
@@ -112,13 +112,13 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.setItem('chakra-ui-color', chakraColor);
       }
   
-      localStorage.removeItem(JWT_TOKEN_KEY);
+      sessionStorage.removeItem(JWT_TOKEN_KEY);
       if (gebruiker && gebruiker.roles == "klant") {
-        localStorage.removeItem(KLANT_ID_KEY);
+        sessionStorage.removeItem(KLANT_ID_KEY);
       } else {
-        localStorage.removeItem(LEVERANCIER_ID_KEY);
+        sessionStorage.removeItem(LEVERANCIER_ID_KEY);
       }
-      localStorage.removeItem(Roles);
+      sessionStorage.removeItem(Roles);
       window.location.reload();
       
       return true;

@@ -55,7 +55,7 @@ function ProductenList() {
       setBody(body);
       let items;
       let categories;
-      if (localStorage.getItem("roles") === "leverancier") {
+      if (sessionStorage.getItem("roles") === "leverancier") {
         items = await post(`producten/leverancier`, { arg: body });
         categories = await getAll("producten/leverancier/categories");
       } else {
@@ -84,7 +84,7 @@ function ProductenList() {
 
     try {
       let response;
-      if (localStorage.getItem("roles") === "leverancier") {
+      if (sessionStorage.getItem("roles") === "leverancier") {
         response = await post(`producten/leverancier/zoekterm`, { arg: body });
       } else {
         response = await post(`producten/zoekterm`, { arg: body });
@@ -124,7 +124,7 @@ function ProductenList() {
       let body = {
         begin: newBegin + 1,
       };
-      if (localStorage.getItem("roles") === "leverancier") {
+      if (sessionStorage.getItem("roles") === "leverancier") {
         response = await post(`producten/leverancier`, { arg: body });
       } else {
         response = await post(`producten/begin`, { arg: body });
@@ -162,7 +162,7 @@ function ProductenList() {
         begin: newBegin + 1,
 
       };
-      if (localStorage.getItem("roles") === "leverancier") {
+      if (sessionStorage.getItem("roles") === "leverancier") {
         response = await post(`producten/leverancier`, { arg: body });
       } else {
         response = await post(`producten/begin`, { arg: body });
@@ -190,7 +190,7 @@ function ProductenList() {
           begin: beginPagina + 1,
           aantal: itemsPerPage,
         };
-        if (localStorage.getItem("roles") === "leverancier") {
+        if (sessionStorage.getItem("roles") === "leverancier") {
           response = await post(`producten/leverancier`, { arg: body });
         } else {
           response = await post(`producten/begin`, { arg: body });
@@ -251,7 +251,7 @@ function ProductenList() {
     >
       {" "}
       <Text fontSize="xl" fontWeight="bold" paddingTop="15" color={textColor}>
-        {localStorage.getItem("roles") === "leverancier"
+        {sessionStorage.getItem("roles") === "leverancier"
           ? "Mijn Producten"
           : "Producten"}
       </Text>
@@ -348,7 +348,7 @@ function ProductenList() {
           onClick={incrementBegin}
           float="right"
           isDisabled={
-            localStorage.getItem("roles") === "leverancier"
+            sessionStorage.getItem("roles") === "leverancier"
               ? 10 != totalOrders
               : 20 != totalOrders
           }

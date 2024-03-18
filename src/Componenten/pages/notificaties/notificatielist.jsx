@@ -37,7 +37,7 @@ function NotificatieList() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setAuthToken(localStorage.getItem("jwtToken"));
+    setAuthToken(sessionStorage.getItem("jwtToken"));
     fetchData();
   }, [begin, totalOrders, itemsPerPage]);
 
@@ -59,7 +59,7 @@ function NotificatieList() {
 
       setAantalOngeopend((prevAantal) => prevAantal - 1);
 
-      localStorage.setItem("idNotificatie", notificatie.idNotificatie);
+      sessionStorage.setItem("idNotificatie", notificatie.idNotificatie);
       navigate(`/notificaties/`);
     } catch (error) {
       console.error("Error updating notificatie:", error);
@@ -76,7 +76,7 @@ function NotificatieList() {
     };
     setBody(body);
 
-      if (localStorage.getItem("roles") == "leverancier") {
+      if (sessionStorage.getItem("roles") == "leverancier") {
         console.log("body: ", body)
         const response = await post(
           `notificatie/leverancier/`, {arg: body}
@@ -85,7 +85,7 @@ function NotificatieList() {
         setTotalOrders(response.length);
 
       }
-      if (localStorage.getItem("roles") == "klant") {
+      if (sessionStorage.getItem("roles") == "klant") {
         const response = await post(`notificatie/klant/`, {arg: body});
         setItems(response);
         setTotalOrders(response.length);
@@ -107,7 +107,7 @@ function NotificatieList() {
     };
   
     let response;
-    if (localStorage.getItem("roles") === "leverancier") {
+    if (sessionStorage.getItem("roles") === "leverancier") {
       response = await post(`notificatie/leverancier`, { arg: body });
     } else {
       response = await post(`notificatie/klant`, { arg: body });
@@ -125,7 +125,7 @@ function NotificatieList() {
     setBegin(prevBegin => prevBegin - itemsPerPage);
   };
 
-  if (localStorage.getItem("roles") == "leverancier") {
+  if (sessionStorage.getItem("roles") == "leverancier") {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>
@@ -170,7 +170,7 @@ function NotificatieList() {
       </Box>
     );
   }
-  if (localStorage.getItem("roles") == "klant") {
+  if (sessionStorage.getItem("roles") == "klant") {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>

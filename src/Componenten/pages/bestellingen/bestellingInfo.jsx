@@ -63,7 +63,7 @@ function BestellingInfoPagina() {
 
 
 
-    if (localStorage.getItem('roles') == 'klant') {
+    if (sessionStorage.getItem('roles') == 'klant') {
         return (
             <div ref={componentRef}>
                 <Flex direction="column" >
@@ -142,7 +142,7 @@ function BestellingInfoPagina() {
 
     
 
-    if (localStorage.getItem('roles') == 'leverancier') {
+    if (sessionStorage.getItem('roles') == 'leverancier') {
         return (
             <div ref={componentRef}>
                 <Flex direction="column" >
