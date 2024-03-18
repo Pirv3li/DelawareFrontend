@@ -73,20 +73,20 @@ function NotificatieList() {
       let body = {
         "begin": begin + 1,
         "aantal": itemsPerPage
-    };
-    setBody(body);
+      };
+      setBody(body);
 
       if (sessionStorage.getItem("roles") == "leverancier") {
         console.log("body: ", body)
         const response = await post(
-          `notificatie/leverancier/`, {arg: body}
+          `notificatie/leverancier/`, { arg: body }
         );
         setItems(response);
         setTotalOrders(response.length);
 
       }
       if (sessionStorage.getItem("roles") == "klant") {
-        const response = await post(`notificatie/klant/`, {arg: body});
+        const response = await post(`notificatie/klant/`, { arg: body });
         setItems(response);
         setTotalOrders(response.length);
 
@@ -100,19 +100,19 @@ function NotificatieList() {
   const incrementBegin = async () => {
     let newBegin = begin + itemsPerPage;
     setBegin(newBegin);
-  
+
     let body = {
       begin: newBegin + 1,
       aantal: itemsPerPage,
     };
-  
+
     let response;
     if (sessionStorage.getItem("roles") === "leverancier") {
       response = await post(`notificatie/leverancier`, { arg: body });
     } else {
       response = await post(`notificatie/klant`, { arg: body });
     }
-  
+
     setItems(response);
     setTotalOrders(response.length);
   };
@@ -140,7 +140,6 @@ function NotificatieList() {
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
             <Tr>
-              <Th>idNotificatie</Th>
               <Th>Onderwerp</Th>
               <Th>Datum</Th>
               <Th>Gezien</Th>
@@ -155,7 +154,6 @@ function NotificatieList() {
                 borderColor="gray.200"
                 _hover={{ bg: hoverColor }}
               >
-                <Td>{item.idNotificatie}</Td>
                 <Td>{item.onderwerp}</Td>
                 <Td>{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
                 <Td>{item.geopend ? "✓" : "✗"}</Td>
@@ -164,9 +162,13 @@ function NotificatieList() {
           </Tbody>
         </Table>
         <Box>
-                        {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={![5, 10, 15].includes(totalOrders)} />
-                    </Box>
+          {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+          <Button
+            rightIcon={<ArrowForwardIcon />}
+            onClick={incrementBegin}
+            float="right"
+            isDisabled={totalOrders % itemsPerPage !== 0}
+          />                    </Box>
       </Box>
     );
   }
@@ -211,9 +213,9 @@ function NotificatieList() {
           </Tbody>
         </Table>
         <Box>
-                        {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={![5, 10, 15].includes(totalOrders)} />
-                    </Box>
+          {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+          <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={![5, 10, 15].includes(totalOrders)} />
+        </Box>
       </Box>
     );
   }

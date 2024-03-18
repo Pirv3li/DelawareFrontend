@@ -196,19 +196,13 @@ function BestellingList() {
         </Table>
         <Box>
           <Box>
-            {begin > 0 && (
-              <Button
-                leftIcon={<ArrowBackIcon />}
-                onClick={decrementBegin}
-                float="left"
-              />
-            )}
-            <Button
-              rightIcon={<ArrowForwardIcon />}
-              onClick={incrementBegin}
-              float="right"
-              isDisabled={![5, 10, 15].includes(totalOrders)}
-            />
+          {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+          <Button
+            rightIcon={<ArrowForwardIcon />}
+            onClick={incrementBegin}
+            float="right"
+            isDisabled={totalOrders % itemsPerPage !== 0}
+          />   
           </Box>
         </Box>
       </Box>
