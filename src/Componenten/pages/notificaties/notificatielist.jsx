@@ -141,6 +141,7 @@ function NotificatieList() {
                   bg: hoverColor,
                   transform: "scale(1.02)",
                   boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                  cursor: "pointer",
                 }}
                 transition="all 0.2s"
               >
