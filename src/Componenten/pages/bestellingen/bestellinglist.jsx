@@ -151,7 +151,6 @@ function BestellingList() {
       </Box>
     );
   }
-  console.log(totalOrders);
   if (sessionStorage.getItem("roles") == "klant") {
     return (
       <Box>
@@ -189,7 +188,7 @@ function BestellingList() {
                 <Td>{item.orderStatus}</Td>
                 <Td>
                   {item.betalingStatus === 1 ? "Betaald" : "Niet Betaald"}
-                </Td>{" "}
+                </Td>
               </Tr>
             ))}
           </Tbody>

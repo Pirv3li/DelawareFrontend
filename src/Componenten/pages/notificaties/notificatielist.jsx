@@ -77,7 +77,6 @@ function NotificatieList() {
       setBody(body);
 
       if (sessionStorage.getItem("roles") == "leverancier") {
-        console.log("body: ", body)
         const response = await post(
           `notificatie/leverancier/`, { arg: body }
         );
@@ -91,7 +90,6 @@ function NotificatieList() {
         setTotalOrders(response.length);
 
       }
-      console.log("totalOrders: ", totalOrders)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
