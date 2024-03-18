@@ -8,6 +8,8 @@ import {
   Heading,
   Box,
   Button,
+  Select,
+  FormLabel,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { post, setAuthToken } from "../../../api/index.js";
@@ -22,7 +24,12 @@ function BestellingList() {
   const [begin, setBegin] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
   const [body, setBody] = useState([]);
+  const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
+
+  const handleItemsPerPage = (e) => {
+    setItemsPerPage(Number(e.target.value));
+  }
 
   const handleClick = (id) => {
     sessionStorage.setItem("idOrder", id);
@@ -33,22 +40,23 @@ function BestellingList() {
     setAuthToken(localStorage.getItem("jwtToken"));
 
     fetchData();
-  }, [begin, totalOrders]);
+  }, [begin, totalOrders, itemsPerPage]);
 
   const fetchData = async () => {
     try {
       let body = {
-        begin: begin,
+        begin: begin + 1,
+        aantal: itemsPerPage,
       };
       setBody(body);
 
       if (localStorage.getItem("roles") == "leverancier") {
-        const response = await post(`order/leverancier`, body);
+        const response = await post(`order/leverancier`, {arg: body});
         setItems(response);
         setTotalOrders(response.length);
       }
       if (localStorage.getItem("roles") == "klant") {
-        const response = await post(`order/klant`, body);
+        const response = await post(`order/klant`, {arg: body});
         setItems(response);
         setTotalOrders(response.length);
       }
@@ -57,12 +65,28 @@ function BestellingList() {
     }
   };
 
-  const incrementBegin = () => {
-    setBegin((prevBegin) => prevBegin + 10);
+  const incrementBegin = async () => {
+    let newBegin = begin + itemsPerPage;
+    setBegin(newBegin);
+  
+    let body = {
+      begin: newBegin + 1,
+      aantal: itemsPerPage,
+    };
+  
+    let response;
+    if (localStorage.getItem("roles") === "leverancier") {
+      response = await post(`order/leverancier`, { arg: body });
+    } else {
+      response = await post(`order/klant`, { arg: body });
+    }
+  
+    setItems(response);
+    setTotalOrders(response.length);
   };
 
   const decrementBegin = () => {
-    setBegin((prevBegin) => prevBegin - 10);
+    setBegin((prevBegin) => prevBegin - itemsPerPage);
   };
 
   if (localStorage.getItem("roles") == "leverancier") {
@@ -71,6 +95,12 @@ function BestellingList() {
         <Heading textAlign="center" mt={2}>
           Bestellingen
         </Heading>
+        <FormLabel>Aantal</FormLabel>
+        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+        </Select>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
             <Tr>
@@ -114,7 +144,7 @@ function BestellingList() {
               rightIcon={<ArrowForwardIcon />}
               onClick={incrementBegin}
               float="right"
-              isDisabled={10 != totalOrders}
+              isDisabled={![5, 10, 15].includes(totalOrders)}
             />
           </Box>
         </Box>
@@ -128,6 +158,12 @@ function BestellingList() {
         <Heading textAlign="center" mt={2}>
           Bestellingen
         </Heading>
+        <FormLabel>Aantal</FormLabel>
+        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
+          <option value={5}>5</option>
+          <option value={10}>10</option>
+          <option value={15}>15</option>
+        </Select>
         <Table colorScheme="Gray 500" mt={10} mb={5}>
           <Thead>
             <Tr>
@@ -171,7 +207,7 @@ function BestellingList() {
               rightIcon={<ArrowForwardIcon />}
               onClick={incrementBegin}
               float="right"
-              isDisabled={10 != totalOrders}
+              isDisabled={![5, 10, 15].includes(totalOrders)}
             />
           </Box>
         </Box>

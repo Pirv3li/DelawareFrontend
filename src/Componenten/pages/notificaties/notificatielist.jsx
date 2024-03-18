@@ -23,7 +23,7 @@ function NotificatieList() {
 
   const hoverColor = useColorModeValue("gray.400", "gray.700");
   const [items, setItems] = useState([]);
-  const [begin, setBegin] = useState(1);
+  const [begin, setBegin] = useState(0);
   const [body, setBody] = useState([])
 
   const [totalOrders, setTotalOrders] = useState(0);
@@ -71,7 +71,7 @@ function NotificatieList() {
   const fetchData = async () => {
     try {
       let body = {
-        "begin": begin,
+        "begin": begin + 1,
         "aantal": itemsPerPage
     };
     setBody(body);
@@ -82,23 +82,44 @@ function NotificatieList() {
           `notificatie/leverancier/`, {arg: body}
         );
         setItems(response);
-        setTotalOrders(response.total);
+        setTotalOrders(response.length);
 
       }
       if (localStorage.getItem("roles") == "klant") {
         const response = await post(`notificatie/klant/`, {arg: body});
         setItems(response);
-        setTotalOrders(response.total);
+        setTotalOrders(response.length);
 
       }
+      console.log("totalOrders: ", totalOrders)
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
-  const incrementBegin = () => {
-    setBegin(prevBegin => prevBegin + itemsPerPage);
+  const incrementBegin = async () => {
+    let newBegin = begin + itemsPerPage;
+    setBegin(newBegin);
+  
+    let body = {
+      begin: newBegin + 1,
+      aantal: itemsPerPage,
+    };
+  
+    let response;
+    if (localStorage.getItem("roles") === "leverancier") {
+      response = await post(`notificatie/leverancier`, { arg: body });
+    } else {
+      response = await post(`notificatie/klant`, { arg: body });
+    }
+  
+    setItems(response);
+    setTotalOrders(response.length);
   };
+
+  // const incrementBegin = () => {
+  //   setBegin(prevBegin => prevBegin + itemsPerPage);
+  // };
 
   const decrementBegin = () => {
     setBegin(prevBegin => prevBegin - itemsPerPage);
@@ -144,7 +165,7 @@ function NotificatieList() {
         </Table>
         <Box>
                         {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={10 != totalOrders} />
+                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={![5, 10, 15].includes(totalOrders)} />
                     </Box>
       </Box>
     );
@@ -191,7 +212,7 @@ function NotificatieList() {
         </Table>
         <Box>
                         {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={10 != totalOrders} />
+                        <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={![5, 10, 15].includes(totalOrders)} />
                     </Box>
       </Box>
     );
