@@ -103,18 +103,30 @@ const Navbar = () => {
             >
               Notificatie
               {aantalOngeopend > 0 && (
+                <div>
+                  <img src="notif-white.png" alt="notificatie" 
+                  style={
+                    {
+                      maxWidth: "25px",
+                      position: "absolute",
+                      top: "3px",
+                      right: "125px",
+                    }
+                  }/>
                 <p
                   className="notificatie-getal"
                   style={{
-                    fontSize: "20px",
+                    fontSize: "17px",
                     color: "red",
                     position: "absolute",
                     top: "-10px",
-                    right: "-10px",
+                    right: "115px",
+                    fontWeight: "bolder"
                   }}
                 >
                   {aantalOngeopend}
                 </p>
+                </div>
               )}
             </ChakraLink>
             <ChakraLink
