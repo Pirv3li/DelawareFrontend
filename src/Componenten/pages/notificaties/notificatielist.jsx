@@ -10,6 +10,7 @@ import {
   Box,
   Select,
   FormLabel,
+  Input,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
 import { getById, update, setAuthToken, post } from "../../../api/index.js";
@@ -20,21 +21,16 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 function NotificatieList() {
   const { setAantalOngeopend } = useContext(NotificatieContext);
-
   const hoverColor = useColorModeValue("gray.400", "gray.700");
   const [items, setItems] = useState([]);
   const [begin, setBegin] = useState(0);
-  const [body, setBody] = useState([])
-
+  const [body, setBody] = useState([]);
   const [totalOrders, setTotalOrders] = useState(0);
-
   const [itemsPerPage, setItemsPerPage] = useState(10);
-
+  const navigate = useNavigate();
   const handleItemsPerPage = (e) => {
     setItemsPerPage(Number(e.target.value));
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     setAuthToken(sessionStorage.getItem("jwtToken"));
@@ -71,24 +67,20 @@ function NotificatieList() {
   const fetchData = async () => {
     try {
       let body = {
-        "begin": begin + 1,
-        "aantal": itemsPerPage
+        begin: begin + 1,
+        aantal: itemsPerPage,
       };
       setBody(body);
 
       if (sessionStorage.getItem("roles") == "leverancier") {
-        const response = await post(
-          `notificatie/leverancier/`, { arg: body }
-        );
+        const response = await post(`notificatie/leverancier/`, { arg: body });
         setItems(response);
         setTotalOrders(response.length);
-
       }
       if (sessionStorage.getItem("roles") == "klant") {
         const response = await post(`notificatie/klant/`, { arg: body });
         setItems(response);
         setTotalOrders(response.length);
-
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -115,27 +107,20 @@ function NotificatieList() {
     setTotalOrders(response.length);
   };
 
-  // const incrementBegin = () => {
-  //   setBegin(prevBegin => prevBegin + itemsPerPage);
-  // };
-
   const decrementBegin = () => {
-    setBegin(prevBegin => prevBegin - itemsPerPage);
+    setBegin((prevBegin) => prevBegin - itemsPerPage);
   };
 
-  if (sessionStorage.getItem("roles") == "leverancier") {
+  if (
+    sessionStorage.getItem("roles") == "leverancier" ||
+    sessionStorage.getItem("roles") == "klant"
+  ) {
     return (
       <Box>
         <Heading textAlign="center" mt={2}>
           Notificaties
         </Heading>
-        <FormLabel>Aantal</FormLabel>
-        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-        </Select>
-        <Table colorScheme="Gray 500" mt={10} mb={5}>
+        <Table colorScheme="Gray 500" mt={10} mb={5} variant={"unstyled"}>
           <Thead>
             <Tr>
               <Th>Onderwerp</Th>
@@ -148,9 +133,16 @@ function NotificatieList() {
               <Tr
                 key={item.idNotificatie}
                 onClick={() => handleClick(item)}
-                borderBottom="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: hoverColor }}
+                border="1px solid"
+                borderColor="white"
+                borderRadius="5px"
+                backgroundColor="white"
+                _hover={{
+                  bg: hoverColor,
+                  transform: "scale(1.02)",
+                  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                }}
+                transition="all 0.2s"
               >
                 <Td>{item.onderwerp}</Td>
                 <Td>{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
@@ -159,60 +151,21 @@ function NotificatieList() {
             ))}
           </Tbody>
         </Table>
-        <Box>
-          {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+        <Box display="flex" justifyContent="center" alignItems="center">
+          {begin > 0 && (
+            <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} />
+          )}
+          <Input
+            style={{ width: "5%" }}
+            value={itemsPerPage}
+            onChange={handleItemsPerPage}
+          />
           <Button
             rightIcon={<ArrowForwardIcon />}
             onClick={incrementBegin}
-            float="right"
             isDisabled={totalOrders % itemsPerPage !== 0}
-          />                    </Box>
-      </Box>
-    );
-  }
-  if (sessionStorage.getItem("roles") == "klant") {
-    return (
-      <Box>
-        <Heading textAlign="center" mt={2}>
-          Notificaties
-        </Heading>
-        <FormLabel>Aantal</FormLabel>
-        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-        </Select>
-        <Table colorScheme="Gray 500" mt={10} mb={5}>
-          <Thead>
-            <Tr>
-              <Th>idNotificatie</Th>
-              <Th>Onderwerp</Th>
-              <Th>Datum</Th>
-              <Th>Afgehandeld</Th>
-              <Th>Gezien</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {items.map((item) => (
-              <Tr
-                key={item.idNotificatie}
-                onClick={() => handleClick(item)}
-                borderBottom="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: hoverColor }}
-              >
-                <Td>{item.idNotificatie}</Td>
-                <Td>{item.onderwerp}</Td>
-                <Td>{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
-                <Td>{item.afgehandeld === 0 ? "nee" : "ja"}</Td>
-                <Td>{item.geopend ? "✓" : "✗"}</Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-        <Box>
-          {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
-          <Button rightIcon={<ArrowForwardIcon />} onClick={incrementBegin} float="right" isDisabled={![5, 10, 15].includes(totalOrders)} />
+            ml={2}
+          />
         </Box>
       </Box>
     );
