@@ -3,26 +3,24 @@ import { useLocation } from "react-router-dom";
 import BestellingList from "./Componenten/pages/bestellingen/bestellinglist";
 import BestellingInfoPagina from "./Componenten/pages/bestellingen/bestellingInfo";
 import Producten from "./Componenten/pages/home/producten";
-import { KlantProfiel } from "./Componenten/KlantProfiel";
-import { LeverancierProfiel } from "./Componenten/LeverancierProfiel";
+import { ProfielInfo } from "./Componenten/Profiel.jsx";
 import ProductInfo from "./Componenten/pages/home/productInfo";
 import NotificatieList from "./Componenten/pages/notificaties/notificatielist";
 import NotificatieInfoPagina from "./Componenten/pages/notificaties/notificatieInfo";
-import PrintPdf from './Componenten/printpdf.jsx';
+import PrintPdf from "./Componenten/printpdf.jsx";
 
 export const Home = () => {
-  if(sessionStorage.getItem("roles") === "leverancier"){
+  if (sessionStorage.getItem("roles") === "leverancier") {
     return (
       <div>
-      <BestellingList />
-    </div>
+        <BestellingList />
+      </div>
     );
   } else {
     return (
-      
-       <div>
-       <Producten />
-     </div>
+      <div>
+        <Producten />
+      </div>
     );
   }
 };
@@ -44,7 +42,6 @@ export const BestellingInfo = () => {
   return (
     <div>
       <BestellingInfoPagina />
-
     </div>
   );
 };
@@ -73,11 +70,12 @@ export const NotificatieInfoMeer = () => {
   );
 };
 
-
 export const Profiel = () => {
-  const isKlant = sessionStorage.getItem("idKlant") !== null;
-
-  return <div>{isKlant ? <KlantProfiel /> : <LeverancierProfiel />}</div>;
+  return (
+    <div>
+      <ProfielInfo />
+    </div>
+  );
 };
 
 export const Login = () => {
