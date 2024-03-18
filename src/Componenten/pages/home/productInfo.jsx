@@ -71,9 +71,11 @@ function ProductInfo({ }) {
                                 </Tr>
                             </Tbody>
                         </Table>
-                        <Button width={"100%"} bg={"cyan"}>
-                            Kopen
-                        </Button>
+                        {sessionStorage.roles !== 'leverancier' && (
+                            <Button width={"100%"} bg={"cyan"}>
+                                Kopen
+                            </Button>
+                        )}
                     </Box>
                 </Flex>
             )}

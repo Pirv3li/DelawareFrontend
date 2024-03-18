@@ -97,7 +97,7 @@ function ProductenList() {
   };
 
   const incrementBegin = async () => {
-    
+
     let newBegin = beginPagina + itemsPerPage;
 
     setBegin(newBegin);
@@ -200,7 +200,7 @@ function ProductenList() {
         const body = {
           begin: 1,
           categories: updatedCategories,
-          aantal:itemsPerPage
+          aantal: itemsPerPage
         };
         response = await post(`producten/zoekcategorie`, { arg: body });
       }
@@ -323,7 +323,9 @@ function ProductenList() {
                     }}
                     mt={5}
                   >
-                    Bestellen
+                    {sessionStorage.getItem("roles") === "leverancier"
+                      ? "Beheren"
+                      : "Bestellen"}
                   </Button>
 
                 </CustomBox>
