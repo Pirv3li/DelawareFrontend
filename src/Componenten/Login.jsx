@@ -29,14 +29,19 @@ const handleLogin = useCallback(
   async ({ gebruikersnaam, password }) => {
     try {
       const response = await login(gebruikersnaam, password);
+      console.log(response);
       if (response) {
         navigate({
           pathname: '/',
           replace: true,
         });
       }
+      else{
+        setShowAlert(true);
+
+      }
     } catch (error) {
-     
+    
       setShowAlert(true);
     }
   },
