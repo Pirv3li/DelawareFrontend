@@ -2,11 +2,10 @@ import { Box, useTheme } from "@chakra-ui/react";
 import React from "react";
 import { Flex, Link as ChakraLink, Text, Image } from "@chakra-ui/react";
 
-import { useNavbarStyles } from "./UseThemaNavbar";
+import { useFooterStyles } from "./UseThemaFooter";
 
 const Footer = () => {
-  const { bgColor, color, hoverColor } = useNavbarStyles();
-  const theme = useTheme();
+  const { bgColor, color, hoverColor } = useFooterStyles();
 
   return (
     <Box>
@@ -17,7 +16,7 @@ const Footer = () => {
         justifyContent="space-between"
         alignItems="center"
         pt={5}
-        pb={theme.space[4]}
+        pb={4}
       >
         <Box
           role="contentinfo"

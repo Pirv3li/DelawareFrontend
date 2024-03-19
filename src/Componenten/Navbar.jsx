@@ -6,17 +6,15 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./UseThemaNavbar.jsx";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUser, faShop,faBox } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { isAuthed, logOut } = useAuth();
-  const { colorMode, toggleColorMode } = useColorMode();
   const { bgColor, color, hoverColor } = useNavbarStyles();
   const { aantalOngeopend, setAantalOngeopend } =
     useContext(NotificatieContext);
@@ -94,9 +92,9 @@ const Navbar = () => {
             <ChakraLink
               as={RouterLink}
               to="/notificaties"
-              mr={5}
+              mr={10}
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"}
+              fontSize={"3xl"}
               display="flex"
               alignItems="center"
             >
@@ -122,25 +120,27 @@ const Navbar = () => {
               to="/bestellingen"
               mr={5}
               _hover={{ color: hoverColor }}
-              fontSize="2xl"
+              fontSize={"3xl"}
             >
-              Bestellingen
+              <FontAwesomeIcon icon={faShop} />
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
               to="/producten"
-              mr={5}
+              mr={10}
               _hover={{ color: hoverColor }}
-              fontSize="2xl"
+              fontSize={"3xl"}
+              ml={8}
             >
-              Producten
+              <FontAwesomeIcon icon={faBox} />
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
               to="/profiel"
               mr={5}
               _hover={{ color: hoverColor }}
-              fontSize="2xl"
+              fontSize={"3xl"}
+              ml={8}
             >
               <FontAwesomeIcon icon={faUser} />
             </ChakraLink>
@@ -151,6 +151,9 @@ const Navbar = () => {
               _hover={{ color: hoverColor }}
               fontSize={"2xl"}
               whiteSpace="nowrap"
+              alignSelf={""}
+              ml="auto"
+              navigate
             >
               Log uit
             </ChakraLink>
@@ -159,19 +162,14 @@ const Navbar = () => {
           <ChakraLink
             as={RouterLink}
             to="/login"
-            ml={150}
+            ml="auto"
             _hover={{ color: hoverColor }}
             fontSize="2xl"
+            
           >
             Login
           </ChakraLink>
         )}
-        <IconButton
-          aria-label="Toggle color mode"
-          icon={colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-          onClick={toggleColorMode}
-          ml="auto"
-        />
       </Flex>
     </Flex>
   );
