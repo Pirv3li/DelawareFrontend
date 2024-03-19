@@ -12,7 +12,6 @@ export default function PrintPdf() {
   return (
     <div>
       <div ref={componentRef}>
-        {/* The content to be printed goes here */}
       </div>
       <button onClick={handlePrint}>Print this out!</button>
     </div>
