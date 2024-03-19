@@ -79,11 +79,13 @@ function NotificatieList() {
 
       if (sessionStorage.getItem("roles") == "leverancier") {
         const response = await post(`notificatie/leverancier/`, { arg: body });
+        console.log(response);
         setItems(response);
         setTotalOrders(response.length);
       }
       if (sessionStorage.getItem("roles") == "klant") {
         const response = await post(`notificatie/klant/`, { arg: body });
+        console.log(response);
         setItems(response);
         setTotalOrders(response.length);
       }
@@ -132,9 +134,7 @@ function NotificatieList() {
           Notificaties
         </Heading>
         <Box display="flex" alignItems="center" mt={5}>
-
           <Input
-            
             style={{ width: "60px" }}
             value={itemsPerPage}
             onChange={handleItemsPerPage}
@@ -142,16 +142,14 @@ function NotificatieList() {
             textAlign={"center"}
             margin={"auto"}
           />
-
         </Box>
-
 
         <Table colorScheme="Gray 500" mt={10} mb={5} variant={"unstyled"}>
           <Thead>
             <Tr>
-              <Th>Onderwerp</Th>
-              <Th>Datum</Th>
-              <Th>Gezien</Th>
+              <Th textAlign="center" width={25}>Datum</Th>
+              <Th textAlign="center" width={50}>Onderwerp</Th>
+              <Th>Tekst</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -163,6 +161,7 @@ function NotificatieList() {
                 borderColor="white"
                 borderRadius="5px"
                 backgroundColor="white"
+                fontWeight={item.geopend ? "normal" : "bold"}
                 _hover={{
                   bg: hoverColor,
                   transform: "scale(1.02)",
@@ -171,9 +170,11 @@ function NotificatieList() {
                 }}
                 transition="all 0.2s"
               >
-                <Td>{item.onderwerp}</Td>
-                <Td>{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
-                <Td>{item.geopend ? "✓" : "✗"}</Td>
+                <Td textAlign="center">
+                  {new Date(item.datum).toLocaleDateString("en-GB")}
+                </Td>
+                <Td textAlign="center">{item.onderwerp}</Td>
+                <Td className="fade-out">{item.text}</Td>
               </Tr>
             ))}
           </Tbody>
@@ -187,19 +188,17 @@ function NotificatieList() {
               onClick={decrementBegin}
             />
           )}
-
           <Box flex="1" />
-
           <Button
             rightIcon={<ArrowForwardIcon />}
             onClick={incrementBegin}
-            style={{ visibility: totalOrders % itemsPerPage !== 0 ? "hidden" : "visible" }}
+            style={{
+              visibility:
+                totalOrders % itemsPerPage !== 0 ? "hidden" : "visible",
+            }}
             alignSelf="flex-end"
           />
         </Box>
-
-
-
       </Box>
     );
   }

@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from 'react-to-print';
 import styled from '@emotion/styled';
 
-import './BestellingInfoPagina.css';
 
 function BestellingInfoPagina() {
     const [order, setOrder] = useState(null);

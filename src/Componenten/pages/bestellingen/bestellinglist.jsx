@@ -5,11 +5,14 @@ import {
   Tr,
   Th,
   Td,
+  Button,
   Heading,
   Box,
-  Button,
   Select,
   FormLabel,
+  Input,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { post, setAuthToken } from "../../../api/index.js";
@@ -29,7 +32,7 @@ function BestellingList() {
 
   const handleItemsPerPage = (e) => {
     setItemsPerPage(Number(e.target.value));
-  }
+  };
 
   const handleClick = (id) => {
     sessionStorage.setItem("idOrder", id);
@@ -51,12 +54,12 @@ function BestellingList() {
       setBody(body);
 
       if (sessionStorage.getItem("roles") == "leverancier") {
-        const response = await post(`order/leverancier`, {arg: body});
+        const response = await post(`order/leverancier`, { arg: body });
         setItems(response);
         setTotalOrders(response.length);
       }
       if (sessionStorage.getItem("roles") == "klant") {
-        const response = await post(`order/klant`, {arg: body});
+        const response = await post(`order/klant`, { arg: body });
         setItems(response);
         setTotalOrders(response.length);
       }
@@ -68,19 +71,19 @@ function BestellingList() {
   const incrementBegin = async () => {
     let newBegin = begin + itemsPerPage;
     setBegin(newBegin);
-  
+
     let body = {
       begin: newBegin + 1,
       aantal: itemsPerPage,
     };
-  
+
     let response;
     if (sessionStorage.getItem("roles") === "leverancier") {
       response = await post(`order/leverancier`, { arg: body });
     } else {
       response = await post(`order/klant`, { arg: body });
     }
-  
+
     setItems(response);
     setTotalOrders(response.length);
   };
@@ -89,120 +92,88 @@ function BestellingList() {
     setBegin((prevBegin) => prevBegin - itemsPerPage);
   };
 
-  if (sessionStorage.getItem("roles") == "leverancier") {
+  if (
+    sessionStorage.getItem("roles") == "leverancier" ||
+    sessionStorage.getItem("roles") == "klant"
+  ) {
     return (
-      <Box mb={5}>
+      <Box
+        alignContent={"center"}
+        justifyContent={"center"}
+        alignSelf={"center"}
+        display={"flex"}
+        flexDirection={"column"}
+      >
         <Heading textAlign="center" mt={2}>
           Bestellingen
         </Heading>
-        <FormLabel>Aantal</FormLabel>
-        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-        </Select>
-        <Table colorScheme="Gray 500" mt={10} mb={5}>
-          <Thead>
-            <Tr>
-              <Th>OrderID</Th>
-              <Th>Datum</Th>
-              <Th>Bedrag</Th>
-              <Th>Order Status</Th>
-              <Th>Betaling Status</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {items.map((item) => (
-              <Tr
-                key={item.idOrder}
-                onClick={() => handleClick(item.idOrder)}
-                borderBottom="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: hoverColor }}
-              >
-                <Td>{item.idOrder}</Td>
-                <Td>{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
-                <Td>€ {item.totaalPrijs}</Td>
-                <Td>{item.orderStatus}</Td>
-                <Td>
-                  {item.betalingStatus === 1 ? "Betaald" : "Niet Betaald"}
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
-        <Box>
-          <Box>
-            {begin > 0 && (
-              <Button
-                leftIcon={<ArrowBackIcon />}
-                onClick={decrementBegin}
-                float="left"
-              />
-            )}
-            <Button
-              rightIcon={<ArrowForwardIcon />}
-              onClick={incrementBegin}
-              float="right"
-              isDisabled={![5, 10, 15].includes(totalOrders)}
-            />
-          </Box>
+        <Box display="flex" alignItems="center" mt={5}>
+          <Input
+            style={{ width: "60px" }}
+            value={itemsPerPage}
+            onChange={handleItemsPerPage}
+            onClick={(e) => e.target.select()}
+            textAlign={"center"}
+            margin={"auto"}
+          />
         </Box>
-      </Box>
-    );
-  }
-  if (sessionStorage.getItem("roles") == "klant") {
-    return (
-      <Box>
-        <Heading textAlign="center" mt={2}>
-          Bestellingen
-        </Heading>
-        <FormLabel>Aantal</FormLabel>
-        <Select value={itemsPerPage} onChange={handleItemsPerPage}>
-          <option value={5}>5</option>
-          <option value={10}>10</option>
-          <option value={15}>15</option>
-        </Select>
-        <Table colorScheme="Gray 500" mt={10} mb={5}>
+
+        <Table colorScheme="Gray 500" mt={10} mb={5} variant={"unstyled"}>
           <Thead>
             <Tr>
-              <Th>OrderID</Th>
-              <Th>Datum</Th>
-              <Th>Bedrag</Th>
-              <Th>Order Status</Th>
-              <Th>Betaling Status</Th>
+              <Th textAlign="center">OrderID</Th>
+              <Th textAlign="center">Datum</Th>
+              <Th textAlign="center">Bedrag</Th>
+              <Th textAlign="center">Order Status</Th>
+              <Th textAlign="center">Betaling Status</Th>
             </Tr>
           </Thead>
           <Tbody>
             {items.map((item) => (
               <Tr
-                key={item.idOrder}
-                onClick={() => handleClick(item.idOrder)}
-                borderBottom="1px solid"
-                borderColor="gray.200"
-                _hover={{ bg: hoverColor }}
+              key={item.idOrder}
+              onClick={() => handleClick(item.idOrder)}
+              border="1px solid"
+              borderColor="white"
+              borderRadius="5px"
+              backgroundColor="white"
+              _hover={{
+                bg: hoverColor,
+                transform: "scale(1.02)",
+                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                cursor: "pointer",
+              }}
+              transition="all 0.2s"
               >
-                <Td>{item.idOrder}</Td>
-                <Td>{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
-                <Td>€ {item.totaalPrijs}</Td>
-                <Td>{item.orderStatus}</Td>
-                <Td>
+                <Td textAlign="center">{item.idOrder}</Td>
+                <Td textAlign="center">{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
+                <Td textAlign="center">€ {item.totaalPrijs}</Td>
+                <Td textAlign="center">{item.orderStatus}</Td>
+                <Td textAlign="center">
                   {item.betalingStatus === 1 ? "Betaald" : "Niet Betaald"}
                 </Td>
               </Tr>
             ))}
           </Tbody>
         </Table>
-        <Box>
-          <Box>
-          {begin > 0 && <Button leftIcon={<ArrowBackIcon />} onClick={decrementBegin} float="left" />}
+        <Box display="flex" alignItems="center" justifyContent="space-between">
+          {begin > 0 && (
+            <Button
+              alignSelf="flex-start"
+              leftIcon={<ArrowBackIcon />}
+              onClick={decrementBegin}
+            />
+          )}
+          <Box flex="1" />
           <Button
             rightIcon={<ArrowForwardIcon />}
             onClick={incrementBegin}
-            float="right"
-            isDisabled={totalOrders % itemsPerPage !== 0}
-          />   
-          </Box>
+            style={{
+              visibility:
+                totalOrders % itemsPerPage !== 0 ? "hidden" : "visible",
+            }}
+            alignSelf="flex-end"
+          />
         </Box>
       </Box>
     );

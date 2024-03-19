@@ -18,6 +18,7 @@ import Layout from "./Componenten/Layout.jsx";
 import { AuthProvider } from "./Componenten/contexts/Auth.contexts.jsx";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { NotificatieProvider } from "./Componenten/contexts/Notificatie.contexts.jsx";
+import './main.css';
 
 const router = createBrowserRouter([
   {

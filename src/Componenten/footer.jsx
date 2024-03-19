@@ -21,7 +21,7 @@ const Footer = () => {
   const theme = useTheme();
 
   return (
-    <Box pb={150}>
+    <Box>
       <Flex
         as="footer"
         bgColor={bgColor}
@@ -29,8 +29,6 @@ const Footer = () => {
         width="100vw"
         justifyContent="space-between"
         alignItems="center"
-        position="fixed"
-        bottom="0"
         mt={5}
         pb={theme.space[4]}
       >
