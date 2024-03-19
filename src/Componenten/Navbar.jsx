@@ -3,21 +3,16 @@ import {
   Flex,
   Link as ChakraLink,
   IconButton,
-  Text,
   useColorMode,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { SunIcon, MoonIcon, BellIcon } from "@chakra-ui/icons";
+import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./useThemaNavbar";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEnvelope,
-  faSheetPlastic,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { isAuthed, logOut } = useAuth();

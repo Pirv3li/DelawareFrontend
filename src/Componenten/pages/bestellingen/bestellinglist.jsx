@@ -8,11 +8,7 @@ import {
   Button,
   Heading,
   Box,
-  Select,
-  FormLabel,
   Input,
-  Text,
-  VStack,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { post, setAuthToken } from "../../../api/index.js";
@@ -36,7 +32,7 @@ function BestellingList() {
 
   const handleClick = (id) => {
     sessionStorage.setItem("idOrder", id);
-    navigate(`/bestellingInfo`);
+    navigate(`/BestellingInfo`);
   };
 
   useEffect(() => {

@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { getById, update } from "../../../api/index.js";
-import { Box, Text, Button } from "@chakra-ui/react";
-import axios from "axios";
+import { Box, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 function NotificatieInfoPagina() {
   const [notificatie, SetNotificatie] = useState(null);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +17,6 @@ function NotificatieInfoPagina() {
 
   const fetchData = async () => {
     try {
-      
       const idNotificatie = sessionStorage.getItem("idNotificatie");
       const notificatie = await getById(`notificatie/${idNotificatie}`);
       SetNotificatie(notificatie);

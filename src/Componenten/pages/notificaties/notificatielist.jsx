@@ -8,17 +8,13 @@ import {
   Button,
   Heading,
   Box,
-  Select,
-  FormLabel,
   Input,
-  Text,
-  VStack,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
-import { getById, update, setAuthToken, post } from "../../../api/index.js";
+import { update, setAuthToken, post } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
-import { NotificatieContext } from "../../contexts/Notificatie.contexts";
+import { NotificatieContext } from "../../contexts/Notificatie.contexts.jsx";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 function NotificatieList() {
@@ -130,7 +126,6 @@ function NotificatieList() {
         display={"flex"}
         flexDirection={"column"}
         padding={" 15px 150px"}
-
       >
         <Heading textAlign="center" mt={2}>
           Notificaties
@@ -149,8 +144,12 @@ function NotificatieList() {
         <Table colorScheme="Gray 500" mt={10} mb={5} variant={"unstyled"}>
           <Thead>
             <Tr>
-              <Th textAlign="center" width={25}>Datum</Th>
-              <Th textAlign="center" width={50}>Onderwerp</Th>
+              <Th textAlign="center" width={25}>
+                Datum
+              </Th>
+              <Th textAlign="center" width={50}>
+                Onderwerp
+              </Th>
               <Th>Tekst</Th>
             </Tr>
           </Thead>

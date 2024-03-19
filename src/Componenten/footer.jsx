@@ -1,22 +1,10 @@
 import { Box, useTheme } from "@chakra-ui/react";
-import { useFooterStyles } from "./useThemaFooter";
-import { useColorMode } from "@chakra-ui/react";
-
 import React from "react";
-import {
-  Flex,
-  Link as ChakraLink,
-  IconButton,
-  Text,
-  Image,
-} from "@chakra-ui/react";
-import { Link as RouterLink } from "react-router-dom";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { Flex, Link as ChakraLink, Text, Image } from "@chakra-ui/react";
 
 import { useNavbarStyles } from "./useThemaNavbar";
 
 const Footer = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { bgColor, color, hoverColor } = useNavbarStyles();
   const theme = useTheme();
 

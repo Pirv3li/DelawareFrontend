@@ -1,5 +1,5 @@
-import { Box, useColorModeValue } from '@chakra-ui/react';
-import React from 'react';
+import { Box } from "@chakra-ui/react";
+import React from "react";
 
 const CustomBox = ({ children, selected, bgColor, onClick }) => (
   <Box

@@ -1,4 +1,4 @@
-import axiosRoot from 'axios';
+import axiosRoot from "axios";
 
 const baseUrl = import.meta.env.VITE_API_URL;
 
@@ -8,9 +8,9 @@ export const axios = axiosRoot.create({
 
 export const setAuthToken = (token) => {
   if (token) {
-    axios.defaults.headers['Authorization'] = `Bearer ${token}`;
+    axios.defaults.headers["Authorization"] = `Bearer ${token}`;
   } else {
-    delete axios.defaults.headers['Authorization'];
+    delete axios.defaults.headers["Authorization"];
   }
 };
 
@@ -33,7 +33,7 @@ export const create = async (url, { arg: body }) => {
 
   // If the response includes a token, store it
   if (response.data && response.data.token) {
-    localStorage.setItem('token', response.data.token);
+    localStorage.setItem("token", response.data.token);
   }
 
   return response.data;
@@ -44,7 +44,7 @@ export const update = async (url, body) => {
   return response.data;
 };
 
-// ...
+
 
 export const getById = async (url) => {
   const { data } = await axios.get(`${baseUrl}/${url}`);
@@ -52,6 +52,6 @@ export const getById = async (url) => {
 };
 
 export const post = async (url, { arg: body }) => {
-  const { data } = await axios.post(`${baseUrl}/${url}`, body); 
+  const { data } = await axios.post(`${baseUrl}/${url}`, body);
   return data;
 };

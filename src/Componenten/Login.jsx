@@ -1,14 +1,10 @@
-import { useCallback, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Box,
   Button,
-  Flex,
   Heading,
   Alert,
   AlertIcon,
-  VStack,
   Center,
   FormControl,
   FormLabel,
@@ -16,13 +12,10 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { useAuth } from "./contexts/Auth.contexts";
-import Error from "../Componenten/Error";
-import { Kbd } from "@chakra-ui/react";
 
 export default function Login() {
-  const { error, loading, login } = useAuth();
+  const { loading, login } = useAuth();
   const navigate = useNavigate();
-  // const [showAlert, setShowAlert] = useState(false);
   const [errorTekst, setErrorTekst] = useState();
   const [gebruikersnaam, setGebruikersnaam] = useState("");
   const [password, setPassword] = useState("");

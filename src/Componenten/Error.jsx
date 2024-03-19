@@ -1,4 +1,4 @@
-import { isAxiosError } from 'axios';
+import { isAxiosError } from "axios";
 
 export default function Error({ error }) {
   if (isAxiosError(error)) {

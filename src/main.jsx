@@ -11,14 +11,14 @@ import {
   ProductInfoMeer,
   Notificaties,
   NotificatieInfoMeer,
-  ProductenList
+  ProductenList,
 } from "./pages.jsx";
 import PrivateRoute from "./Componenten/PrivateRoute.jsx";
 import Layout from "./Componenten/Layout.jsx";
 import { AuthProvider } from "./Componenten/contexts/Auth.contexts.jsx";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { NotificatieProvider } from "./Componenten/contexts/Notificatie.contexts.jsx";
-import './main.css';
+import "./main.css";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +40,7 @@ const router = createBrowserRouter([
         ],
       },
       {
-        path: "bestellingInfo",
+        path: "BestellingInfo",
         element: <PrivateRoute />,
         children: [
           {

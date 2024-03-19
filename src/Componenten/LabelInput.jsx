@@ -1,14 +1,15 @@
-import { useFormContext } from 'react-hook-form';
+import { useFormContext } from "react-hook-form";
 
 export default function LabelInput({
-  label, name, type, validationRules, ...rest
+  label,
+  name,
+  type,
+  validationRules,
+  ...rest
 }) {
   const {
     register,
-    formState: {
-      errors,
-      isSubmitting,
-    },
+    formState: { errors, isSubmitting },
   } = useFormContext();
 
   const hasError = name in errors;

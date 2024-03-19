@@ -1,13 +1,13 @@
 import Log from "./Componenten/Login";
 import { useLocation } from "react-router-dom";
-import BestellingList from "./Componenten/pages/bestellingen/bestellinglist";
-import BestellingInfoPagina from "./Componenten/pages/bestellingen/bestellingInfo";
-import Producten from "./Componenten/pages/home/producten";
+import BestellingList from "./Componenten/pages/bestellingen/BestellingList";
+import BestellingInfoPagina from "./Componenten/pages/bestellingen/BestellingInfo";
+import Producten from "./Componenten/pages/home/Producten.jsx";
 import { ProfielInfo } from "./Componenten/Profiel.jsx";
-import ProductInfo from "./Componenten/pages/home/productInfo";
-import NotificatieList from "./Componenten/pages/notificaties/notificatielist";
-import NotificatieInfoPagina from "./Componenten/pages/notificaties/notificatieInfo";
-import PrintPdf from "./Componenten/printpdf.jsx";
+import ProductInfo from "./Componenten/pages/home/ProductInfo";
+import NotificatieList from "./Componenten/pages/notificaties/NotificatieList";
+import NotificatieInfoPagina from "./Componenten/pages/notificaties/NotificatieInfo";
+import PrintPdf from "./Componenten/PrintPdf.jsx";
 
 export const Home = () => {
   if (sessionStorage.getItem("roles") === "leverancier") {

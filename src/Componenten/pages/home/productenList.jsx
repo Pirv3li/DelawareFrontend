@@ -17,9 +17,7 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
 import { getAll, post } from "../../../api/index.js";
 import { useTheme } from "../../useThema.jsx";
-import { Link } from "react-router-dom";
-import MeerInfo from "./productInfo.jsx";
-import CustomBox from "../themas/chakraBox.jsx";
+import CustomBox from "../../ChakraBox.jsx";
 import { useNavigate } from "react-router-dom";
 
 function ProductenList() {
@@ -28,7 +26,6 @@ function ProductenList() {
   const [items, setItems] = useState([]);
   const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [selectedProductId, setSelectedProductId] = useState(null);
   const [showList, setShowList] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [beginPagina, setBegin] = useState(0);
@@ -40,7 +37,6 @@ function ProductenList() {
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
   };
-
 
   useEffect(() => {
     fetchData();
@@ -79,7 +75,6 @@ function ProductenList() {
       begin: 1,
       zoekterm: finalSearchTerm,
       aantal: itemsPerPage,
-
     };
 
     try {
@@ -97,7 +92,6 @@ function ProductenList() {
   };
 
   const incrementBegin = async () => {
-
     let newBegin = beginPagina + itemsPerPage;
 
     setBegin(newBegin);
@@ -109,7 +103,6 @@ function ProductenList() {
         begin: newBegin + 1,
         categories: selectedCategories,
         aantal: itemsPerPage,
-
       };
       response = await post(`producten/zoekcategorie`, { arg: body });
     } else if (actualSearchTerm) {
@@ -117,7 +110,6 @@ function ProductenList() {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
         aantal: itemsPerPage,
-
       };
       response = await post(`producten/zoekterm`, { arg: body });
     } else {
@@ -146,7 +138,6 @@ function ProductenList() {
         begin: newBegin + 1,
         categories: selectedCategories,
         aantal: 20,
-
       };
       response = await post(`producten/zoekcategorie`, { arg: body });
     } else if (actualSearchTerm) {
@@ -154,13 +145,11 @@ function ProductenList() {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
         aantal: 20,
-
       };
       response = await post(`producten/zoekterm`, { arg: body });
     } else {
       let body = {
         begin: newBegin + 1,
-
       };
       if (sessionStorage.getItem("roles") === "leverancier") {
         response = await post(`producten/leverancier`, { arg: body });
@@ -200,7 +189,7 @@ function ProductenList() {
         const body = {
           begin: 1,
           categories: updatedCategories,
-          aantal: itemsPerPage
+          aantal: itemsPerPage,
         };
         response = await post(`producten/zoekcategorie`, { arg: body });
       }
@@ -327,7 +316,6 @@ function ProductenList() {
                       ? "Beheren"
                       : "Bestellen"}
                   </Button>
-
                 </CustomBox>
               </WrapItem>
             ))}
