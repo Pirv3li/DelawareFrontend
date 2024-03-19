@@ -12,6 +12,8 @@ import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./useThemaNavbar";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faEnvelope, faSheetPlastic, faUser } from '@fortawesome/free-solid-svg-icons'
 
 const Navbar = () => {
   const { isAuthed, logOut } = useAuth();
@@ -100,17 +102,17 @@ const Navbar = () => {
               display="flex"
               alignItems="center"
             >
-              <BellIcon
-                boxSize={7}
-              />
+              <FontAwesomeIcon icon={faEnvelope} />
               {aantalOngeopend > 0 && (
                 <p
                   className="notificatie-getal"
                   style={{
                     fontSize: "17px",
                     color: "red",
-                    marginLeft: "5px",
-                    fontWeight: "bolder"
+                    marginLeft: "0px",
+
+                    fontWeight: "bolder",
+                    marginBottom: "20px",
                   }}
                 >
                   {aantalOngeopend}
@@ -124,7 +126,7 @@ const Navbar = () => {
               _hover={{ color: hoverColor }}
               fontSize="2xl"
             >
-              Bestellingen
+                  Bestellingen
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
@@ -142,7 +144,8 @@ const Navbar = () => {
               _hover={{ color: hoverColor }}
               fontSize="2xl"
             >
-              Profiel
+              <FontAwesomeIcon icon={faUser} />
+
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
