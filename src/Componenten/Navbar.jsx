@@ -7,7 +7,7 @@ import {
   useColorMode,
 } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { SunIcon, MoonIcon } from "@chakra-ui/icons";
+import { SunIcon, MoonIcon, BellIcon } from "@chakra-ui/icons";
 import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./useThemaNavbar";
@@ -74,7 +74,7 @@ const Navbar = () => {
         <img
           src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
           alt=""
-          style={{ maxWidth: "auto",height: "100px"}}
+          style={{ maxWidth: "auto", height: "100px" }}
         />
       </ChakraLink>
 
@@ -84,7 +84,7 @@ const Navbar = () => {
         bgColor={bgColor}
         color={color}
         width="50%"
-        
+
         justifyContent="space-between"
         alignItems="center"
         flexWrap="nowrap"
@@ -99,34 +99,22 @@ const Navbar = () => {
               fontSize={"2xl"}
               display="flex"
               alignItems="center"
-              position="relative"
             >
-              Notificatie
+              <BellIcon
+                boxSize={7}
+              />
               {aantalOngeopend > 0 && (
-                <div>
-                  <img src="notif-white.png" alt="notificatie" 
-                  style={
-                    {
-                      maxWidth: "25px",
-                      position: "absolute",
-                      top: "3px",
-                      right: "125px",
-                    }
-                  }/>
                 <p
                   className="notificatie-getal"
                   style={{
                     fontSize: "17px",
                     color: "red",
-                    position: "absolute",
-                    top: "-10px",
-                    right: "115px",
+                    marginLeft: "5px",
                     fontWeight: "bolder"
                   }}
                 >
                   {aantalOngeopend}
                 </p>
-                </div>
               )}
             </ChakraLink>
             <ChakraLink
