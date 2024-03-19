@@ -103,6 +103,7 @@ function BestellingList() {
         alignSelf={"center"}
         display={"flex"}
         flexDirection={"column"}
+        padding={" 15px 150px"}
       >
         <Heading textAlign="center" mt={2}>
           Bestellingen
@@ -131,22 +132,24 @@ function BestellingList() {
           <Tbody>
             {items.map((item) => (
               <Tr
-              key={item.idOrder}
-              onClick={() => handleClick(item.idOrder)}
-              border="1px solid"
-              borderColor="white"
-              borderRadius="5px"
-              backgroundColor="white"
-              _hover={{
-                bg: hoverColor,
-                transform: "scale(1.02)",
-                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
-                cursor: "pointer",
-              }}
-              transition="all 0.2s"
+                key={item.idOrder}
+                onClick={() => handleClick(item.idOrder)}
+                border="1px solid"
+                borderColor="white"
+                borderRadius="5px"
+                backgroundColor="white"
+                _hover={{
+                  bg: hoverColor,
+                  transform: "scale(1.02)",
+                  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                  cursor: "pointer",
+                }}
+                transition="all 0.2s"
               >
                 <Td textAlign="center">{item.idOrder}</Td>
-                <Td textAlign="center">{new Date(item.datum).toLocaleDateString("en-GB")}</Td>
+                <Td textAlign="center">
+                  {new Date(item.datum).toLocaleDateString("en-GB")}
+                </Td>
                 <Td textAlign="center">€ {item.totaalPrijs}</Td>
                 <Td textAlign="center">{item.orderStatus}</Td>
                 <Td textAlign="center">

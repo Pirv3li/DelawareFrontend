@@ -129,6 +129,8 @@ function NotificatieList() {
         alignSelf={"center"}
         display={"flex"}
         flexDirection={"column"}
+        padding={" 15px 150px"}
+
       >
         <Heading textAlign="center" mt={2}>
           Notificaties
