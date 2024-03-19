@@ -12,19 +12,23 @@ import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./useThemaNavbar";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEnvelope, faSheetPlastic, faUser } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faEnvelope,
+  faSheetPlastic,
+  faUser,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { isAuthed, logOut } = useAuth();
   const { colorMode, toggleColorMode } = useColorMode();
   const { bgColor, color, hoverColor } = useNavbarStyles();
-  const { aantalOngeopend, setAantalOngeopend } = useContext(
-    NotificatieContext
-  );
+  const { aantalOngeopend, setAantalOngeopend } =
+    useContext(NotificatieContext);
 
   const handleLogout = () => {
     logOut();
+    navigate(`/producten`);
   };
 
   useEffect(() => {
@@ -86,7 +90,6 @@ const Navbar = () => {
         bgColor={bgColor}
         color={color}
         width="50%"
-
         justifyContent="space-between"
         alignItems="center"
         flexWrap="nowrap"
@@ -126,7 +129,7 @@ const Navbar = () => {
               _hover={{ color: hoverColor }}
               fontSize="2xl"
             >
-                  Bestellingen
+              Bestellingen
             </ChakraLink>
             <ChakraLink
               as={RouterLink}
@@ -145,7 +148,6 @@ const Navbar = () => {
               fontSize="2xl"
             >
               <FontAwesomeIcon icon={faUser} />
-
             </ChakraLink>
             <ChakraLink
               as={RouterLink}

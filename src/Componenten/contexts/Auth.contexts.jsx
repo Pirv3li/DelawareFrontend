@@ -15,7 +15,6 @@ const JWT_TOKEN_KEY = "jwtToken";
 const KLANT_ID_KEY = "idKlant";
 const Roles = "roles";
 const LEVERANCIER_ID_KEY = "idLeverancier";
-
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -50,10 +49,8 @@ export const AuthProvider = ({ children }) => {
     api.post
   );
 
-  const {
-    isMutating: loadingLeverancier,
-    trigger: doLoginLeverancier,
-  } = useSWRMutation("leverancier/login", api.post);
+  const { isMutating: loadingLeverancier, trigger: doLoginLeverancier } =
+    useSWRMutation("leverancier/login", api.post);
 
   const login = useCallback(
     async (username, password) => {
@@ -67,7 +64,6 @@ export const AuthProvider = ({ children }) => {
         return true;
       } catch (error) {
         // Ignore the error from the first login attempt
-        
       }
 
       try {
@@ -78,40 +74,24 @@ export const AuthProvider = ({ children }) => {
 
         setSession(token, user);
         return true;
-      } catch (error) {
-      }
+      } catch (error) {}
     },
     [doLoginKlant, doLoginLeverancier, setSession]
   );
 
   const loading = loadingKlant || loadingLeverancier;
 
-  // const register = useCallback(
-  //   async (data) => {
-  //     try {
-  //       const { token, user } = await doRegister(data);
-  //       console.log(user); // Log the user object
-  //       setSession(token, user);
-  //       return true;
-  //     } catch (error) {
-  //       console.error(error);
-  //       return false;
-  //     }
-  //   },
-  //   [doRegister, setSession],
-  // );
-
   const logOut = useCallback(() => {
     try {
       setToken(null);
       setGebruiker(null);
-  
-      const chakraColor = sessionStorage.getItem('chakra-ui-color');
+
+      const chakraColor = sessionStorage.getItem("chakra-ui-color");
       sessionStorage.clear();
       if (chakraColor) {
-        sessionStorage.setItem('chakra-ui-color', chakraColor);
+        sessionStorage.setItem("chakra-ui-color", chakraColor);
       }
-  
+
       sessionStorage.removeItem(JWT_TOKEN_KEY);
       if (gebruiker && gebruiker.roles == "klant") {
         sessionStorage.removeItem(KLANT_ID_KEY);
@@ -119,9 +99,7 @@ export const AuthProvider = ({ children }) => {
         sessionStorage.removeItem(LEVERANCIER_ID_KEY);
       }
       sessionStorage.removeItem(Roles);
-      navigate(`/producten`);
 
-      
       return true;
     } catch (error) {
       console.error("Error during logOut:", error);
@@ -143,7 +121,6 @@ export const AuthProvider = ({ children }) => {
 
   const getKlant = useCallback(async () => {
     try {
-
       const response = await api.getAll(`klant/`);
       if (response) {
         return response;
@@ -156,7 +133,6 @@ export const AuthProvider = ({ children }) => {
 
   const getLeverancier = useCallback(async () => {
     try {
-
       const response = await api.getAll(`leverancier/`);
       if (response) {
         return response;

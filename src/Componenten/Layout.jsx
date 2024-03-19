@@ -8,7 +8,7 @@ export default function Layout() {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <div style={{ flex: '1', padding: "15px 150px"}}>
+      <div style={{ flex: '1'}}>
         <Outlet />
       </div >
       <Footer />

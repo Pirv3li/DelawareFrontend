@@ -29,7 +29,7 @@ const Footer = () => {
         width="100vw"
         justifyContent="space-between"
         alignItems="center"
-        mt={5}
+        pt={5}
         pb={theme.space[4]}
       >
         <Box

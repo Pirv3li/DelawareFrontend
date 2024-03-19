@@ -1,117 +1,104 @@
-import { useCallback, useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { FormProvider, useForm } from 'react-hook-form';
-import { Box, Button, Flex, Heading,Alert, AlertIcon  } from '@chakra-ui/react';
-import LabelInput from '../Componenten/LabelInput';
-import { useAuth } from './contexts/Auth.contexts';
-import Error from '../Componenten/Error';
-import { Kbd } from '@chakra-ui/react'
-
-
+import { useCallback, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Alert,
+  AlertIcon,
+  VStack,
+  Center,
+  FormControl,
+  FormLabel,
+  Input,
+  Container,
+} from "@chakra-ui/react";
+import { useAuth } from "./contexts/Auth.contexts";
+import Error from "../Componenten/Error";
+import { Kbd } from "@chakra-ui/react";
 
 export default function Login() {
   const { error, loading, login } = useAuth();
   const navigate = useNavigate();
-  const [showAlert, setShowAlert] = useState(false);
+  // const [showAlert, setShowAlert] = useState(false);
+  const [errorTekst, setErrorTekst] = useState();
+  const [gebruikersnaam, setGebruikersnaam] = useState("");
+  const [password, setPassword] = useState("");
 
-
-  const methods = useForm({
-    defaultValues: {
-      gebruikersnaam: '',
-      password: '',
-    },
-  });
-  const { handleSubmit } = methods;
-
-
-
-const handleLogin = useCallback(
-  async ({ gebruikersnaam, password }) => {
+  const handleLogin = async (event) => {
+    event.preventDefault();
     try {
+      console.log(gebruikersnaam, password);
       const response = await login(gebruikersnaam, password);
       console.log(response);
       if (response) {
         navigate({
-          pathname: '/',
+          pathname: "/",
           replace: true,
         });
-      }
-      else{
-        setShowAlert(true);
-
+      } else {
+        setErrorTekst("Foute inlogggegevens");
       }
     } catch (error) {
-    
-      setShowAlert(true);
+      setErrorTekst("Foute inlogggegevens");
     }
-  },
-  [login, navigate]
-);
-
-
+  };
 
   return (
-    <FormProvider {...methods}>
-      {showAlert && (
-      <Alert status="error">
-        <AlertIcon />
-        Foute login gegevens
-      </Alert>
-      )}
-      <Flex align="center" justify="center" minH="60vh">
-        <Box width="md" p={8} borderWidth={1} borderRadius={8} boxShadow="lg">
-          <Heading mb={4}
-            align="center"
-            justify="center">Log in</Heading>
-
-          <Error error={error} />
-          <form onSubmit={handleSubmit(handleLogin)}> {/* Add this line */}
-          <LabelInput
-
-            label="gebruikersnaam: "
-            type="text"
-            name="gebruikersnaam"
-            placeholder=""
-            data-cy='gebruikersnaam_input'
-            mb={4}
-            
-
-          />
-
-          <LabelInput
-            label="password: "
-            type="password"
-            name="password"
-            mb={4} 
-            data-cy='password_input'
-            borderColor="lightblue"
-            borderWidth={2}
-          />
-
-          <Flex mt={4}
-            alignItems="center"
-            justifyContent="center">
-          </Flex>
-          <Flex mt={4} alignItems="center" justifyContent="center">
-            <Button
-              type="submit"
-              isLoading={loading}
-              onClick={handleSubmit(handleLogin)}
-              data-cy='submit_btn'
-              
-
-            >
-              Log in
-            </Button>
-            {/* <Link to="/register">
-              <Button ml={4} colorScheme="teal">
-                Register
-              </Button>
-            </Link> */}
-          </Flex>
-          </form>
-        </Box>
-      </Flex>
-    </FormProvider>
+    <Center
+      h="100vh"
+      bgImage="url('https://images.unsplash.com/photo-1634302200791-9c062778b653?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"
+      bgSize="cover"
+    >
+      <Container
+        maxW="sm"
+        p={8}
+        backgroundColor="white"
+        borderRadius="md"
+        boxShadow="lg"
+      >
+        <Heading mb={6}>Log in</Heading>
+        {errorTekst && (
+          <Alert
+            status="error"
+            style={{ marginTop: "20px", marginBottom: "20px" }}
+          >
+            <AlertIcon />
+            {errorTekst}
+          </Alert>
+        )}
+        <form onSubmit={handleLogin}>
+          <FormControl id="gebruikersnaam" mb={4}>
+            <FormLabel>Gebruikersnaam</FormLabel>
+            <Input
+              type="text"
+              name="gebruikersnaam"
+              data-cy="gebruikersnaam_input"
+              onChange={(e) => setGebruikersnaam(e.target.value)}
+            />
+          </FormControl>
+          <FormControl id="password" mb={4}>
+            <FormLabel>Password</FormLabel>
+            <Input
+              type="password"
+              name="password"
+              data-cy="password_input"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </FormControl>
+          <Button
+            type="submit"
+            isLoading={loading}
+            data-cy="submit_btn"
+            colorScheme="blue"
+            width="full"
+          >
+            Log in
+          </Button>
+        </form>
+      </Container>
+    </Center>
   );
 }
