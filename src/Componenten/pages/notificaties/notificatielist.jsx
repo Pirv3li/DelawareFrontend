@@ -183,20 +183,17 @@ function NotificatieList() {
           {begin > 0 && (
             <Button
               alignSelf="flex-start"
-              colorScheme="blue"
               leftIcon={<ArrowBackIcon />}
               onClick={decrementBegin}
-              style={{ borderRadius: "20px" }}
             />
           )}
 
           <Box flex="1" />
 
           <Button
-            colorScheme="blue"
             rightIcon={<ArrowForwardIcon />}
             onClick={incrementBegin}
-            style={{ borderRadius: "20px", visibility: totalOrders % itemsPerPage !== 0 ? "hidden" : "visible" }}
+            style={{ visibility: totalOrders % itemsPerPage !== 0 ? "hidden" : "visible" }}
             alignSelf="flex-end"
           />
         </Box>
