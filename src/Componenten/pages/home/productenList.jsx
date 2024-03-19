@@ -16,7 +16,7 @@ import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
 import React, { useState, useEffect } from "react";
 import { getAll, post } from "../../../api/index.js";
-import { useTheme } from "../../useThema.jsx";
+import { useTheme } from "../../UseThema.jsx";
 import CustomBox from "../../ChakraBox.jsx";
 import { useNavigate } from "react-router-dom";
 

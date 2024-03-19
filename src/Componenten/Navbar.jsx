@@ -9,7 +9,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { SunIcon, MoonIcon } from "@chakra-ui/icons";
 import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
-import { useNavbarStyles } from "./useThemaNavbar";
+import { useNavbarStyles } from "./UseThemaNavbar.jsx";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser } from "@fortawesome/free-solid-svg-icons";

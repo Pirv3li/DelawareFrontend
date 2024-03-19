@@ -2,7 +2,7 @@ import { Box, useTheme } from "@chakra-ui/react";
 import React from "react";
 import { Flex, Link as ChakraLink, Text, Image } from "@chakra-ui/react";
 
-import { useNavbarStyles } from "./useThemaNavbar";
+import { useNavbarStyles } from "./UseThemaNavbar";
 
 const Footer = () => {
   const { bgColor, color, hoverColor } = useNavbarStyles();
