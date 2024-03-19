@@ -26,7 +26,6 @@ const Footer = () => {
         as="footer"
         bgColor={bgColor}
         color={color}
-        width="100vw"
         justifyContent="space-between"
         alignItems="center"
         pt={5}
