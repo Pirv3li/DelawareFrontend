@@ -155,7 +155,6 @@ const Navbar = () => {
               whiteSpace="nowrap"
               alignSelf={""}
               ml="auto"
-              navigate
               data-cy="logout-btn"
             >
               Log uit

@@ -27,7 +27,6 @@ let fotos = [
   "https://images.pexels.com/photos/1642220/pexels-photo-1642220.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
 ]
 let randomGetal = Math.floor(Math.random() * fotos.length);
-console.log(randomGetal);
 export default function Login() {
   const { error, loading, login } = useAuth();
   const navigate = useNavigate();
@@ -40,9 +39,7 @@ export default function Login() {
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      console.log(gebruikersnaam, password);
       const response = await login(gebruikersnaam, password);
-      console.log(response);
       if (response) {
         navigate({
           pathname: "/",

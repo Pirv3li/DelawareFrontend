@@ -20,16 +20,34 @@ import {
   Image,
 } from "@chakra-ui/react";
 
+import { getAll, post } from "../api/index.js";
+
 export const ProfielInfo = () => {
   const { getKlant, getLeverancier } = useAuth();
   const [userData, setUserData] = useState({});
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
+  const [showAkkoord, setShowAkkoord] = useState(false);
+  const [body, setBody] = useState({});
+  const [afhandelInfo, setAfhandelInfo] = useState({});
   const roles = sessionStorage.getItem("roles");
-
+  const [response, setResponse] = useState([]);
   useEffect(() => {
     fetchUserData();
+    fetchData();
   }, []);
+
+
+  const fetchData = async () => {
+    try {
+      const response = await getAll(`goedkeuring${roles}/laatsteWijziging`);
+      setResponse(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+
 
   async function fetchUserData() {
     try {
@@ -38,8 +56,7 @@ export const ProfielInfo = () => {
         setUserData(roles === "klant" ? data[0].klant : data[0].leverancier);
       } else {
         console.error(
-          `No data returned from ${
-            roles === "klant" ? "getKlant" : "getLeverancier"
+          `No data returned from ${roles === "klant" ? "getKlant" : "getLeverancier"
           }`
         );
       }
@@ -48,31 +65,114 @@ export const ProfielInfo = () => {
       console.error(error);
     }
   }
+  const handleInputChange = (event) => {
+    setBody({
+      ...body,
+      [event.target.id]: event.target.value,
+    });
+  };
 
   const handleWijzigen = () => {
     if (!isEditing) {
       setIsEditing(true);
+      setShowAkkoord(true);
+      let body = {}
+
+      if (roles === "leverancier") {
+        const {
+          leverancierNummer,
+          gebruikersnaam,
+          email,
+          isActief,
+          roles,
+          bedrijf: {
+            iban,
+            btwNummer,
+            telefoonnummer,
+            sector,
+            adres: { straat, nummer, stad, postcode }
+          }
+        } = userData;
+
+
+        body = {
+          leverancierNummer,
+          gebruikersnaam,
+          email,
+          isActief: Boolean(isActief),
+          roles,
+          iban,
+          btwNummer,
+          telefoonnummer,
+          sector,
+          straat,
+          nummer,
+          stad,
+          postcode
+        };
+      }
+      else if (roles === "klant") {
+        const {
+          klantNummer,
+          gebruikersnaam,
+          email,
+          isActief,
+          roles,
+          bedrijf: {
+            iban,
+            btwNummer,
+            telefoonnummer,
+            sector,
+            adres: { straat, nummer, stad, postcode }
+          }
+        } = userData;
+
+
+        body = {
+          klantNummer,
+          gebruikersnaam,
+          email,
+          isActief: Boolean(isActief),
+          roles,
+          iban,
+          btwNummer,
+          telefoonnummer,
+          sector,
+          straat,
+          nummer,
+          stad,
+          postcode
+        };
+
+      }
+      setBody(body);
+
       return;
     }
 
     setIsEditing(false);
-    userData.gebruikersnaam = document.getElementById("gebruikersnaam").value;
-    userData.bedrijf.sector = document.getElementById("sector").value;
-    userData.bedrijf.adres.straat = document.getElementById("straat").value;
-    userData.bedrijf.adres.nummer = document.getElementById("nummer").value;
-    userData.bedrijf.adres.postcode = document.getElementById("postcode").value;
-    userData.bedrijf.adres.stad = document.getElementById("stad").value;
-    userData.email = document.getElementById("email").value;
-    userData.bedrijf.telefoonnummer =document.getElementById("telefoonnummer").value;
+    setShowAkkoord(false);
 
-      console.log(userData);
+
+
+
+  };
+  const handleAkkoord = async () => {
+    setIsEditing(false);
+    try {
+      const response = await post(`goedkeuring${roles}`, { arg: body });
+    } catch (error) {
+      console.error(error);
+    }
+
+    setShowAkkoord(false);
+    window.location.reload();
   };
 
   if (loading) {
     return <div>Loading...</div>;
   }
 
-  console.log("userdata:", userData);
 
   const personalFields = [
     {
@@ -150,8 +250,7 @@ export const ProfielInfo = () => {
                 <FormControl key={id} mb={4}>
                   <FormLabel color="gray.500">{label}</FormLabel>
                   {isEditing ? (
-                    <Input defaultValue={value} borderColor={"gray"} id={id} />
-                  ) : (
+                    <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange} />) : (
                     <Text color="gray.700">{value}</Text>
                   )}
                 </FormControl>
@@ -183,7 +282,7 @@ export const ProfielInfo = () => {
             </TabPanel>
           </TabPanels>
         </Tabs>
-        <Flex justify="center">
+        <Flex direction="column" align="center">
           <Button
             colorScheme="blue"
             variant="solid"
@@ -193,6 +292,24 @@ export const ProfielInfo = () => {
           >
             wijzigen
           </Button>
+          {showAkkoord && (
+            response.afgehandeld === "in behandeling" ? (
+              <Flex direction="column" mt={4}>
+                <Text margin={"auto"}>In behandeling</Text>
+                <Text margin={"auto"}>{new Date(response.datumAanvraag).toLocaleDateString()}</Text>
+              </Flex>
+            ) : (
+              <Button
+                colorScheme="green"
+                variant="solid"
+                mt={4}
+                onClick={handleAkkoord}
+                style={{ borderRadius: "20px" }}
+              >
+                Akkoord
+              </Button>
+            )
+          )}
         </Flex>
       </Box>
     </Flex>
