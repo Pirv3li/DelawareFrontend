@@ -153,7 +153,7 @@ const Navbar = () => {
               whiteSpace="nowrap"
               alignSelf={""}
               ml="auto"
-              navigate
+              
             >
               Log uit
             </ChakraLink>

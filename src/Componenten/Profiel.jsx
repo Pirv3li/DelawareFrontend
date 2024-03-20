@@ -63,8 +63,9 @@ export const ProfielInfo = () => {
     userData.bedrijf.adres.postcode = document.getElementById("postcode").value;
     userData.bedrijf.adres.stad = document.getElementById("stad").value;
     userData.email = document.getElementById("email").value;
-    userData.bedrijf.telefoonnummer =
-      document.getElementById("telefoonnummer").value;
+    userData.bedrijf.telefoonnummer =document.getElementById("telefoonnummer").value;
+
+      console.log(userData);
   };
 
   if (loading) {
