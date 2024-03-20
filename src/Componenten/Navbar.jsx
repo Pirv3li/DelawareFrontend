@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Flex,
   Link as ChakraLink,
@@ -16,6 +17,7 @@ import { faEnvelope, faUser, faShop,faBox } from "@fortawesome/free-solid-svg-ic
 const Navbar = () => {
   const { isAuthed, logOut } = useAuth();
   const { bgColor, color, hoverColor } = useNavbarStyles();
+  const navigate = useNavigate();
   const { aantalOngeopend, setAantalOngeopend } =
     useContext(NotificatieContext);
 
@@ -153,7 +155,8 @@ const Navbar = () => {
               whiteSpace="nowrap"
               alignSelf={""}
               ml="auto"
-              
+              navigate
+              data-cy="logout-btn"
             >
               Log uit
             </ChakraLink>
