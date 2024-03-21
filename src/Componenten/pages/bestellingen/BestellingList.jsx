@@ -27,7 +27,10 @@ function BestellingList() {
   const navigate = useNavigate();
 
   const handleItemsPerPage = (e) => {
-    setItemsPerPage(Number(e.target.value));
+    const newValue = Number(e.target.value);
+    if (newValue >= 1 && newValue <= 50) {
+      setItemsPerPage(newValue);
+    }
   };
 
   const handleClick = (id) => {
