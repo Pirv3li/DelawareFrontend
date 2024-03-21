@@ -248,7 +248,7 @@ export const ProfielInfo = () => {
             <TabPanel>
               {personalFields.map(({ label, value, id }) => (
                 <FormControl key={id} mb={4}>
-                  <FormLabel color="gray.500">{label}</FormLabel>
+                  <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
                   {isEditing ? (
                     <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange} />) : (
                     <Text color="gray.700">{value}</Text>
@@ -259,7 +259,7 @@ export const ProfielInfo = () => {
             <TabPanel>
               {companyFields.map(({ label, value, id }) => (
                 <FormControl key={id} mb={4}>
-                  <FormLabel color="gray.500">{label}</FormLabel>
+                  <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
                   {isEditing ? (
                     <Input defaultValue={value} borderColor={"gray"} id={id} />
                   ) : (
@@ -271,7 +271,7 @@ export const ProfielInfo = () => {
             <TabPanel>
               {financialFields.map(({ label, value, id }) => (
                 <FormControl key={id} mb={4}>
-                  <FormLabel color="gray.500">{label}</FormLabel>
+                  <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
                   {isEditing ? (
                     <Input defaultValue={value} borderColor={"gray"} id={id} />
                   ) : (
