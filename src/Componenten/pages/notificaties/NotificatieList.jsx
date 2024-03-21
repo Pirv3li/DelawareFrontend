@@ -11,7 +11,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import React, { useState, useEffect, useContext } from "react";
-import { update, setAuthToken, post } from "../../../api/index.js";
+import { update, setAuthToken, post, getAll } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { NotificatieContext } from "../../contexts/Notificatie.contexts.jsx";
@@ -73,18 +73,10 @@ function NotificatieList() {
       };
       setBody(body);
 
-      if (sessionStorage.getItem("roles") == "leverancier") {
-        const response = await post(`notificatie/leverancier/`, { arg: body });
-        console.log(response);
+        const response = await getAll(`notificatie/${sessionStorage.getItem("roles")}/${begin + 1}/${itemsPerPage}`);
         setItems(response);
         setTotalOrders(response.length);
-      }
-      if (sessionStorage.getItem("roles") == "klant") {
-        const response = await post(`notificatie/klant/`, { arg: body });
-        console.log(response);
-        setItems(response);
-        setTotalOrders(response.length);
-      }
+  
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -94,17 +86,11 @@ function NotificatieList() {
     let newBegin = begin + itemsPerPage;
     setBegin(newBegin);
 
-    let body = {
-      begin: newBegin + 1,
-      aantal: itemsPerPage,
-    };
+
 
     let response;
-    if (sessionStorage.getItem("roles") === "leverancier") {
-      response = await post(`notificatie/leverancier`, { arg: body });
-    } else {
-      response = await post(`notificatie/klant`, { arg: body });
-    }
+
+    response = await post(`notificatie/${sessionStorage.getItem("roles")}`, { arg: body });
 
     setItems(response);
     setTotalOrders(response.length);

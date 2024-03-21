@@ -44,18 +44,15 @@ function ProductenList() {
 
   const fetchData = async () => {
     try {
-      let body = {
-        begin: beginPagina + 1,
-        aantal: itemsPerPage,
-      };
+
       setBody(body);
       let items;
       let categories;
       if (sessionStorage.getItem("roles") === "leverancier") {
-        items = await post(`producten/leverancier`, { arg: body });
+        items = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`);
         categories = await getAll("producten/leverancier/categories");
       } else {
-        items = await post(`producten/begin`, { arg: body });
+        items = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`);
         categories = await getAll("producten/categories");
       }
       setItems(items);
@@ -67,22 +64,20 @@ function ProductenList() {
   };
 
   const handleSearch = async () => {
-    // If searchTerm is null or undefined, set it to an empty string
+
     const finalSearchTerm = searchTerm || "";
+  
+    
     setActualSearchTerm(finalSearchTerm);
 
-    const body = {
-      begin: 1,
-      zoekterm: finalSearchTerm,
-      aantal: itemsPerPage,
-    };
 
     try {
       let response;
       if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await post(`producten/leverancier/zoekterm`, { arg: body });
+        response = await getAll(`producten/leverancier/zoekterm/${beginPagina + 1}/${itemsPerPage}/${finalSearchTerm}`);
       } else {
-        response = await post(`producten/zoekterm`, { arg: body });
+        response = await getAll(`producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${finalSearchTerm}`);
+
       }
       setItems(response);
       setTotalOrders(response.length);
@@ -104,22 +99,22 @@ function ProductenList() {
         categories: selectedCategories,
         aantal: itemsPerPage,
       };
-      response = await post(`producten/zoekcategorie`, { arg: body });
+      response = await getAll(`producten/zoekcategorie/${1}/${itemsPerPage}/${updatedCategories}`);
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
         aantal: itemsPerPage,
       };
-      response = await post(`producten/zoekterm`, { arg: body });
+      response = await getAll(`producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${finalSearchTerm}`);
     } else {
       let body = {
         begin: newBegin + 1,
       };
       if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await post(`producten/leverancier`, { arg: body });
+        response = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`);
       } else {
-        response = await post(`producten/begin`, { arg: body });
+        response = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`);
       }
     }
     setItems(response);
@@ -139,22 +134,22 @@ function ProductenList() {
         categories: selectedCategories,
         aantal: 20,
       };
-      response = await post(`producten/zoekcategorie`, { arg: body });
+      response = await getAll(`producten/zoekcategorie/${1}/${itemsPerPage}/${selectedCategories}`);
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
         aantal: 20,
       };
-      response = await post(`producten/zoekterm`, { arg: body });
+      response = await getAll(`producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`);
     } else {
       let body = {
         begin: newBegin + 1,
       };
       if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await post(`producten/leverancier`, { arg: body });
+        response = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`);
       } else {
-        response = await post(`producten/begin`, { arg: body });
+        response = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`);
       }
     }
     setItems(response);
@@ -180,18 +175,17 @@ function ProductenList() {
           aantal: itemsPerPage,
         };
         if (sessionStorage.getItem("roles") === "leverancier") {
-          response = await post(`producten/leverancier`, { arg: body });
+          response = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`,);
         } else {
-          response = await post(`producten/begin`, { arg: body });
+          response = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`,);
         }
       } else {
-        // If categories are selected, make the category search API call
         const body = {
           begin: 1,
           categories: updatedCategories,
           aantal: itemsPerPage,
         };
-        response = await post(`producten/zoekcategorie`, { arg: body });
+        response = await getAll(`producten/zoekcategorie/${beginPagina + 1}/${itemsPerPage}/${updatedCategories}`);
       }
       setItems(response);
       setTotalOrders(response.length);
@@ -206,9 +200,7 @@ function ProductenList() {
       selectedCategories.includes(item.categorie)
   );
 
-  // const searchedItems = filteredItems.filter((item) =>
-  //   item.naam.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
+
 
   const sortedItems = filteredItems.sort((a, b) => {
     const aIsSelected = selectedCategories.includes(a.categorie);

@@ -11,7 +11,7 @@ import {
   Input,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
-import { post, setAuthToken } from "../../../api/index.js";
+import { post, setAuthToken, getAll } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
@@ -22,7 +22,6 @@ function BestellingList() {
   const [items, setItems] = useState([]);
   const [begin, setBegin] = useState(0);
   const [totalOrders, setTotalOrders] = useState(0);
-  const [body, setBody] = useState([]);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const navigate = useNavigate();
 
@@ -46,22 +45,10 @@ function BestellingList() {
 
   const fetchData = async () => {
     try {
-      let body = {
-        begin: begin + 1,
-        aantal: itemsPerPage,
-      };
-      setBody(body);
+        const response = await getAll(`order/${sessionStorage.getItem("roles")}/${begin + 1}/${itemsPerPage}`);
+        setItems(response);
+        setTotalOrders(response.length);
 
-      if (sessionStorage.getItem("roles") == "leverancier") {
-        const response = await post(`order/leverancier`, { arg: body });
-        setItems(response);
-        setTotalOrders(response.length);
-      }
-      if (sessionStorage.getItem("roles") == "klant") {
-        const response = await post(`order/klant`, { arg: body });
-        setItems(response);
-        setTotalOrders(response.length);
-      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -71,17 +58,9 @@ function BestellingList() {
     let newBegin = begin + itemsPerPage;
     setBegin(newBegin);
 
-    let body = {
-      begin: newBegin + 1,
-      aantal: itemsPerPage,
-    };
 
     let response;
-    if (sessionStorage.getItem("roles") === "leverancier") {
-      response = await post(`order/leverancier`, { arg: body });
-    } else {
-      response = await post(`order/klant`, { arg: body });
-    }
+    response = await post(`order/${sessionStorage.getItem("roles")}`, { arg: body });
 
     setItems(response);
     setTotalOrders(response.length);
