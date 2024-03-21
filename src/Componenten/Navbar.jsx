@@ -85,7 +85,7 @@ const Navbar = () => {
         bgColor={bgColor}
         color={color}
         width="50%"
-        justifyContent="space-between"
+        justifyContent="space-evenly"
         alignItems="center"
         flexWrap="nowrap"
       >
@@ -149,12 +149,12 @@ const Navbar = () => {
             <ChakraLink
               as={RouterLink}
               onClick={handleLogout}
-              mr={5}
+              // mr={5}
               _hover={{ color: hoverColor }}
               fontSize={"2xl"}
               whiteSpace="nowrap"
               alignSelf={""}
-              ml="auto"
+              // ml="auto"
               data-cy="logout-btn"
             >
               Log uit
@@ -165,9 +165,9 @@ const Navbar = () => {
             as={RouterLink}
             to="/login"
             ml="auto"
+            mr={3}
             _hover={{ color: hoverColor }}
             fontSize="2xl"
-            
           >
             Login
           </ChakraLink>
