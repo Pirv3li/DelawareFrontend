@@ -199,14 +199,29 @@ export const ProfielInfo = () => {
   const companyFields = [
     { label: "Sector", value: userData.bedrijf.sector, id: "sector" },
     {
-      label: "Adres",
-      value: `${userData.bedrijf.adres.straat} ${userData.bedrijf.adres.nummer}, ${userData.bedrijf.adres.postcode} ${userData.bedrijf.adres.stad}`,
-      id: "adres",
-    },
-    {
       label: "Telefoonnummer",
       value: userData.bedrijf.telefoonnummer,
       id: "telefoonnummer",
+    },
+    {
+      label: "Straat",
+      value: userData.bedrijf.adres.straat,
+      id: "straat",
+    },
+    {
+      label: "Nummer",
+      value: userData.bedrijf.adres.nummer,
+      id: "nummer",
+    },
+    {
+      label: "Postcode",
+      value: userData.bedrijf.adres.postcode,
+      id: "postcode",
+    },
+    {
+      label: "Stad",
+      value: userData.bedrijf.adres.stad,
+      id: "stad",
     },
   ];
 
@@ -261,7 +276,7 @@ export const ProfielInfo = () => {
                 <FormControl key={id} mb={4}>
                   <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
                   {isEditing ? (
-                    <Input defaultValue={value} borderColor={"gray"} id={id} />
+                    <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange}/>
                   ) : (
                     <Text color="gray.700">{value}</Text>
                   )}
@@ -273,7 +288,7 @@ export const ProfielInfo = () => {
                 <FormControl key={id} mb={4}>
                   <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
                   {isEditing ? (
-                    <Input defaultValue={value} borderColor={"gray"} id={id} />
+                    <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange}/>
                   ) : (
                     <Text color="gray.700">{value}</Text>
                   )}
