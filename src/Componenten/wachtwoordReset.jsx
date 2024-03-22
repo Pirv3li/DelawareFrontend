@@ -1,6 +1,8 @@
 import { useCallback, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
+import { CheckIcon } from '@chakra-ui/icons'
+
 import {
   Box,
   Button,
@@ -18,7 +20,7 @@ import {
 import { useAuth } from "./contexts/Auth.contexts";
 import Error from "../Componenten/Error";
 import { Kbd } from "@chakra-ui/react";
-
+import { post } from "../api/index.js";
 
 let fotos = [
   "https://images.unsplash.com/photo-1634302200791-9c062778b653?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -30,30 +32,42 @@ let randomGetal = Math.floor(Math.random() * fotos.length);
 
 
 
-export default function Login() {
-  const { error, loading, login } = useAuth();
+export default function WachtwoordResetFunctie() {
+  const { loading } = useAuth();
   const navigate = useNavigate();
   // const [showAlert, setShowAlert] = useState(false);
   const [errorTekst, setErrorTekst] = useState();
   const [gebruikersnaam, setGebruikersnaam] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  let [response, setResponse] = useState("");
   const [bgImage, setBgImage] = useState(fotos[randomGetal]);
 
-  const handleLogin = async (event) => {
+
+
+  const handleReset = async () => {
     event.preventDefault();
-    try {
-      const response = await login(gebruikersnaam, password);
-      if (response) {
-        navigate({
-          pathname: "/",
-          replace: true,
-        });
-      } else {
-        setErrorTekst("Foute inlogggegevens");
-      }
-    } catch (error) {
-      setErrorTekst("Foute inlogggegevens");
+
+
+
+    let body = {
+      username: gebruikersnaam,
+      email: email,
     }
+
+    response = await post(`klant/reset`, { arg: body });
+    setResponse(response);
+    response = await post(`leverancier/reset`, { arg: body });
+
+
+    if (response) {
+      setErrorTekst(<>Wachtwoord gereset <br /> Controleer uw email</>);
+    } else {
+      setErrorTekst(<>Wachtwoord gereset <br /> Controleer uw email</>);
+    }
+
+
+
+
   };
 
 
@@ -70,60 +84,70 @@ export default function Login() {
         borderRadius="md"
         boxShadow="lg"
       >
-        <Heading mb={6}>Log in</Heading>
+        <Heading mb={6}>Wachtwoord reset</Heading>
         {errorTekst && (
           <Alert
-            status="error"
-            style={{ marginTop: "20px", marginBottom: "20px" }}
+            style={{ marginTop: "20px", marginBottom: "20px", backgroundColor: "mintgreen" }}
           >
-            <AlertIcon />
+            
             {errorTekst}
+            <CheckIcon ml={"auto"} color={"green"} fontSize={"2xl"}/>
           </Alert>
         )}
-        <form onSubmit={handleLogin}>
+        <form onSubmit={handleReset}>
           <FormControl id="gebruikersnaam" mb={4}>
             <FormLabel>Gebruikersnaam</FormLabel>
             <Input
               type="text"
               name="gebruikersnaam"
               data-cy="gebruikersnaam_input"
-              onChange={(e) => setGebruikersnaam(e.target.value)}
+              onChange={(e) => {
+                setGebruikersnaam(e.target.value);
+                setErrorTekst("");
+                
+              }}
+              required
             />
           </FormControl>
-          <FormControl id="password" mb={4}>
-            <FormLabel>Password</FormLabel>
+          <FormControl id="email" mb={4}>
+            <FormLabel>Email</FormLabel>
             <Input
-              type="password"
-              name="password"
-              data-cy="password_input"
-              onChange={(e) => setPassword(e.target.value)}
+              type="email"
+              name="email"
+              data-cy="email_input"
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setErrorTekst("");
+              }}
+              required
             />
           </FormControl>
           <Flex direction={"row"}>
             <Button
               type="submit"
               isLoading={loading}
-              data-cy="submit_btn"
+              data-cy="reset_btn"
               colorScheme="blue"
-              width={"8vh"}
               mr={"auto"}
+              width={"8vh"}
 
             >
-              Log in
+              Resetten
             </Button>
             <Button
-              type="submit"
               isLoading={loading}
               data-cy="submit_btn"
               textColor={"blue"}
-              width={"8vh"}
-              onClick={() => navigate("/wachtwoord-vergeten")}
+              onClick={() => navigate("/login")}
               ml={"auto"}
+              width={"8vh"}
+              
 
             >
-              Vergeten
+              Terug
             </Button>
           </Flex>
+
         </form>
       </Container>
     </Center>

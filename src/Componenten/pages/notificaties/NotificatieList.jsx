@@ -17,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { NotificatieContext } from "../../contexts/Notificatie.contexts.jsx";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
+
 function NotificatieList() {
   const { setAantalOngeopend } = useContext(NotificatieContext);
   const hoverColor = useColorModeValue("gray.400", "gray.700");

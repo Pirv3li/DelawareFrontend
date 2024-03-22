@@ -12,6 +12,7 @@ import {
   Notificaties,
   NotificatieInfoMeer,
   ProductenList,
+  WachtwoordReset
 } from "./pages.jsx";
 import PrivateRoute from "./Componenten/PrivateRoute.jsx";
 import Layout from "./Componenten/Layout.jsx";
@@ -95,6 +96,16 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <NotificatieInfoMeer />,
+          },
+        ],
+      },
+      {
+        path: "wachtwoord-vergeten",
+
+        children: [
+          {
+            index: true,
+            element: <WachtwoordReset />,
           },
         ],
       },

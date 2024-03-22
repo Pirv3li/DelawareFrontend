@@ -7,6 +7,7 @@ import { ProfielInfo } from "./Componenten/Profiel.jsx";
 import ProductInfo from "./Componenten/pages/home/ProductInfo";
 import NotificatieList from "./Componenten/pages/notificaties/NotificatieList";
 import NotificatieInfoPagina from "./Componenten/pages/notificaties/NotificatieInfo";
+import WachtwoordResetFunctie from "./Componenten/wachtwoordReset.jsx";
 
 export const Home = () => {
   if (sessionStorage.getItem("roles") === "leverancier") {
@@ -81,6 +82,14 @@ export const Login = () => {
   return (
     <div>
       <Log />
+    </div>
+  );
+};
+
+export const WachtwoordReset = () => {
+  return (
+    <div>
+      <WachtwoordResetFunctie />
     </div>
   );
 };
