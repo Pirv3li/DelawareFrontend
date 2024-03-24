@@ -1,7 +1,7 @@
 import { Box, useTheme } from "@chakra-ui/react";
 import React from "react";
 import { Flex, Link as ChakraLink, Text, Image } from "@chakra-ui/react";
-
+import Whatsapp from "./Whatsapp";
 import { useFooterStyles } from "./UseThemaFooter";
 
 const Footer = () => {
@@ -9,6 +9,7 @@ const Footer = () => {
 
   return (
     <Box>
+          <Whatsapp />
       <Flex
         as="footer"
         bgColor={bgColor}
