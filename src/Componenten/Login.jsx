@@ -19,16 +19,13 @@ import { useAuth } from "./contexts/Auth.contexts";
 import Error from "../Componenten/Error";
 import { Kbd } from "@chakra-ui/react";
 
-
 let fotos = [
   "https://images.unsplash.com/photo-1634302200791-9c062778b653?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
   "https://images.pexels.com/photos/17082478/pexels-photo-17082478/free-photo-of-red-office-building-corner.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   "https://images.pexels.com/photos/1642220/pexels-photo-1642220.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-]
+];
 let randomGetal = Math.floor(Math.random() * fotos.length);
-
-
 
 export default function Login() {
   const { error, loading, login } = useAuth();
@@ -56,13 +53,8 @@ export default function Login() {
     }
   };
 
-
   return (
-    <Center
-      h="100vh"
-      bgImage={`url('${bgImage}')`}
-      bgSize="cover"
-    >
+    <Center h="100vh" bgImage={`url('${bgImage}')`} bgSize="cover">
       <Container
         maxW="sm"
         p={8}
@@ -107,7 +99,6 @@ export default function Login() {
               colorScheme="blue"
               width={"8vh"}
               mr={"auto"}
-
             >
               Log in
             </Button>
@@ -116,10 +107,8 @@ export default function Login() {
               isLoading={loading}
               data-cy="submit_btn"
               textColor={"blue"}
-              width={"8vh"}
               onClick={() => navigate("/wachtwoord-vergeten")}
               ml={"auto"}
-
             >
               Vergeten
             </Button>
