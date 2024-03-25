@@ -97,7 +97,6 @@ export default function Login() {
               isLoading={loading}
               data-cy="submit_btn"
               colorScheme="blue"
-              width={"8vh"}
               mr={"auto"}
             >
               Log in

@@ -44,15 +44,18 @@ function ProductenList() {
 
   const fetchData = async () => {
     try {
-
       setBody(body);
       let items;
       let categories;
       if (sessionStorage.getItem("roles") === "leverancier") {
-        items = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`);
+        items = await getAll(
+          `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
+        );
         categories = await getAll("producten/leverancier/categories");
       } else {
-        items = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`);
+        items = await getAll(
+          `producten/begin/${beginPagina + 1}/${itemsPerPage}`
+        );
         categories = await getAll("producten/categories");
       }
       setItems(items);
@@ -63,21 +66,32 @@ function ProductenList() {
     }
   };
 
+  const handleItemsPerPage = (e) => {
+    const newValue = Number(e.target.value);
+    if (newValue >= 1 && newValue <= 50) {
+      setItemsPerPage(newValue);
+    }
+  };
+
   const handleSearch = async () => {
-
     const finalSearchTerm = searchTerm || "";
-  
-    
-    setActualSearchTerm(finalSearchTerm);
 
+    setActualSearchTerm(finalSearchTerm);
 
     try {
       let response;
       if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await getAll(`producten/leverancier/zoekterm/${beginPagina + 1}/${itemsPerPage}/${finalSearchTerm}`);
+        response = await getAll(
+          `producten/leverancier/zoekterm/${
+            beginPagina + 1
+          }/${itemsPerPage}/${finalSearchTerm}`
+        );
       } else {
-        response = await getAll(`producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${finalSearchTerm}`);
-
+        response = await getAll(
+          `producten/zoekterm/${
+            beginPagina + 1
+          }/${itemsPerPage}/${finalSearchTerm}`
+        );
       }
       setItems(response);
       setTotalOrders(response.length);
@@ -99,22 +113,32 @@ function ProductenList() {
         categories: selectedCategories,
         aantal: itemsPerPage,
       };
-      response = await getAll(`producten/zoekcategorie/${1}/${itemsPerPage}/${updatedCategories}`);
+      response = await getAll(
+        `producten/zoekcategorie/${1}/${itemsPerPage}/${updatedCategories}`
+      );
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
         aantal: itemsPerPage,
       };
-      response = await getAll(`producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${finalSearchTerm}`);
+      response = await getAll(
+        `producten/zoekterm/${
+          beginPagina + 1
+        }/${itemsPerPage}/${finalSearchTerm}`
+      );
     } else {
       let body = {
         begin: newBegin + 1,
       };
       if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`);
+        response = await getAll(
+          `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
+        );
       } else {
-        response = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`);
+        response = await getAll(
+          `producten/begin/${beginPagina + 1}/${itemsPerPage}`
+        );
       }
     }
     setItems(response);
@@ -134,22 +158,32 @@ function ProductenList() {
         categories: selectedCategories,
         aantal: 20,
       };
-      response = await getAll(`producten/zoekcategorie/${1}/${itemsPerPage}/${selectedCategories}`);
+      response = await getAll(
+        `producten/zoekcategorie/${1}/${itemsPerPage}/${selectedCategories}`
+      );
     } else if (actualSearchTerm) {
       const body = {
         begin: newBegin + 1,
         zoekterm: actualSearchTerm,
         aantal: 20,
       };
-      response = await getAll(`producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`);
+      response = await getAll(
+        `producten/zoekterm/${
+          beginPagina + 1
+        }/${itemsPerPage}/${actualSearchTerm}`
+      );
     } else {
       let body = {
         begin: newBegin + 1,
       };
       if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`);
+        response = await getAll(
+          `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
+        );
       } else {
-        response = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`);
+        response = await getAll(
+          `producten/begin/${beginPagina + 1}/${itemsPerPage}`
+        );
       }
     }
     setItems(response);
@@ -175,9 +209,13 @@ function ProductenList() {
           aantal: itemsPerPage,
         };
         if (sessionStorage.getItem("roles") === "leverancier") {
-          response = await getAll(`producten/leverancier/${beginPagina + 1}/${itemsPerPage}`,);
+          response = await getAll(
+            `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
+          );
         } else {
-          response = await getAll(`producten/begin/${beginPagina + 1}/${itemsPerPage}`,);
+          response = await getAll(
+            `producten/begin/${beginPagina + 1}/${itemsPerPage}`
+          );
         }
       } else {
         const body = {
@@ -185,7 +223,11 @@ function ProductenList() {
           categories: updatedCategories,
           aantal: itemsPerPage,
         };
-        response = await getAll(`producten/zoekcategorie/${beginPagina + 1}/${itemsPerPage}/${updatedCategories}`);
+        response = await getAll(
+          `producten/zoekcategorie/${
+            beginPagina + 1
+          }/${itemsPerPage}/${updatedCategories}`
+        );
       }
       setItems(response);
       setTotalOrders(response.length);
@@ -199,8 +241,6 @@ function ProductenList() {
       selectedCategories.length === 0 ||
       selectedCategories.includes(item.categorie)
   );
-
-
 
   const sortedItems = filteredItems.sort((a, b) => {
     const aIsSelected = selectedCategories.includes(a.categorie);
@@ -247,6 +287,7 @@ function ProductenList() {
           <Button onClick={handleSearch}>Zoek</Button>
 
           <HStack spacing={5}>
+            <Wrap spacing={5}>
             {categories.map((category) => (
               <Checkbox
                 key={category}
@@ -255,8 +296,17 @@ function ProductenList() {
               >
                 {category}
               </Checkbox>
-            ))}
-            <FormLabel>Aantal</FormLabel>
+            ))}</Wrap>
+            {/* <Box display="flex" alignItems="center" mt={5}>
+              <Input
+                style={{ width: "60px" }}
+                value={itemsPerPage}
+                onChange={handleItemsPerPage}
+                onClick={(e) => e.target.select()}
+                textAlign={"center"}
+                margin={"auto"}
+              />
+            </Box> */}
             <Select value={itemsPerPage} onChange={handleItemsPerPageChange}>
               <option value={10}>10</option>
               <option value={20}>20</option>

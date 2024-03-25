@@ -6,13 +6,20 @@ import {
   IconButton,
   useColorMode,
 } from "@chakra-ui/react";
+import { Box, Stack, useBreakpointValue } from "@chakra-ui/react";
+
 import { Link as RouterLink } from "react-router-dom";
 import { getById, setAuthToken } from "../api/index.js";
 import { useAuth } from "./contexts/Auth.contexts";
 import { useNavbarStyles } from "./UseThemaNavbar.jsx";
 import { NotificatieContext } from "../Componenten/contexts/Notificatie.contexts.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEnvelope, faUser, faShop,faBox } from "@fortawesome/free-solid-svg-icons";
+import {
+  faEnvelope,
+  faUser,
+  faShop,
+  faBox,
+} from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = () => {
   const { isAuthed, logOut } = useAuth();
@@ -61,42 +68,38 @@ const Navbar = () => {
     }
   };
 
+  const direction = useBreakpointValue({ base: "column", md: "row" });
+
   return (
     <Flex
       as="nav"
-      p={4}
+      ml="auto"
       bgColor={bgColor}
       color={color}
-      width="auto"
+      width="100%"
       justifyContent="space-between"
       alignItems="center"
+      flexWrap="nowrap"
+      direction="row"
     >
-      <ChakraLink as={RouterLink} to="/" mx={2} _hover={{ color: hoverColor }}>
+      <Box>
+        <ChakraLink as={RouterLink} to="/" mx={2}>
         <img
-          src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
-          alt=""
-          style={{ maxWidth: "auto", height: "100px" }}
-        />
-      </ChakraLink>
-
-      <Flex
-        as="nav"
-        ml="auto"
-        bgColor={bgColor}
-        color={color}
-        width="50%"
-        justifyContent="space-evenly"
-        alignItems="center"
-        flexWrap="nowrap"
-      >
+  src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
+  alt=""
+  style={{ minWidth: "50px", maxWidth: "200px", height: "auto" }}
+/>
+        </ChakraLink>
+      </Box>
+      <Flex direction="row" justify="flex-end" align="center" spacing={4}>
         {isAuthed ? (
           <>
             <ChakraLink
+            m={2}
               as={RouterLink}
               to="/notificaties"
-              mr={10}
               _hover={{ color: hoverColor }}
-              fontSize={"3xl"}
+              fontSize={"2xl"} // Adjusted fontSize
               display="flex"
               alignItems="center"
             >
@@ -108,7 +111,6 @@ const Navbar = () => {
                     fontSize: "17px",
                     color: "red",
                     marginLeft: "0px",
-
                     fontWeight: "bolder",
                     marginBottom: "20px",
                   }}
@@ -118,43 +120,40 @@ const Navbar = () => {
               )}
             </ChakraLink>
             <ChakraLink
+            m={2}
               as={RouterLink}
               to="/bestellingen"
-              mr={5}
               _hover={{ color: hoverColor }}
-              fontSize={"3xl"}
+              fontSize={"2xl"} // Adjusted fontSize
             >
               <FontAwesomeIcon icon={faShop} />
             </ChakraLink>
             <ChakraLink
+            m={2}
               as={RouterLink}
               to="/producten"
-              mr={10}
               _hover={{ color: hoverColor }}
-              fontSize={"3xl"}
-              ml={8}
+              fontSize={"2xl"} // Adjusted fontSize
             >
               <FontAwesomeIcon icon={faBox} />
             </ChakraLink>
             <ChakraLink
+            m={2}
               as={RouterLink}
               to="/profiel"
-              mr={5}
               _hover={{ color: hoverColor }}
-              fontSize={"3xl"}
-              ml={8}
+              fontSize={"2xl"} // Adjusted fontSize
             >
               <FontAwesomeIcon icon={faUser} />
             </ChakraLink>
             <ChakraLink
+            mr={3}
               as={RouterLink}
               onClick={handleLogout}
-              // mr={5}
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"}
+              fontSize={"2xl"} // Adjusted fontSize
               whiteSpace="nowrap"
               alignSelf={""}
-              // ml="auto"
               data-cy="logout-btn"
             >
               Log uit
