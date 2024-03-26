@@ -104,7 +104,7 @@ export default function Login() {
             <Button
               type="submit"
               isLoading={loading}
-              data-cy="submit_btn"
+              data-cy="forgot_btn"
               textColor={"blue"}
               onClick={() => navigate("/wachtwoord-vergeten")}
               ml={"auto"}

@@ -360,6 +360,7 @@ function ProductenList() {
                       alignItems: "center",
                       width: "100%",
                     }}
+                    data-cy="bestellen_btn"
                     mt={5}
                   >
                     {sessionStorage.getItem("roles") === "leverancier"
