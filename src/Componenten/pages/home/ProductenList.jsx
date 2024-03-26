@@ -223,11 +223,18 @@ function ProductenList() {
           categories: updatedCategories,
           aantal: itemsPerPage,
         };
-        response = await getAll(
-          `producten/zoekcategorie/${
-            beginPagina + 1
-          }/${itemsPerPage}/${updatedCategories}`
-        );
+        if (sessionStorage.getItem("roles") === "leverancier") {
+          response = await getAll(
+            `producten/leverancier/zoekcategorie/${beginPagina + 1}/${itemsPerPage}/${updatedCategories.join(",")}`
+          );
+        } else {
+          response = await getAll(
+            `producten/zoekcategorie/${
+              beginPagina + 1
+            }/${itemsPerPage}/${updatedCategories}`
+          );
+        }
+        
       }
       setItems(response);
       setTotalOrders(response.length);
