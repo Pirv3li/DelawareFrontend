@@ -5,6 +5,7 @@ import {
   Link as ChakraLink,
   IconButton,
   useColorMode,
+  Tooltip,
 } from "@chakra-ui/react";
 import { Box, Stack, useBreakpointValue } from "@chakra-ui/react";
 
@@ -27,6 +28,8 @@ const Navbar = () => {
   const navigate = useNavigate();
   const { aantalOngeopend, setAantalOngeopend } =
     useContext(NotificatieContext);
+
+  const iconSize = useBreakpointValue({ base: "md", md: "lg" });
 
   const handleLogout = () => {
     logOut();
@@ -68,7 +71,6 @@ const Navbar = () => {
     }
   };
 
-
   return (
     <Flex
       as="nav"
@@ -93,68 +95,75 @@ const Navbar = () => {
       <Flex direction="row" justify="flex-end" align="center" spacing={4}>
         {isAuthed ? (
           <>
-            <ChakraLink
-              m={2}
-              as={RouterLink}
-              to="/notificaties"
-              _hover={{ color: hoverColor }}
-              fontSize={"2xl"} 
-              display="flex"
-              alignItems="center"
-              data-cy="notificaties_btn"
-            >
-              <FontAwesomeIcon icon={faEnvelope} />
-              {aantalOngeopend > 0 && (
-                <p
-                  className="notificatie-getal"
-                  style={{
-                    fontSize: "17px",
-                    color: "red",
-                    marginLeft: "0px",
-                    fontWeight: "bolder",
-                    marginBottom: "20px",
-                  }}
-                >
-                  {aantalOngeopend}
-                </p>
-              )}
-            </ChakraLink>
-            <ChakraLink
-              m={2}
-              as={RouterLink}
-              to="/bestellingen"
-              _hover={{ color: hoverColor }}
-              fontSize={"2xl"} 
-              data-cy="bestellingen_btn"
-            >
-              <FontAwesomeIcon icon={faShop} />
-            </ChakraLink>
-            <ChakraLink
-              m={2}
-              as={RouterLink}
-              to="/producten"
-              _hover={{ color: hoverColor }}
-              fontSize={"2xl"} 
-              data-cy="productennav_btn"
-            >
-              <FontAwesomeIcon icon={faBox} />
-            </ChakraLink>
-            <ChakraLink
-              m={2}
-              as={RouterLink}
-              to="/profiel"
-              _hover={{ color: hoverColor }}
-              fontSize={"2xl"} 
-              data-cy="profiel_btn"
-            >
-              <FontAwesomeIcon icon={faUser} />
-            </ChakraLink>
+            <Tooltip label="Notificaties">
+              <ChakraLink
+                m={2}
+                as={RouterLink}
+                to="/notificaties"
+                _hover={{ color: hoverColor }}
+                fontSize={iconSize}
+                display="flex"
+                alignItems="center"
+              >
+                <FontAwesomeIcon icon={faEnvelope} size={iconSize} />
+                {aantalOngeopend > 0 && (
+                  <p
+                    className="notificatie-getal"
+                    style={{
+                      fontSize: "17px",
+                      color: "red",
+                      marginLeft: "0px",
+                      fontWeight: "bolder",
+                      marginBottom: "20px",
+                    }}
+                  >
+                    {aantalOngeopend}
+                  </p>
+                )}
+              </ChakraLink>
+            </Tooltip>
+
+            <Tooltip label="Bestellingen">
+              <ChakraLink
+                m={2}
+                as={RouterLink}
+                to="/bestellingen"
+                _hover={{ color: hoverColor }}
+                fontSize={iconSize}
+              >
+                <FontAwesomeIcon icon={faShop} size={iconSize} />
+              </ChakraLink>
+            </Tooltip>
+
+            <Tooltip label="Producten">
+              <ChakraLink
+                m={2}
+                as={RouterLink}
+                to="/producten"
+                _hover={{ color: hoverColor }}
+                fontSize={iconSize}
+              >
+                <FontAwesomeIcon icon={faBox} size={iconSize} />
+              </ChakraLink>
+            </Tooltip>
+
+            <Tooltip label="Profiel">
+              <ChakraLink
+                m={2}
+                as={RouterLink}
+                to="/profiel"
+                _hover={{ color: hoverColor }}
+                fontSize={iconSize}
+              >
+                <FontAwesomeIcon icon={faUser} size={iconSize} />
+              </ChakraLink>
+            </Tooltip>
             <ChakraLink
               mr={3}
               as={RouterLink}
               onClick={handleLogout}
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"} 
+              fontSize={iconSize}
               whiteSpace="nowrap"
               alignSelf={""}
               data-cy="logout-btn"
@@ -169,7 +178,7 @@ const Navbar = () => {
             ml="auto"
             mr={3}
             _hover={{ color: hoverColor }}
-            fontSize="2xl"
+            fontSize={iconSize}
           >
             Login
           </ChakraLink>

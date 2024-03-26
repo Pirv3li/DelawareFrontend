@@ -14,6 +14,10 @@ import {
   List,
   ListItem,
   Flex,
+  useBreakpointValue,
+  VStack,
+  HStack,
+  Text,
 } from "@chakra-ui/react";
 import { getById } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
@@ -28,6 +32,8 @@ function BestellingInfoPagina() {
   const hoverColor = useColorModeValue("gray.400", "gray.700");
 
   const navigate = useNavigate();
+
+  const isTableLayout = useBreakpointValue({ base: false, md: true });
 
   const componentRef = useRef();
   const handlePrint = useReactToPrint({
@@ -118,6 +124,7 @@ function BestellingInfoPagina() {
       </Box>
 
       <Box display="flex" flexDirection="column" alignItems="center" p={5}>
+      {isTableLayout ? (
         <Table variant="simple" m={8} width="100%">
           <Thead>
             <Tr>
@@ -192,6 +199,75 @@ function BestellingInfoPagina() {
             </Tr>
           </Tbody>
         </Table>
+        ) : (
+          <VStack spacing={4} width="100%">
+          {orderDetails &&
+            orderDetails.map((item) => (
+              <>
+              <Box
+                key={item.idOrderDetails}
+                onClick={() => handleClick(item.idOrderDetails)}
+                borderWidth={1}
+                borderRadius="lg"
+                overflow="hidden"
+                p={4}
+                _hover={{
+                  bg: hoverColor,
+                  transform: "scale(1.02)",
+                  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                  cursor: "pointer",
+                }}
+                transition="all 0.2s"
+                width="100%"
+              >
+                <HStack spacing={4}>
+                  <Image
+                    boxSize="120px"
+                    src={item.foto}
+                    alt="Product"
+                    objectFit="contain"
+                  />
+                  <VStack align="start" spacing={1}>
+                    <Text fontWeight="bold">{item.naam}</Text>
+                    <Text>€ {item.eenheidsprijs}</Text>
+                    <Text>
+                      BTW: € {(item.btwtarief / 100) * item.eenheidsprijs}
+                    </Text>
+                    <Text>Aantal: {item.aantal}</Text>
+                    <Text>
+                      Prijs: €
+                      {(
+                        ((item.btwtarief / 100) * item.eenheidsprijs +
+                          item.eenheidsprijs) *
+                        item.aantal
+                      ).toFixed(2)}
+                    </Text>
+                  </VStack>
+                </HStack>
+              </Box>
+            </>
+            ))}
+            <Flex alignItems="center">
+                  <Box mr={2}>
+                  Totaal: €
+                    {orderDetails &&
+                      orderDetails
+                        .reduce(
+                          (total, item) =>
+                            total +
+                            ((item.btwtarief / 100) * item.eenheidsprijs +
+                              item.eenheidsprijs) *
+                              item.aantal,
+                          0
+                        )
+                        .toFixed(2)}
+                  </Box>
+                  <Button onClick={handlePrint} colorScheme="red" size="sm">
+                    PDF
+                  </Button>
+                  </Flex>
+        </VStack>
+      )}
       </Box>
     </div>
   );
