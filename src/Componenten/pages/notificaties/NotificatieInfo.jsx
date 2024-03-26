@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getById, update } from "../../../api/index.js";
-import { Box, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
+import { VStack, Heading, Button, Box, Center, Text } from "@chakra-ui/react";
 
 function NotificatieInfoPagina() {
   const [notificatie, SetNotificatie] = useState(null);
@@ -45,26 +45,27 @@ function NotificatieInfoPagina() {
   };
 
   return (
-    <div>
-      <Box p={5} shadow="md" borderWidth="1px">
-        <Text>
-          Notificatie nummer: {notificatie && notificatie.idNotificatie}
-        </Text>
+    <Center h="100vh">
+      <Box
+        borderRadius="5%"
+        boxShadow="2xl"
+        p={5}
+        borderWidth="1px"
+        borderColor="gray.200"
+        bg="white"
+      >
+        <VStack spacing={5} width="100%" maxW="md">
+          <Heading as="h2" size="lg">
+            {notificatie && notificatie.onderwerp}
+          </Heading>
+          <Text fontSize="m" color="gray.400" fontStyle="italic">
+            {notificatie &&
+              new Date(notificatie.datum).toLocaleDateString("en-GB")}
+          </Text>
+          <Text fontSize="xl">{notificatie && notificatie.text}</Text>
+        </VStack>
       </Box>
-      <Box p={5} shadow="md" borderWidth="1px">
-        <Text>Onderwerp: {notificatie && notificatie.onderwerp}</Text>
-      </Box>
-      <Box p={5} shadow="md" borderWidth="1px">
-        <Text>
-          Datum:{" "}
-          {notificatie &&
-            new Date(notificatie.datum).toLocaleDateString("en-GB")}
-        </Text>
-      </Box>
-      <Box p={5} shadow="md" borderWidth="1px">
-        <Text> {notificatie && notificatie.text}</Text>
-      </Box>
-    </div>
+    </Center>
   );
 }
 

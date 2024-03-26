@@ -68,7 +68,6 @@ const Navbar = () => {
     }
   };
 
-  const direction = useBreakpointValue({ base: "column", md: "row" });
 
   return (
     <Flex
@@ -84,22 +83,22 @@ const Navbar = () => {
     >
       <Box>
         <ChakraLink as={RouterLink} to="/" mx={2}>
-        <img
-  src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
-  alt=""
-  style={{ minWidth: "50px", maxWidth: "200px", height: "auto" }}
-/>
+          <img
+            src="https://www.the5thconference.com/wp-content/uploads/2019/08/Logo_delaware_FullColor_whitetext_digital.png"
+            alt=""
+            style={{ minWidth: "50px", maxWidth: "200px", height: "auto" }}
+          />
         </ChakraLink>
       </Box>
       <Flex direction="row" justify="flex-end" align="center" spacing={4}>
         {isAuthed ? (
           <>
             <ChakraLink
-            m={2}
+              m={2}
               as={RouterLink}
               to="/notificaties"
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"} // Adjusted fontSize
+              fontSize={"2xl"} 
               display="flex"
               alignItems="center"
             >
@@ -120,38 +119,38 @@ const Navbar = () => {
               )}
             </ChakraLink>
             <ChakraLink
-            m={2}
+              m={2}
               as={RouterLink}
               to="/bestellingen"
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"} // Adjusted fontSize
+              fontSize={"2xl"} 
             >
               <FontAwesomeIcon icon={faShop} />
             </ChakraLink>
             <ChakraLink
-            m={2}
+              m={2}
               as={RouterLink}
               to="/producten"
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"} // Adjusted fontSize
+              fontSize={"2xl"} 
             >
               <FontAwesomeIcon icon={faBox} />
             </ChakraLink>
             <ChakraLink
-            m={2}
+              m={2}
               as={RouterLink}
               to="/profiel"
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"} // Adjusted fontSize
+              fontSize={"2xl"} 
             >
               <FontAwesomeIcon icon={faUser} />
             </ChakraLink>
             <ChakraLink
-            mr={3}
+              mr={3}
               as={RouterLink}
               onClick={handleLogout}
               _hover={{ color: hoverColor }}
-              fontSize={"2xl"} // Adjusted fontSize
+              fontSize={"2xl"} 
               whiteSpace="nowrap"
               alignSelf={""}
               data-cy="logout-btn"

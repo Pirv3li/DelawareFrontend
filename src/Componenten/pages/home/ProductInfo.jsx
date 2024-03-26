@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Box, Text, Flex, Button, Heading } from "@chakra-ui/react";
+import { Box, Text, Flex, Button, Heading, VStack } from "@chakra-ui/react";
 import { getById } from "../../../api/index.js";
-import { useNavigate } from "react-router-dom";
-import { Table, Tbody, Tr, Th, Td } from "@chakra-ui/react";
 
 function ProductInfo({}) {
   const [product, setProduct] = useState(null);
@@ -21,7 +19,6 @@ function ProductInfo({}) {
     }
   };
 
-  const navigate = useNavigate();
 
   return (
     <Box>
@@ -38,38 +35,21 @@ function ProductInfo({}) {
               }}
             />
           </Box>
-          <Box width="1px" bg="red.300" minHeight="600px" mt={7} />
           <Box ml={4} mt={50}>
-            <Flex>
-              <Heading ml={9} size={"3xl"}>
-                {product.naam}
-              </Heading>
-            </Flex>
+            <Heading ml={9} size={"3xl"}>
+              {product.naam}
+            </Heading>
             <Text fontSize={25} mt={5} mb={5}>
               {product.beschrijving}
             </Text>
-            <Table variant="striped" colorScheme="blue">
-              <Tbody>
-                <Tr>
-                  <Td>Aantal</Td>
-                  <Td>{product.aantal}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Gewicht</Td>
-                  <Td>{product.gewicht} KG</Td>
-                </Tr>
-                <Tr>
-                  <Td>btw</Td>
-                  <Td>% {product.btwtarief}</Td>
-                </Tr>
-                <Tr>
-                  <Td>Eenheidsprijs</Td>
-                  <Td>€ {product.eenheidsprijs.toFixed(2)}</Td>
-                </Tr>
-              </Tbody>
-            </Table>
+            <VStack align="start" spacing={3}>
+              <Text>Aantal: {product.aantal}</Text>
+              <Text>Gewicht: {product.gewicht} KG</Text>
+              <Text>btw: % {product.btwtarief}</Text>
+              <Text>Eenheidsprijs: € {product.eenheidsprijs.toFixed(2)}</Text>
+            </VStack>
             {sessionStorage.roles !== "leverancier" && (
-              <Button width={"100%"} bg={"cyan"}>
+              <Button width={"30%"} bg={"lightgray"} mt={5}>
                 Kopen
               </Button>
             )}
