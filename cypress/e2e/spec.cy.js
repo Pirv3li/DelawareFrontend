@@ -22,3 +22,31 @@ describe("Klant Login", () => {
     cy.logout();
   });
 })
+
+describe("product bekijken", () => {  
+  beforeEach(() => {
+    cy.loginKlant('klant2', '12345678'); 
+  });
+  it("bekijk product", () => {
+    cy.get('[data-cy=bestellen_btn]').first().click();
+    cy.get('[data-cy=kopen_btn]');
+  });
+})
+
+describe("navigeren naar alle paginas", () => {  
+  beforeEach(() => {
+    cy.loginKlant('klant2', '12345678'); 
+  });
+  it("bekijk notificaties", () => {
+    cy.get('[data-cy=notificaties_btn]').click();
+  });
+  it("bekijk bestellingen", () => {
+    cy.get('[data-cy=bestellingen_btn]').click();
+  });
+  it("bekijk producten", () => {
+    cy.get('[data-cy=productennav_btn]').click();
+  });
+  it("bekijk profiel", () => {
+    cy.get('[data-cy=profiel_btn]').click();
+  });
+})

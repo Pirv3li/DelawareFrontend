@@ -101,6 +101,7 @@ const Navbar = () => {
               fontSize={"2xl"} 
               display="flex"
               alignItems="center"
+              data-cy="notificaties_btn"
             >
               <FontAwesomeIcon icon={faEnvelope} />
               {aantalOngeopend > 0 && (
@@ -124,6 +125,7 @@ const Navbar = () => {
               to="/bestellingen"
               _hover={{ color: hoverColor }}
               fontSize={"2xl"} 
+              data-cy="bestellingen_btn"
             >
               <FontAwesomeIcon icon={faShop} />
             </ChakraLink>
@@ -133,6 +135,7 @@ const Navbar = () => {
               to="/producten"
               _hover={{ color: hoverColor }}
               fontSize={"2xl"} 
+              data-cy="productennav_btn"
             >
               <FontAwesomeIcon icon={faBox} />
             </ChakraLink>
@@ -142,6 +145,7 @@ const Navbar = () => {
               to="/profiel"
               _hover={{ color: hoverColor }}
               fontSize={"2xl"} 
+              data-cy="profiel_btn"
             >
               <FontAwesomeIcon icon={faUser} />
             </ChakraLink>

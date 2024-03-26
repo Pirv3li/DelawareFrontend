@@ -49,7 +49,7 @@ function ProductInfo({}) {
               <Text>Eenheidsprijs: € {product.eenheidsprijs.toFixed(2)}</Text>
             </VStack>
             {sessionStorage.roles !== "leverancier" && (
-              <Button width={"30%"} bg={"lightgray"} mt={5}>
+              <Button width={"30%"} bg={"lightgray"} mt={5} data-cy="kopen_btn">
                 Kopen
               </Button>
             )}
