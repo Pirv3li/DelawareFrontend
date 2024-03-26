@@ -388,8 +388,8 @@ function ProductenList() {
           float="right"
           isDisabled={
             sessionStorage.getItem("roles") === "leverancier"
-              ? 10 != totalOrders
-              : 20 != totalOrders
+            ? sortedItems.length < itemsPerPage
+            : sortedItems.length < itemsPerPage
           }
           w={"400px"}
           h={50}
