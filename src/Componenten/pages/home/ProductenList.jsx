@@ -1,4 +1,3 @@
-
 import {
   Text,
   VStack,
@@ -40,8 +39,33 @@ function ProductenList() {
   };
 
   useEffect(() => {
-    fetchData();
-  }, [beginPagina, itemsPerPage]);
+    if (actualSearchTerm) {
+      fetchNextPageDataWithSearchTerm();
+    } else {
+      fetchData();
+    }
+  }, [beginPagina, itemsPerPage, actualSearchTerm]);
+  
+
+  const fetchNextPageDataWithSearchTerm = async () => {
+    try {
+      let response;
+      if (sessionStorage.getItem("roles") === "leverancier") {
+        response = await getAll(
+          `producten/leverancier/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`
+        );
+      } else {
+        response = await getAll(
+          `producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`
+        );
+      }
+      setItems(response);
+      setTotalOrders(response.length);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
 
   const fetchData = async () => {
     try {
@@ -360,7 +384,6 @@ function ProductenList() {
                       alignItems: "center",
                       width: "100%",
                     }}
-                    data-cy="bestellen_btn"
                     mt={5}
                   >
                     {sessionStorage.getItem("roles") === "leverancier"
