@@ -42,7 +42,6 @@ export const AuthProvider = ({ children }) => {
       sessionStorage.setItem(KLANT_ID_KEY, user.idKlant);
     } else {
       sessionStorage.setItem(LEVERANCIER_ID_KEY, user.idLeverancier);
-      console.log(user.idLeverancier);
     }
   }, []);
 

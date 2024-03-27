@@ -213,7 +213,6 @@ function ProductenList() {
   const decrementBegin = async () => {
     let newBegin = beginPagina - itemsPerPage;
     updateBeginPagina(newBegin);
-    console.log(beginPagina);
     window.scrollTo(0, 0);
     fetchDataAndUpdateState();
   };
@@ -242,13 +241,11 @@ function ProductenList() {
         }
       } else {
         if (sessionStorage.getItem("roles") === "leverancier") {
-          console.log(updatedCategories);
           response = await getAll(
             `producten/leverancier/zoekcategorie/${
               beginPagina + 1
             }/${itemsPerPage}/${updatedCategories}`
           );
-          console.log(response);
         } else {
           response = await getAll(
             `producten/zoekcategorie/${

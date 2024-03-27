@@ -59,7 +59,6 @@ function BestellingInfoPagina() {
       setOrder(order);
       setAdres(adres);
       setOrderDetails(orderDetails);
-      console.log(order.betalingStatus);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -82,14 +81,12 @@ function BestellingInfoPagina() {
     Met vriendelijke groet,
 
     delaware`;
-      console.log(order);
       const idOrder = order.idOrder;
       const text = reminderMessage;
       const onderwerp = "Betalingsherinnering ";
       const geopend = false;
       const afgehandeld = false;
       const datum = new Date();
-      console.log(idOrder, text, onderwerp, geopend, afgehandeld, datum);
       const response = await create("notificatie", {
         arg: {
           idOrder,

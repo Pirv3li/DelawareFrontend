@@ -151,7 +151,6 @@ export const ProfielInfo = () => {
   const handleAkkoord = async () => {
     setIsEditing(false);
     try {
-      console.log(body);
       const response = await post(`goedkeuring${roles}`, {arg: body });
     } catch (error) {
       console.error(error);
