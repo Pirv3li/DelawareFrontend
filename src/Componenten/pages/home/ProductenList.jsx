@@ -33,10 +33,37 @@ function ProductenList() {
   const [body, setBody] = useState([]);
   const [actualSearchTerm, setActualSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(20);
+  
+  const [sortedItems, setSortedItems] = useState([]);
+
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
   };
+
+  const updateBeginPagina = (newValue) => {
+    setBegin(newValue);
+  };
+
+  useEffect(() => {
+    if (Array.isArray(items)) {
+      setSortedItems(
+        items.slice().sort((a, b) => {
+          const aIsSelected = selectedCategories.includes(a.categorie);
+          const bIsSelected = selectedCategories.includes(b.categorie);
+  
+          if (aIsSelected && !bIsSelected) {
+            return -1;
+          } else if (!aIsSelected && bIsSelected) {
+            return 1;
+          } else {
+            return 0;
+          }
+        })
+      );
+    }
+  }, [items, selectedCategories]);
+  
 
   useEffect(() => {
     if (actualSearchTerm) {
@@ -45,18 +72,21 @@ function ProductenList() {
       fetchData();
     }
   }, [beginPagina, itemsPerPage, actualSearchTerm]);
-  
 
   const fetchNextPageDataWithSearchTerm = async () => {
     try {
       let response;
       if (sessionStorage.getItem("roles") === "leverancier") {
         response = await getAll(
-          `producten/leverancier/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`
+          `producten/leverancier/zoekterm/${
+            beginPagina + 1
+          }/${itemsPerPage}/${actualSearchTerm}`
         );
       } else {
         response = await getAll(
-          `producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`
+          `producten/zoekterm/${
+            beginPagina + 1
+          }/${itemsPerPage}/${actualSearchTerm}`
         );
       }
       setItems(response);
@@ -65,7 +95,6 @@ function ProductenList() {
       console.error("Error fetching data:", error);
     }
   };
-  
 
   const fetchData = async () => {
     try {
@@ -86,15 +115,10 @@ function ProductenList() {
       setItems(items);
       setCategories(categories);
       setTotalOrders(items.length);
+
+      fetchDataAndUpdateState();
     } catch (error) {
       console.error("Error fetching data:", error);
-    }
-  };
-
-  const handleItemsPerPage = (e) => {
-    const newValue = Number(e.target.value);
-    if (newValue >= 1 && newValue <= 50) {
-      setItemsPerPage(newValue);
     }
   };
 
@@ -125,95 +149,79 @@ function ProductenList() {
     }
   };
 
+  const fetchDataAndUpdateState = async () => {
+    try {
+      let response;
+  
+      if (selectedCategories.length > 0) {
+        if (sessionStorage.getItem("roles") === "leverancier") {
+          response = await getAll(
+            `producten/leverancier/zoekcategorie/${beginPagina}/${itemsPerPage}/${selectedCategories}`
+          );
+          
+        } else {
+          response = await getAll(
+            `producten/zoekcategorie/${beginPagina + 1}/${itemsPerPage}/${selectedCategories}`
+          );
+        }
+      } else if (actualSearchTerm) {
+        response = await getAll(
+          `producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`
+        );
+      } else {
+        if (sessionStorage.getItem("roles") === "leverancier") {
+          response = await getAll(
+            `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
+          );
+        } else {
+          response = await getAll(
+            `producten/begin/${beginPagina + 1}/${itemsPerPage}`
+          );
+        }
+      }
+  
+      // Sort the response based on selected categories
+      const sortedResponse = response.slice().sort((a, b) => {
+        const aIsSelected = selectedCategories.includes(a.categorie);
+        const bIsSelected = selectedCategories.includes(b.categorie);
+  
+        if (aIsSelected && !bIsSelected) {
+          return -1;
+        } else if (!aIsSelected && bIsSelected) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+  
+      // Update items state and total orders
+      setItems(response);
+      setTotalOrders(response.length);
+  
+      // Update sorted items state
+      setSortedItems(sortedResponse);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  
+  
   const incrementBegin = async () => {
     let newBegin = beginPagina + itemsPerPage;
-
-    setBegin(newBegin);
+    updateBeginPagina(newBegin);
     window.scrollTo(0, 20);
-
-    let response;
-    if (selectedCategories.length > 0) {
-      const body = {
-        begin: newBegin + 1,
-        categories: selectedCategories,
-        aantal: itemsPerPage,
-      };
-      response = await getAll(
-        `producten/zoekcategorie/${1}/${itemsPerPage}/${updatedCategories}`
-      );
-    } else if (actualSearchTerm) {
-      const body = {
-        begin: newBegin + 1,
-        zoekterm: actualSearchTerm,
-        aantal: itemsPerPage,
-      };
-      response = await getAll(
-        `producten/zoekterm/${
-          beginPagina + 1
-        }/${itemsPerPage}/${finalSearchTerm}`
-      );
-    } else {
-      let body = {
-        begin: newBegin + 1,
-      };
-      if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await getAll(
-          `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
-        );
-      } else {
-        response = await getAll(
-          `producten/begin/${beginPagina + 1}/${itemsPerPage}`
-        );
-      }
-    }
-    setItems(response);
-    setTotalOrders(response.length);
+    fetchDataAndUpdateState();
   };
-
+  
   const decrementBegin = async () => {
     let newBegin = beginPagina - itemsPerPage;
-
-    setBegin(newBegin);
+    updateBeginPagina(newBegin);
+    console.log(beginPagina);
     window.scrollTo(0, 0);
-
-    let response;
-    if (selectedCategories.length > 0) {
-      const body = {
-        begin: newBegin + 1,
-        categories: selectedCategories,
-        aantal: 20,
-      };
-      response = await getAll(
-        `producten/zoekcategorie/${1}/${itemsPerPage}/${selectedCategories}`
-      );
-    } else if (actualSearchTerm) {
-      const body = {
-        begin: newBegin + 1,
-        zoekterm: actualSearchTerm,
-        aantal: 20,
-      };
-      response = await getAll(
-        `producten/zoekterm/${
-          beginPagina + 1
-        }/${itemsPerPage}/${actualSearchTerm}`
-      );
-    } else {
-      let body = {
-        begin: newBegin + 1,
-      };
-      if (sessionStorage.getItem("roles") === "leverancier") {
-        response = await getAll(
-          `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
-        );
-      } else {
-        response = await getAll(
-          `producten/begin/${beginPagina + 1}/${itemsPerPage}`
-        );
-      }
-    }
-    setItems(response);
-    setTotalOrders(response.length);
+    fetchDataAndUpdateState();
   };
+  
+
 
   const handleCategoryChange = async (event) => {
     const category = event.target.name;
@@ -228,11 +236,6 @@ function ProductenList() {
     try {
       let response;
       if (updatedCategories.length === 0) {
-        // If no categories are selected, make the original API call
-        let body = {
-          begin: beginPagina + 1,
-          aantal: itemsPerPage,
-        };
         if (sessionStorage.getItem("roles") === "leverancier") {
           response = await getAll(
             `producten/leverancier/${beginPagina + 1}/${itemsPerPage}`
@@ -243,15 +246,14 @@ function ProductenList() {
           );
         }
       } else {
-        const body = {
-          begin: 1,
-          categories: updatedCategories,
-          aantal: itemsPerPage,
-        };
         if (sessionStorage.getItem("roles") === "leverancier") {
+          console.log(updatedCategories)
           response = await getAll(
-            `producten/leverancier/zoekcategorie/${beginPagina + 1}/${itemsPerPage}/${updatedCategories.join(",")}`
+            `producten/leverancier/zoekcategorie/${
+              beginPagina + 1
+            }/${itemsPerPage}/${updatedCategories}`
           );
+          console.log(response)
         } else {
           response = await getAll(
             `producten/zoekcategorie/${
@@ -259,7 +261,6 @@ function ProductenList() {
             }/${itemsPerPage}/${updatedCategories}`
           );
         }
-        
       }
       setItems(response);
       setTotalOrders(response.length);
@@ -267,25 +268,6 @@ function ProductenList() {
       console.error("Error during category search:", error);
     }
   };
-
-  const filteredItems = items.filter(
-    (item) =>
-      selectedCategories.length === 0 ||
-      selectedCategories.includes(item.categorie)
-  );
-
-  const sortedItems = filteredItems.sort((a, b) => {
-    const aIsSelected = selectedCategories.includes(a.categorie);
-    const bIsSelected = selectedCategories.includes(b.categorie);
-
-    if (aIsSelected && !bIsSelected) {
-      return -1;
-    } else if (!aIsSelected && bIsSelected) {
-      return 1;
-    } else {
-      return 0;
-    }
-  });
 
   const handleClick = (selectedProductId) => {
     sessionStorage.setItem("idProduct", selectedProductId);
@@ -320,15 +302,16 @@ function ProductenList() {
 
           <HStack spacing={5}>
             <Wrap spacing={5}>
-            {categories.map((category) => (
-              <Checkbox
-                key={category}
-                name={category}
-                onChange={handleCategoryChange}
-              >
-                {category}
-              </Checkbox>
-            ))}</Wrap>
+              {categories.map((category) => (
+                <Checkbox
+                  key={category}
+                  name={category}
+                  onChange={handleCategoryChange}
+                >
+                  {category}
+                </Checkbox>
+              ))}
+            </Wrap>
             {/* <Box display="flex" alignItems="center" mt={5}>
               <Input
                 style={{ width: "60px" }}
@@ -413,8 +396,8 @@ function ProductenList() {
           float="right"
           isDisabled={
             sessionStorage.getItem("roles") === "leverancier"
-            ? sortedItems.length < itemsPerPage
-            : sortedItems.length < itemsPerPage
+              ? sortedItems.length < itemsPerPage
+              : sortedItems.length < itemsPerPage
           }
           w={"400px"}
           h={50}
