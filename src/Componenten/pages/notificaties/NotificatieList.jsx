@@ -91,9 +91,10 @@ function NotificatieList() {
 
     let response;
 
-    response = await post(`notificatie/${sessionStorage.getItem("roles")}`, {
-      arg: body,
-    });
+    response = await getAll(
+      `notificatie/${sessionStorage.getItem("roles")}/${
+        begin + 1
+      }/${itemsPerPage}`);
 
     setItems(response);
     setTotalOrders(response.length);

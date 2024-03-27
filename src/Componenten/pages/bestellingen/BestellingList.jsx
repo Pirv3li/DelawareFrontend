@@ -60,9 +60,9 @@ function BestellingList() {
     setBegin(newBegin);
 
     let response;
-    response = await post(`order/${sessionStorage.getItem("roles")}`, {
-      arg: body,
-    });
+    response = await getAll(
+      `order/${sessionStorage.getItem("roles")}/${begin + 1}/${itemsPerPage}`
+    );
 
     setItems(response);
     setTotalOrders(response.length);
