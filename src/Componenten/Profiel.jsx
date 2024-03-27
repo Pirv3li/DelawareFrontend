@@ -123,13 +123,12 @@ export const ProfielInfo = () => {
           },
         } = userData;
         userData.roles = JSON.parse(userData.roles);
-
+      
         body = {
           klantNummer,
           gebruikersnaam,
           email,
           isActief: Boolean(isActief),
-          klant,
           roles:["klant"],
           iban,
           btwNummer,
