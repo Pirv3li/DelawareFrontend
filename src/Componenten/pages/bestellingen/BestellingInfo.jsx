@@ -56,14 +56,18 @@ function BestellingInfoPagina() {
       const order = await getById(`order/${idOrder}`);
       const adres = await getById(`adres/${order.idAdres}`);
       let orderDetails = await getById(`orderdetails/order/${idOrder}`);
+
       // sessionStorage.removeItem('idOrder');
       setOrder(order);
       setAdres(adres);
       setOrderDetails(orderDetails);
+      console.log(order.betalingStatus);
+
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
+
 
   const handleClick = (id) => {
     sessionStorage.setItem("idProduct", id);
@@ -71,7 +75,7 @@ function BestellingInfoPagina() {
   };
 
   const handlePaymentReminder = async () => {
-    const reminderMessage = `Beste [klant],
+    const reminderMessage = `Beste,
 
     Dit is een herinnering om u eraan te herinneren dat uw betaling voor de bestelling met ordernummer: ${order.idOrder} nog niet is ontvangen. 
 
@@ -142,9 +146,9 @@ function BestellingInfoPagina() {
             Betaling Status:{" "}
             <b>
               {order &&
-                (order.betalingStatus === 1 ? "Betaald" : "Niet Betaald")}
+                (order.betalingStatus == 1 ? "Betaald" : "Niet Betaald")}
             </b>
-            {order && order.betalingStatus !== 1 && (
+            {order && order.betalingStatus != 1 && sessionStorage.getItem("roles")=="leverancier"&&(
               <Button
                 size="sm"
                 colorScheme="blue"

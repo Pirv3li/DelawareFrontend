@@ -25,24 +25,6 @@ function NotificatieInfoPagina() {
     }
   };
 
-  const handleAfgehandeld = async (idNotificatie) => {
-    try {
-      const updatedNotificatie = {
-        idOrder: notificatie.idOrder,
-        text: notificatie.text,
-        onderwerp: notificatie.onderwerp,
-        geopend: notificatie.geopend === 1,
-        afgehandeld: "true",
-        datum: notificatie.datum,
-      };
-
-      await update(`notificatie/${idNotificatie}`, updatedNotificatie);
-
-      navigate(`/notificaties`);
-    } catch (error) {
-      console.error("Error updating notificatie:", error);
-    }
-  };
 
   return (
     <Center h="100vh">
