@@ -19,7 +19,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import { getById } from "../../../api/index.js";
+import { create, getAll, getById } from "../../../api/index.js"; // Import the API function for sending payment reminders
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
@@ -70,6 +70,47 @@ function BestellingInfoPagina() {
     navigate(`/productinfo`);
   };
 
+  const handlePaymentReminder = async () => {
+    const reminderMessage = `Beste [klant],
+
+    Dit is een herinnering om u eraan te herinneren dat uw betaling voor de bestelling met ordernummer: ${order.idOrder} nog niet is ontvangen. 
+
+    Gelieve zo spoedig mogelijk de betaling te voldoen om vertragingen in de verwerking van uw bestelling te voorkomen. Als u de betaling al heeft gedaan, kunt u deze herinnering negeren.
+
+    Bedankt voor uw aandacht en medewerking.
+
+    Met vriendelijke groet,
+
+    delaware`;
+    try {
+      const idOrder = order.idOrder;
+      const text = reminderMessage;
+      const onderwerp = "Betalingsherinnering ";
+      const geopend = false;
+      const afgehandeld = false;
+      const datum = new Date();
+
+      const response = await create("notificatie", {
+        arg: {
+          idOrder,
+          text,
+          onderwerp,
+          geopend,
+          afgehandeld,
+          datum,
+        },
+      });
+
+      if (response.ok) {
+        console.log("Payment reminder sent successfully");
+      } else {
+        console.error("Failed to send payment reminder");
+      }
+    } catch (error) {
+      console.error("Error sending payment reminder:", error);
+    }
+  };
+
   let roles = sessionStorage.getItem("roles");
 
   return (
@@ -103,13 +144,23 @@ function BestellingInfoPagina() {
               {order &&
                 (order.betalingStatus === 1 ? "Betaald" : "Niet Betaald")}
             </b>
+            {order && order.betalingStatus !== 1 && (
+              <Button
+                size="sm"
+                colorScheme="blue"
+                ml={2}
+                onClick={handlePaymentReminder}
+              >
+                Betalingsherinnering
+              </Button>
+            )}
           </ListItem>
           <ListItem>
             Adres:{" "}
             <b>{adres && `${adres.straat} ${adres.nummer} ${adres.stad}`}</b>
           </ListItem>
         </List>
-        {roles === "klant" && order && order.betalingStatus != "1" && (
+        {roles === "klant" && order && order.betalingStatus !== "1" && (
           <Button colorScheme="green" mt={5} w="100%">
             betalen
           </Button>
@@ -124,150 +175,154 @@ function BestellingInfoPagina() {
       </Box>
 
       <Box display="flex" flexDirection="column" alignItems="center" p={5}>
-      {isTableLayout ? (
-        <Table variant="simple" m={8} width="100%">
-          <Thead>
-            <Tr>
-              <Th> </Th>
-              <Th>naam</Th>
-              <Th>stukprijs</Th>
-              <Th>btw</Th>
-              <Th>aantal</Th>
-              <Th width={"25px"}>prijs</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {orderDetails &&
-              orderDetails.map((item) => (
-                <Tr
-                  key={item.idOrderDetails}
-                  onClick={() => handleClick(item.idOrderDetails)}
-                  borderBottom="1px solid"
-                  borderColor="gray.200"
-                  _hover={{
-                    bg: hoverColor,
-                    transform: "scale(1.02)",
-                    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
-                    cursor: "pointer",
-                  }}
-                  transition="all 0.2s"
-                >
-                  <Td width="20%">
-                    <Image src={item.foto} alt="Product" objectFit="contain" />
-                  </Td>
-                  <Td width="20%">{item.naam}</Td>
-                  <Td width="10%">€ {item.eenheidsprijs}</Td>
-                  <Td width="10%">
-                    € {(item.btwtarief / 100) * item.eenheidsprijs}
-                  </Td>
-                  <Td width="10%">{item.aantal}</Td>
-                  <Td width={"25px"}>
-                    €
-                    {(
-                      ((item.btwtarief / 100) * item.eenheidsprijs +
-                        item.eenheidsprijs) *
-                      item.aantal
-                    ).toFixed(2)}
-                  </Td>
-                </Tr>
-              ))}
-            <Tr>
-              <Th gridColumn={"5 / auto"} textAlign="right">
-                Totaal:
-              </Th>
-              <Th>
-                <Flex alignItems="center">
-                  <Box mr={2}>
-                    €
-                    {orderDetails &&
-                      orderDetails
-                        .reduce(
-                          (total, item) =>
-                            total +
-                            ((item.btwtarief / 100) * item.eenheidsprijs +
-                              item.eenheidsprijs) *
-                              item.aantal,
-                          0
-                        )
-                        .toFixed(2)}
-                  </Box>
-                  <Button onClick={handlePrint} colorScheme="red" size="sm">
-                    PDF
-                  </Button>
-                </Flex>
-              </Th>
-            </Tr>
-          </Tbody>
-        </Table>
-        ) : (
-          <VStack spacing={4} width="100%">
-          {orderDetails &&
-            orderDetails.map((item) => (
-              <>
-              <Box
-                key={item.idOrderDetails}
-                onClick={() => handleClick(item.idOrderDetails)}
-                borderWidth={1}
-                borderRadius="lg"
-                overflow="hidden"
-                p={4}
-                _hover={{
-                  bg: hoverColor,
-                  transform: "scale(1.02)",
-                  boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
-                  cursor: "pointer",
-                }}
-                transition="all 0.2s"
-                width="100%"
-              >
-                <HStack spacing={4}>
-                  <Image
-                    boxSize="120px"
-                    src={item.foto}
-                    alt="Product"
-                    objectFit="contain"
-                  />
-                  <VStack align="start" spacing={1}>
-                    <Text fontWeight="bold">{item.naam}</Text>
-                    <Text>€ {item.eenheidsprijs}</Text>
-                    <Text>
-                      BTW: € {(item.btwtarief / 100) * item.eenheidsprijs}
-                    </Text>
-                    <Text>Aantal: {item.aantal}</Text>
-                    <Text>
-                      Prijs: €
+        {isTableLayout ? (
+          <Table variant="simple" m={8} width="100%">
+            <Thead>
+              <Tr>
+                <Th> </Th>
+                <Th>naam</Th>
+                <Th>stukprijs</Th>
+                <Th>btw</Th>
+                <Th>aantal</Th>
+                <Th width={"25px"}>prijs</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {orderDetails &&
+                orderDetails.map((item) => (
+                  <Tr
+                    key={item.idOrderDetails}
+                    onClick={() => handleClick(item.idOrderDetails)}
+                    borderBottom="1px solid"
+                    borderColor="gray.200"
+                    _hover={{
+                      bg: hoverColor,
+                      transform: "scale(1.02)",
+                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                      cursor: "pointer",
+                    }}
+                    transition="all 0.2s"
+                  >
+                    <Td width="20%">
+                      <Image
+                        src={item.foto}
+                        alt="Product"
+                        objectFit="contain"
+                      />
+                    </Td>
+                    <Td width="20%">{item.naam}</Td>
+                    <Td width="10%">€ {item.eenheidsprijs}</Td>
+                    <Td width="10%">
+                      € {(item.btwtarief / 100) * item.eenheidsprijs}
+                    </Td>
+                    <Td width="10%">{item.aantal}</Td>
+                    <Td width={"25px"}>
+                      €
                       {(
                         ((item.btwtarief / 100) * item.eenheidsprijs +
                           item.eenheidsprijs) *
                         item.aantal
                       ).toFixed(2)}
-                    </Text>
-                  </VStack>
-                </HStack>
-              </Box>
-            </>
-            ))}
-            <Flex alignItems="center">
-                  <Box mr={2}>
-                  Totaal: €
-                    {orderDetails &&
-                      orderDetails
-                        .reduce(
-                          (total, item) =>
-                            total +
+                    </Td>
+                  </Tr>
+                ))}
+              <Tr>
+                <Th gridColumn={"5 / auto"} textAlign="right">
+                  Totaal:
+                </Th>
+                <Th>
+                  <Flex alignItems="center">
+                    <Box mr={2}>
+                      €
+                      {orderDetails &&
+                        orderDetails
+                          .reduce(
+                            (total, item) =>
+                              total +
+                              ((item.btwtarief / 100) * item.eenheidsprijs +
+                                item.eenheidsprijs) *
+                                item.aantal,
+                            0
+                          )
+                          .toFixed(2)}
+                    </Box>
+                    <Button onClick={handlePrint} colorScheme="red" size="sm">
+                      PDF
+                    </Button>
+                  </Flex>
+                </Th>
+              </Tr>
+            </Tbody>
+          </Table>
+        ) : (
+          <VStack spacing={4} width="100%">
+            {orderDetails &&
+              orderDetails.map((item) => (
+                <>
+                  <Box
+                    key={item.idOrderDetails}
+                    onClick={() => handleClick(item.idOrderDetails)}
+                    borderWidth={1}
+                    borderRadius="lg"
+                    overflow="hidden"
+                    p={4}
+                    _hover={{
+                      bg: hoverColor,
+                      transform: "scale(1.02)",
+                      boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
+                      cursor: "pointer",
+                    }}
+                    transition="all 0.2s"
+                    width="100%"
+                  >
+                    <HStack spacing={4}>
+                      <Image
+                        boxSize="120px"
+                        src={item.foto}
+                        alt="Product"
+                        objectFit="contain"
+                      />
+                      <VStack align="start" spacing={1}>
+                        <Text fontWeight="bold">{item.naam}</Text>
+                        <Text>€ {item.eenheidsprijs}</Text>
+                        <Text>
+                          BTW: € {(item.btwtarief / 100) * item.eenheidsprijs}
+                        </Text>
+                        <Text>Aantal: {item.aantal}</Text>
+                        <Text>
+                          Prijs: €
+                          {(
                             ((item.btwtarief / 100) * item.eenheidsprijs +
                               item.eenheidsprijs) *
-                              item.aantal,
-                          0
-                        )
-                        .toFixed(2)}
+                            item.aantal
+                          ).toFixed(2)}
+                        </Text>
+                      </VStack>
+                    </HStack>
                   </Box>
-                  <Button onClick={handlePrint} colorScheme="red" size="sm">
-                    PDF
-                  </Button>
-                  </Flex>
-        </VStack>
-      )}
+                </>
+              ))}
+            <Flex alignItems="center">
+              <Box mr={2}>
+                Totaal: €
+                {orderDetails &&
+                  orderDetails
+                    .reduce(
+                      (total, item) =>
+                        total +
+                        ((item.btwtarief / 100) * item.eenheidsprijs +
+                          item.eenheidsprijs) *
+                          item.aantal,
+                      0
+                    )
+                    .toFixed(2)}
+              </Box>
+              <Button onClick={handlePrint} colorScheme="red" size="sm">
+                PDF
+              </Button>
+            </Flex>
+          </VStack>
+        )}
       </Box>
     </div>
   );
