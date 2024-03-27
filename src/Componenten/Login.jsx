@@ -77,7 +77,7 @@ export default function Login() {
             />
           </FormControl>
           <FormControl id="password" mb={4}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel>Wachtwoord</FormLabel>
             <Input
               type="password"
               name="password"
