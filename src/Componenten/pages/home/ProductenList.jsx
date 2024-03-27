@@ -33,9 +33,8 @@ function ProductenList() {
   const [body, setBody] = useState([]);
   const [actualSearchTerm, setActualSearchTerm] = useState("");
   const [itemsPerPage, setItemsPerPage] = useState(20);
-  
-  const [sortedItems, setSortedItems] = useState([]);
 
+  const [sortedItems, setSortedItems] = useState([]);
 
   const handleItemsPerPageChange = (event) => {
     setItemsPerPage(Number(event.target.value));
@@ -51,7 +50,7 @@ function ProductenList() {
         items.slice().sort((a, b) => {
           const aIsSelected = selectedCategories.includes(a.categorie);
           const bIsSelected = selectedCategories.includes(b.categorie);
-  
+
           if (aIsSelected && !bIsSelected) {
             return -1;
           } else if (!aIsSelected && bIsSelected) {
@@ -63,7 +62,6 @@ function ProductenList() {
       );
     }
   }, [items, selectedCategories]);
-  
 
   useEffect(() => {
     if (actualSearchTerm) {
@@ -152,21 +150,24 @@ function ProductenList() {
   const fetchDataAndUpdateState = async () => {
     try {
       let response;
-  
+
       if (selectedCategories.length > 0) {
         if (sessionStorage.getItem("roles") === "leverancier") {
           response = await getAll(
             `producten/leverancier/zoekcategorie/${beginPagina}/${itemsPerPage}/${selectedCategories}`
           );
-          
         } else {
           response = await getAll(
-            `producten/zoekcategorie/${beginPagina + 1}/${itemsPerPage}/${selectedCategories}`
+            `producten/zoekcategorie/${
+              beginPagina + 1
+            }/${itemsPerPage}/${selectedCategories}`
           );
         }
       } else if (actualSearchTerm) {
         response = await getAll(
-          `producten/zoekterm/${beginPagina + 1}/${itemsPerPage}/${actualSearchTerm}`
+          `producten/zoekterm/${
+            beginPagina + 1
+          }/${itemsPerPage}/${actualSearchTerm}`
         );
       } else {
         if (sessionStorage.getItem("roles") === "leverancier") {
@@ -179,12 +180,12 @@ function ProductenList() {
           );
         }
       }
-  
+
       // Sort the response based on selected categories
       const sortedResponse = response.slice().sort((a, b) => {
         const aIsSelected = selectedCategories.includes(a.categorie);
         const bIsSelected = selectedCategories.includes(b.categorie);
-  
+
         if (aIsSelected && !bIsSelected) {
           return -1;
         } else if (!aIsSelected && bIsSelected) {
@@ -193,26 +194,25 @@ function ProductenList() {
           return 0;
         }
       });
-  
+
       // Update items state and total orders
       setItems(response);
       setTotalOrders(response.length);
-  
+
       // Update sorted items state
       setSortedItems(sortedResponse);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-  
-  
+
   const incrementBegin = async () => {
     let newBegin = beginPagina + itemsPerPage;
     updateBeginPagina(newBegin);
     window.scrollTo(0, 20);
     fetchDataAndUpdateState();
   };
-  
+
   const decrementBegin = async () => {
     let newBegin = beginPagina - itemsPerPage;
     updateBeginPagina(newBegin);
@@ -220,8 +220,6 @@ function ProductenList() {
     window.scrollTo(0, 0);
     fetchDataAndUpdateState();
   };
-  
-
 
   const handleCategoryChange = async (event) => {
     const category = event.target.name;
@@ -247,13 +245,13 @@ function ProductenList() {
         }
       } else {
         if (sessionStorage.getItem("roles") === "leverancier") {
-          console.log(updatedCategories)
+          console.log(updatedCategories);
           response = await getAll(
             `producten/leverancier/zoekcategorie/${
               beginPagina + 1
             }/${itemsPerPage}/${updatedCategories}`
           );
-          console.log(response)
+          console.log(response);
         } else {
           response = await getAll(
             `producten/zoekcategorie/${
@@ -301,7 +299,7 @@ function ProductenList() {
           <Button onClick={handleSearch}>Zoek</Button>
 
           <HStack spacing={5}>
-            <Wrap spacing={5}>
+            <Wrap spacing={5} flex="1">
               {categories.map((category) => (
                 <Checkbox
                   key={category}
@@ -312,23 +310,16 @@ function ProductenList() {
                 </Checkbox>
               ))}
             </Wrap>
-            {/* <Box display="flex" alignItems="center" mt={5}>
-              <Input
-                style={{ width: "60px" }}
-                value={itemsPerPage}
-                onChange={handleItemsPerPage}
-                onClick={(e) => e.target.select()}
-                textAlign={"center"}
-                margin={"auto"}
-              />
-            </Box> */}
-            <Select value={itemsPerPage} onChange={handleItemsPerPageChange}>
+            <Select
+              value={itemsPerPage}
+              onChange={handleItemsPerPageChange}
+              width="100px"
+            >
               <option value={10}>10</option>
               <option value={20}>20</option>
               <option value={30}>30</option>
             </Select>
           </HStack>
-
           <Wrap spacing={4} justify="flex-wrap" overflow="none">
             {sortedItems.map((item) => (
               <WrapItem key={item.idProduct}>

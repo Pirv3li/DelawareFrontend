@@ -114,9 +114,9 @@ function BestellingInfoPagina() {
   let roles = sessionStorage.getItem("roles");
 
   return (
-    <div ref={componentRef}>
+    <div ref={componentRef} style={{marginTop:45}}>
       <Box
-        mt={5}
+        mt={10}
         w="80%"
         p={5}
         color="black"
