@@ -29,7 +29,11 @@ const Navbar = () => {
   const { aantalOngeopend, setAantalOngeopend } =
     useContext(NotificatieContext);
 
-  const iconSize = useBreakpointValue({ base: "md", md: "lg" });
+  const iconSize = useBreakpointValue({
+    base: "sm",
+    sm: "lg",
+    lg: "2x",
+  });
 
   const handleLogout = () => {
     logOut();

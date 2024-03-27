@@ -290,13 +290,16 @@ function ProductenList() {
       </Text>
       {showList && (
         <>
-          <Input
-            placeholder="Zoek producten op naam"
-            value={searchTerm}
-            height={35}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-          <Button onClick={handleSearch}>Zoek</Button>
+          <Flex>
+            <Input
+              placeholder="Zoek producten op naam"
+              value={searchTerm}
+              height={35}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              mr={4}
+            />
+            <Button onClick={handleSearch}>Zoek</Button>
+          </Flex>
 
           <HStack spacing={5}>
             <Wrap spacing={5} flex="1">
@@ -320,7 +323,7 @@ function ProductenList() {
               <option value={30}>30</option>
             </Select>
           </HStack>
-          <Wrap spacing={4} justify="flex-wrap" overflow="none">
+          <Wrap spacing={4} justify="center" overflow="none">
             {sortedItems.map((item) => (
               <WrapItem key={item.idProduct}>
                 <CustomBox
@@ -370,13 +373,14 @@ function ProductenList() {
           </Wrap>
         </>
       )}
-      <Flex alignSelf={"end"}>
+      <Flex alignSelf={"end"} mb={8} w="100%" justify={"space-evenly"}>
+        {" "}
         {beginPagina > 0 && (
           <Button
             leftIcon={<ArrowBackIcon />}
             onClick={decrementBegin}
             float="left"
-            w={"400px"}
+            w={"150px"}
             h={50}
             bg={"gray.500"}
           />
@@ -390,7 +394,7 @@ function ProductenList() {
               ? sortedItems.length < itemsPerPage
               : sortedItems.length < itemsPerPage
           }
-          w={"400px"}
+          w={"150px"}
           h={50}
           bg={"gray.500"}
           ml={5}
