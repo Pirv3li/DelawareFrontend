@@ -356,6 +356,7 @@ function ProductenList() {
                       width: "100%",
                     }}
                     mt={5}
+                    data-cy="bestellen_btn"
                   >
                     {sessionStorage.getItem("roles") === "leverancier"
                       ? "Beheren"
