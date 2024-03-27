@@ -131,7 +131,7 @@ function BestellingList() {
                 <Td textAlign="center">€ {item.totaalPrijs}</Td>
                 <Td textAlign="center">{item.orderStatus}</Td>
                 <Td textAlign="center">
-                  {item.betalingStatus === 1 ? "Betaald" : "Niet Betaald"}
+                  {item.betalingStatus == 1 ? "Betaald" : "Niet Betaald"}
                 </Td>
               </Tr>
             ))}
