@@ -164,12 +164,12 @@ function BestellingInfoPagina() {
             <b>{adres && `${adres.straat} ${adres.nummer} ${adres.stad}`}</b>
           </ListItem>
         </List>
-        {roles === "klant" && order && order.betalingStatus !== "1" && (
+        {roles == "klant" && order && order.betalingStatus != "1" && (
           <Button colorScheme="green" mt={5} w="100%">
             betalen
           </Button>
         )}
-        {roles === "leverancier" &&
+        {roles == "leverancier" &&
           order &&
           order.orderStatus != "geleverd" && (
             <Button colorScheme="green" mt={5} w="100%">
