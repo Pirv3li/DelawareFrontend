@@ -75,14 +75,13 @@ export const ProfielInfo = () => {
       setIsEditing(true);
       setShowAkkoord(true);
       let body = {};
-
       if (roles === "leverancier") {
         const {
           leverancierNummer,
           gebruikersnaam,
           email,
           isActief,
-          roles,
+          roles = "leverancier",
           bedrijf: {
             iban,
             btwNummer,
@@ -91,13 +90,14 @@ export const ProfielInfo = () => {
             adres: { straat, nummer, stad, postcode },
           },
         } = userData;
+        userData.roles = JSON.parse(userData.roles);
 
         body = {
           leverancierNummer,
           gebruikersnaam,
           email,
           isActief: Boolean(isActief),
-          roles,
+          roles:["leverancier"],
           iban,
           btwNummer,
           telefoonnummer,
@@ -113,7 +113,7 @@ export const ProfielInfo = () => {
           gebruikersnaam,
           email,
           isActief,
-          roles,
+          roles = "klant",
           bedrijf: {
             iban,
             btwNummer,
@@ -122,13 +122,15 @@ export const ProfielInfo = () => {
             adres: { straat, nummer, stad, postcode },
           },
         } = userData;
+        userData.roles = JSON.parse(userData.roles);
 
         body = {
           klantNummer,
           gebruikersnaam,
           email,
           isActief: Boolean(isActief),
-          roles,
+          klant,
+          roles:["klant"],
           iban,
           btwNummer,
           telefoonnummer,
@@ -150,7 +152,8 @@ export const ProfielInfo = () => {
   const handleAkkoord = async () => {
     setIsEditing(false);
     try {
-      const response = await post(`goedkeuring${roles}`, { arg: body });
+      console.log(body);
+      const response = await post(`goedkeuring${roles}`, {arg: body });
     } catch (error) {
       console.error(error);
     }

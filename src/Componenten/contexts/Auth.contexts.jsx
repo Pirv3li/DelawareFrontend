@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [gebruiker, setGebruiker] = useState(null);
   const [ready, setReady] = useState(false);
   const [isAuthed, setIsAuthed] = useState(false);
+  
 
   useEffect(() => {
     api.setAuthToken(token);
@@ -36,11 +37,12 @@ export const AuthProvider = ({ children }) => {
     setGebruiker(user);
 
     sessionStorage.setItem(JWT_TOKEN_KEY, token);
-    sessionStorage.setItem(Roles, user.roles);
-    if (user.roles == "klant") {
+    sessionStorage.setItem(Roles, JSON.parse(user.roles)[0]);
+    if (JSON.parse(user.roles)[0] == "klant") {
       sessionStorage.setItem(KLANT_ID_KEY, user.idKlant);
     } else {
       sessionStorage.setItem(LEVERANCIER_ID_KEY, user.idLeverancier);
+      console.log(user.idLeverancier);
     }
   }, []);
 

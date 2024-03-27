@@ -56,7 +56,6 @@ function BestellingInfoPagina() {
       const order = await getById(`order/${idOrder}`);
       const adres = await getById(`adres/${order.idAdres}`);
       let orderDetails = await getById(`orderdetails/order/${idOrder}`);
-
       setOrder(order);
       setAdres(adres);
       setOrderDetails(orderDetails);
@@ -83,14 +82,14 @@ function BestellingInfoPagina() {
     Met vriendelijke groet,
 
     delaware`;
-    try {
+      console.log(order);
       const idOrder = order.idOrder;
       const text = reminderMessage;
       const onderwerp = "Betalingsherinnering ";
       const geopend = false;
       const afgehandeld = false;
       const datum = new Date();
-
+      console.log(idOrder, text, onderwerp, geopend, afgehandeld, datum);
       const response = await create("notificatie", {
         arg: {
           idOrder,
@@ -102,14 +101,8 @@ function BestellingInfoPagina() {
         },
       });
 
-      if (response.ok) {
-        console.log("Payment reminder sent successfully");
-      } else {
-        console.error("Failed to send payment reminder");
-      }
-    } catch (error) {
-      console.error("Error sending payment reminder:", error);
-    }
+     
+ 
   };
 
   let roles = sessionStorage.getItem("roles");
