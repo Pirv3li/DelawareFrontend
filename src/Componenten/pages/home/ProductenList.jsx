@@ -181,7 +181,6 @@ function ProductenList() {
         }
       }
 
-      // Sort the response based on selected categories
       const sortedResponse = response.slice().sort((a, b) => {
         const aIsSelected = selectedCategories.includes(a.categorie);
         const bIsSelected = selectedCategories.includes(b.categorie);
@@ -195,11 +194,9 @@ function ProductenList() {
         }
       });
 
-      // Update items state and total orders
       setItems(response);
       setTotalOrders(response.length);
 
-      // Update sorted items state
       setSortedItems(sortedResponse);
     } catch (error) {
       console.error("Error fetching data:", error);

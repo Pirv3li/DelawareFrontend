@@ -45,10 +45,11 @@ function BestellingList() {
 
   const fetchData = async () => {
     try {
-        const response = await getAll(`order/${sessionStorage.getItem("roles")}/${begin + 1}/${itemsPerPage}`);
-        setItems(response);
-        setTotalOrders(response.length);
-
+      const response = await getAll(
+        `order/${sessionStorage.getItem("roles")}/${begin + 1}/${itemsPerPage}`
+      );
+      setItems(response);
+      setTotalOrders(response.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -58,9 +59,10 @@ function BestellingList() {
     let newBegin = begin + itemsPerPage;
     setBegin(newBegin);
 
-
     let response;
-    response = await post(`order/${sessionStorage.getItem("roles")}`, { arg: body });
+    response = await post(`order/${sessionStorage.getItem("roles")}`, {
+      arg: body,
+    });
 
     setItems(response);
     setTotalOrders(response.length);

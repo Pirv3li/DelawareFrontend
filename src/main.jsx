@@ -12,7 +12,7 @@ import {
   Notificaties,
   NotificatieInfoMeer,
   ProductenList,
-  WachtwoordReset
+  WachtwoordReset,
 } from "./pages.jsx";
 import PrivateRoute from "./Componenten/PrivateRoute.jsx";
 import Layout from "./Componenten/Layout.jsx";

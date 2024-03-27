@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { FormProvider, useForm } from "react-hook-form";
-import { CheckIcon } from '@chakra-ui/icons'
+import { CheckIcon } from "@chakra-ui/icons";
 
 import {
   Box,
@@ -27,56 +27,47 @@ let fotos = [
   "https://images.pexels.com/photos/17082478/pexels-photo-17082478/free-photo-of-red-office-building-corner.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   "https://images.pexels.com/photos/36717/amazing-animal-beautiful-beautifull.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
   "https://images.pexels.com/photos/1642220/pexels-photo-1642220.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-]
+];
 let randomGetal = Math.floor(Math.random() * fotos.length);
-
-
 
 export default function WachtwoordResetFunctie() {
   const { loading } = useAuth();
   const navigate = useNavigate();
-  // const [showAlert, setShowAlert] = useState(false);
   const [errorTekst, setErrorTekst] = useState();
   const [gebruikersnaam, setGebruikersnaam] = useState("");
   const [email, setEmail] = useState("");
   let [response, setResponse] = useState("");
   const [bgImage, setBgImage] = useState(fotos[randomGetal]);
 
-
-
   const handleReset = async () => {
     event.preventDefault();
-
-
 
     let body = {
       username: gebruikersnaam,
       email: email,
-    }
+    };
 
     response = await post(`klant/reset`, { arg: body });
     setResponse(response);
     response = await post(`leverancier/reset`, { arg: body });
 
-
     if (response) {
-      setErrorTekst(<>Wachtwoord gereset <br /> Controleer uw email</>);
+      setErrorTekst(
+        <>
+          Wachtwoord gereset <br /> Controleer uw email
+        </>
+      );
     } else {
-      setErrorTekst(<>Wachtwoord gereset <br /> Controleer uw email</>);
+      setErrorTekst(
+        <>
+          Wachtwoord gereset <br /> Controleer uw email
+        </>
+      );
     }
-
-
-
-
   };
 
-
   return (
-    <Center
-      h="100vh"
-      bgImage={`url('${bgImage}')`}
-      bgSize="cover"
-    >
+    <Center h="100vh" bgImage={`url('${bgImage}')`} bgSize="cover">
       <Container
         maxW="sm"
         p={8}
@@ -87,11 +78,14 @@ export default function WachtwoordResetFunctie() {
         <Heading mb={6}>Wachtwoord reset</Heading>
         {errorTekst && (
           <Alert
-            style={{ marginTop: "20px", marginBottom: "20px", backgroundColor: "mintgreen" }}
+            style={{
+              marginTop: "20px",
+              marginBottom: "20px",
+              backgroundColor: "mintgreen",
+            }}
           >
-            
             {errorTekst}
-            <CheckIcon ml={"auto"} color={"green"} fontSize={"2xl"}/>
+            <CheckIcon ml={"auto"} color={"green"} fontSize={"2xl"} />
           </Alert>
         )}
         <form onSubmit={handleReset}>
@@ -104,7 +98,6 @@ export default function WachtwoordResetFunctie() {
               onChange={(e) => {
                 setGebruikersnaam(e.target.value);
                 setErrorTekst("");
-                
               }}
               required
             />
@@ -130,7 +123,6 @@ export default function WachtwoordResetFunctie() {
               colorScheme="blue"
               mr={"auto"}
               width={"8vh"}
-
             >
               Resetten
             </Button>
@@ -141,13 +133,10 @@ export default function WachtwoordResetFunctie() {
               onClick={() => navigate("/login")}
               ml={"auto"}
               width={"8vh"}
-              
-
             >
               Terug
             </Button>
           </Flex>
-
         </form>
       </Container>
     </Center>

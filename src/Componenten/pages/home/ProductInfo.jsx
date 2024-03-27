@@ -19,7 +19,6 @@ function ProductInfo({}) {
     }
   };
 
-
   return (
     <Box>
       {product && (

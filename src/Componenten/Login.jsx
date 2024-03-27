@@ -1,14 +1,11 @@
-import { useCallback, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
-  Box,
   Button,
   Flex,
   Heading,
   Alert,
   AlertIcon,
-  VStack,
   Center,
   FormControl,
   FormLabel,
@@ -16,8 +13,6 @@ import {
   Container,
 } from "@chakra-ui/react";
 import { useAuth } from "./contexts/Auth.contexts";
-import Error from "../Componenten/Error";
-import { Kbd } from "@chakra-ui/react";
 
 let fotos = [
   "https://images.unsplash.com/photo-1634302200791-9c062778b653?q=80&w=1000&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -28,9 +23,8 @@ let fotos = [
 let randomGetal = Math.floor(Math.random() * fotos.length);
 
 export default function Login() {
-  const { error, loading, login } = useAuth();
+  const { loading, login } = useAuth();
   const navigate = useNavigate();
-  // const [showAlert, setShowAlert] = useState(false);
   const [errorTekst, setErrorTekst] = useState();
   const [gebruikersnaam, setGebruikersnaam] = useState("");
   const [password, setPassword] = useState("");

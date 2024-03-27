@@ -9,7 +9,7 @@ const Footer = () => {
 
   return (
     <Box>
-          <Whatsapp />
+      <Whatsapp />
       <Flex
         as="footer"
         bgColor={bgColor}

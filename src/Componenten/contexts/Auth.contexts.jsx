@@ -63,7 +63,7 @@ export const AuthProvider = ({ children }) => {
         setSession(token, user);
         return true;
       } catch (error) {
-        // Ignore the error from the first login attempt
+        console.log("Error during login:", error);
       }
 
       try {

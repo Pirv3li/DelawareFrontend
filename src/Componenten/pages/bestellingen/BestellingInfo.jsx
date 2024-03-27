@@ -19,7 +19,7 @@ import {
   HStack,
   Text,
 } from "@chakra-ui/react";
-import { create, getAll, getById } from "../../../api/index.js"; // Import the API function for sending payment reminders
+import { create, getAll, getById } from "../../../api/index.js";
 import { useColorModeValue } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import { useReactToPrint } from "react-to-print";
@@ -57,17 +57,14 @@ function BestellingInfoPagina() {
       const adres = await getById(`adres/${order.idAdres}`);
       let orderDetails = await getById(`orderdetails/order/${idOrder}`);
 
-      // sessionStorage.removeItem('idOrder');
       setOrder(order);
       setAdres(adres);
       setOrderDetails(orderDetails);
       console.log(order.betalingStatus);
-
     } catch (error) {
       console.error("Error fetching data:", error);
     }
   };
-
 
   const handleClick = (id) => {
     sessionStorage.setItem("idProduct", id);
@@ -118,7 +115,7 @@ function BestellingInfoPagina() {
   let roles = sessionStorage.getItem("roles");
 
   return (
-    <div ref={componentRef} style={{marginTop:45}}>
+    <div ref={componentRef} style={{ marginTop: 45 }}>
       <Box
         mt={10}
         w="80%"
@@ -148,16 +145,18 @@ function BestellingInfoPagina() {
               {order &&
                 (order.betalingStatus == 1 ? "Betaald" : "Niet Betaald")}
             </b>
-            {order && order.betalingStatus != 1 && sessionStorage.getItem("roles")=="leverancier"&&(
-              <Button
-                size="sm"
-                colorScheme="blue"
-                ml={2}
-                onClick={handlePaymentReminder}
-              >
-                Betalingsherinnering
-              </Button>
-            )}
+            {order &&
+              order.betalingStatus != 1 &&
+              sessionStorage.getItem("roles") == "leverancier" && (
+                <Button
+                  size="sm"
+                  colorScheme="blue"
+                  ml={2}
+                  onClick={handlePaymentReminder}
+                >
+                  Betalingsherinnering
+                </Button>
+              )}
           </ListItem>
           <ListItem>
             Adres:{" "}
@@ -169,13 +168,11 @@ function BestellingInfoPagina() {
             betalen
           </Button>
         )}
-        {roles == "leverancier" &&
-          order &&
-          order.orderStatus != "geleverd" && (
-            <Button colorScheme="green" mt={5} w="100%">
-              verander levering status
-            </Button>
-          )}
+        {roles == "leverancier" && order && order.orderStatus != "geleverd" && (
+          <Button colorScheme="green" mt={5} w="100%">
+            verander levering status
+          </Button>
+        )}
       </Box>
 
       <Box display="flex" flexDirection="column" alignItems="center" p={5}>
@@ -262,9 +259,8 @@ function BestellingInfoPagina() {
           <VStack spacing={4} width="100%">
             {orderDetails &&
               orderDetails.map((item) => (
-                <>
+                <React.Fragment key={item.idOrderDetails}>
                   <Box
-                    key={item.idOrderDetails}
                     onClick={() => handleClick(item.idOrderDetails)}
                     borderWidth={1}
                     borderRadius="lg"
@@ -304,7 +300,7 @@ function BestellingInfoPagina() {
                       </VStack>
                     </HStack>
                   </Box>
-                </>
+                </React.Fragment>
               ))}
             <Flex alignItems="center">
               <Box mr={2}>

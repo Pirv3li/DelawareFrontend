@@ -37,7 +37,6 @@ export const ProfielInfo = () => {
     fetchData();
   }, []);
 
-
   const fetchData = async () => {
     try {
       const response = await getAll(`goedkeuring${roles}/laatsteWijziging`);
@@ -47,8 +46,6 @@ export const ProfielInfo = () => {
     }
   };
 
-
-
   async function fetchUserData() {
     try {
       const data = await (roles === "klant" ? getKlant() : getLeverancier());
@@ -56,7 +53,8 @@ export const ProfielInfo = () => {
         setUserData(roles === "klant" ? data[0].klant : data[0].leverancier);
       } else {
         console.error(
-          `No data returned from ${roles === "klant" ? "getKlant" : "getLeverancier"
+          `No data returned from ${
+            roles === "klant" ? "getKlant" : "getLeverancier"
           }`
         );
       }
@@ -76,7 +74,7 @@ export const ProfielInfo = () => {
     if (!isEditing) {
       setIsEditing(true);
       setShowAkkoord(true);
-      let body = {}
+      let body = {};
 
       if (roles === "leverancier") {
         const {
@@ -90,10 +88,9 @@ export const ProfielInfo = () => {
             btwNummer,
             telefoonnummer,
             sector,
-            adres: { straat, nummer, stad, postcode }
-          }
+            adres: { straat, nummer, stad, postcode },
+          },
         } = userData;
-
 
         body = {
           leverancierNummer,
@@ -108,10 +105,9 @@ export const ProfielInfo = () => {
           straat,
           nummer,
           stad,
-          postcode
+          postcode,
         };
-      }
-      else if (roles === "klant") {
+      } else if (roles === "klant") {
         const {
           klantNummer,
           gebruikersnaam,
@@ -123,10 +119,9 @@ export const ProfielInfo = () => {
             btwNummer,
             telefoonnummer,
             sector,
-            adres: { straat, nummer, stad, postcode }
-          }
+            adres: { straat, nummer, stad, postcode },
+          },
         } = userData;
-
 
         body = {
           klantNummer,
@@ -141,9 +136,8 @@ export const ProfielInfo = () => {
           straat,
           nummer,
           stad,
-          postcode
+          postcode,
         };
-
       }
       setBody(body);
 
@@ -152,10 +146,6 @@ export const ProfielInfo = () => {
 
     setIsEditing(false);
     setShowAkkoord(false);
-
-
-
-
   };
   const handleAkkoord = async () => {
     setIsEditing(false);
@@ -172,7 +162,6 @@ export const ProfielInfo = () => {
   if (loading) {
     return <div>Loading...</div>;
   }
-
 
   const personalFields = [
     {
@@ -263,9 +252,17 @@ export const ProfielInfo = () => {
             <TabPanel>
               {personalFields.map(({ label, value, id }) => (
                 <FormControl key={id} mb={4}>
-                  <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
+                  <FormLabel htmlFor={id} color="gray.500">
+                    {label}
+                  </FormLabel>
                   {isEditing ? (
-                    <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange} />) : (
+                    <Input
+                      defaultValue={value}
+                      borderColor={"gray"}
+                      id={id}
+                      onChange={handleInputChange}
+                    />
+                  ) : (
                     <Text color="gray.700">{value}</Text>
                   )}
                 </FormControl>
@@ -274,9 +271,16 @@ export const ProfielInfo = () => {
             <TabPanel>
               {companyFields.map(({ label, value, id }) => (
                 <FormControl key={id} mb={4}>
-                  <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
+                  <FormLabel htmlFor={id} color="gray.500">
+                    {label}
+                  </FormLabel>
                   {isEditing ? (
-                    <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange}/>
+                    <Input
+                      defaultValue={value}
+                      borderColor={"gray"}
+                      id={id}
+                      onChange={handleInputChange}
+                    />
                   ) : (
                     <Text color="gray.700">{value}</Text>
                   )}
@@ -286,9 +290,16 @@ export const ProfielInfo = () => {
             <TabPanel>
               {financialFields.map(({ label, value, id }) => (
                 <FormControl key={id} mb={4}>
-                  <FormLabel htmlFor={id} color="gray.500">{label}</FormLabel>
+                  <FormLabel htmlFor={id} color="gray.500">
+                    {label}
+                  </FormLabel>
                   {isEditing ? (
-                    <Input defaultValue={value} borderColor={"gray"} id={id} onChange={handleInputChange}/>
+                    <Input
+                      defaultValue={value}
+                      borderColor={"gray"}
+                      id={id}
+                      onChange={handleInputChange}
+                    />
                   ) : (
                     <Text color="gray.700">{value}</Text>
                   )}
@@ -307,11 +318,13 @@ export const ProfielInfo = () => {
           >
             wijzigen
           </Button>
-          {showAkkoord && (
-            response.afgehandeld === "in behandeling" ? (
+          {showAkkoord &&
+            (response.afgehandeld === "in behandeling" ? (
               <Flex direction="column" mt={4}>
                 <Text margin={"auto"}>In behandeling</Text>
-                <Text margin={"auto"}>{new Date(response.datumAanvraag).toLocaleDateString()}</Text>
+                <Text margin={"auto"}>
+                  {new Date(response.datumAanvraag).toLocaleDateString()}
+                </Text>
               </Flex>
             ) : (
               <Button
@@ -323,8 +336,7 @@ export const ProfielInfo = () => {
               >
                 Akkoord
               </Button>
-            )
-          )}
+            ))}
         </Flex>
       </Box>
     </Flex>

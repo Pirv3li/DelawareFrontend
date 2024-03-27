@@ -16,11 +16,9 @@ export const setAuthToken = (token) => {
 
 export const getAll = async (url) => {
   const { data } = await axios.get(`${baseUrl}/${url}`);
-  // Check if data has an 'items' property
   if (data && data.items) {
     return data.items;
   }
-  // If not, return the data as is
   return data;
 };
 
@@ -31,7 +29,6 @@ export const deleteById = async (url, { arg: id }) => {
 export const create = async (url, { arg: body }) => {
   const response = await axios.post(`${baseUrl}/${url}`, body);
 
-  // If the response includes a token, store it
   if (response.data && response.data.token) {
     localStorage.setItem("token", response.data.token);
   }
@@ -43,8 +40,6 @@ export const update = async (url, body) => {
   const response = await axios.put(`${baseUrl}/${url}`, body);
   return response.data;
 };
-
-
 
 export const getById = async (url) => {
   const { data } = await axios.get(`${baseUrl}/${url}`);

@@ -17,7 +17,6 @@ import { useNavigate } from "react-router-dom";
 import { NotificatieContext } from "../../contexts/Notificatie.contexts.jsx";
 import { ArrowBackIcon, ArrowForwardIcon } from "@chakra-ui/icons";
 
-
 function NotificatieList() {
   const { setAantalOngeopend } = useContext(NotificatieContext);
   const hoverColor = useColorModeValue("gray.400", "gray.700");
@@ -74,10 +73,13 @@ function NotificatieList() {
       };
       setBody(body);
 
-        const response = await getAll(`notificatie/${sessionStorage.getItem("roles")}/${begin + 1}/${itemsPerPage}`);
-        setItems(response);
-        setTotalOrders(response.length);
-  
+      const response = await getAll(
+        `notificatie/${sessionStorage.getItem("roles")}/${
+          begin + 1
+        }/${itemsPerPage}`
+      );
+      setItems(response);
+      setTotalOrders(response.length);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -87,11 +89,11 @@ function NotificatieList() {
     let newBegin = begin + itemsPerPage;
     setBegin(newBegin);
 
-
-
     let response;
 
-    response = await post(`notificatie/${sessionStorage.getItem("roles")}`, { arg: body });
+    response = await post(`notificatie/${sessionStorage.getItem("roles")}`, {
+      arg: body,
+    });
 
     setItems(response);
     setTotalOrders(response.length);

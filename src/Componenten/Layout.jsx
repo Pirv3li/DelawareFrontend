@@ -8,9 +8,9 @@ export default function Layout() {
     >
       <Navbar />
       <div style={{ flex: "1" }}>
-        <Outlet/>
+        <Outlet />
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

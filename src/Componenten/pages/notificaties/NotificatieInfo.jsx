@@ -25,7 +25,6 @@ function NotificatieInfoPagina() {
     }
   };
 
-
   return (
     <Center h="100vh">
       <Box
